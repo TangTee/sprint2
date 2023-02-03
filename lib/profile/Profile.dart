@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:age_calculator/age_calculator.dart';
 import '../widgets/PostCard.dart';
 import '../widgets/custom_textfield.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -122,15 +123,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return EditPage(
-                          uid: FirebaseAuth.instance.currentUser!.uid,
-                        );
-                      },
+                  PersistentNavBarNavigator.pushNewScreen(
+                    context,
+                    screen: EditPage(
+                      uid: FirebaseAuth.instance.currentUser!.uid,
                     ),
-                    (_) => false,
+                    withNavBar: false, // OPTIONAL VALUE. True by default.
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
                 },
               ),
