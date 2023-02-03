@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:tangteevs/widgets/tag.dart';
-import 'package:tangteevs/profile/profileback.dart';
+
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import '../utils/color.dart';
@@ -114,7 +114,9 @@ class _EditActState extends State<EditAct> {
                       color: mobileSearchColor,
                       size: 30,
                     ),
-                    onPressed: () => {nextScreen(context, MyHomePage())},
+                    onPressed: () => {
+                      Navigator.of(context).popUntil((route) => route.isFirst)
+                    },
                   ),
                   toolbarHeight: MediaQuery.of(context).size.height * 0.13,
                   centerTitle: true,
@@ -545,7 +547,7 @@ class _EditActState extends State<EditAct> {
       _tagController.text = '';
       _tagColorController.text = '';
 
-      nextScreen(context, MyHomePage());
+      Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
 }

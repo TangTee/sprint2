@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/feed/EditAct.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/like.dart';
@@ -362,16 +363,14 @@ class _PostCardState extends State<CardWidget> {
                     ),
                   ),
                   onTap: () {
-                    Navigator.of(context, rootNavigator: true)
-                        .pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) {
-                          return EditAct(
-                            postid: widget.snap['postid'],
-                          );
-                        },
+                    PersistentNavBarNavigator.pushNewScreen(
+                      context,
+                      screen: EditAct(
+                        postid: widget.snap['postid'],
                       ),
-                      (_) => false,
+                      withNavBar: false, // OPTIONAL VALUE. True by default.
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
                     );
                   },
                 ),
