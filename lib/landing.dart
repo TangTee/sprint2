@@ -79,7 +79,7 @@ class _LandingPageState extends State<LandingPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30))),
               child: const Text(
-                "login",
+                "Login",
                 style: TextStyle(color: white, fontSize: 24),
               ),
               onPressed: () {
@@ -90,7 +90,7 @@ class _LandingPageState extends State<LandingPage> {
           const SizedBox(height: 8),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: mobileBackgroundColor,
+                backgroundColor: purple,
                 side: const BorderSide(
                   width: 2.0,
                   color: purple,
@@ -101,7 +101,7 @@ class _LandingPageState extends State<LandingPage> {
                     borderRadius: BorderRadius.circular(30))),
             child: const Text(
               "Create Account",
-              style: TextStyle(color: purple, fontSize: 24),
+              style: TextStyle(color: mobileBackgroundColor, fontSize: 24),
             ),
             onPressed: () {
               nextScreen(context, const RegisterPage());

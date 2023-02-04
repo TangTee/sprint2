@@ -43,6 +43,12 @@ class _RegisnextPageState extends State<RegisnextPage> {
   bool isLoading = false;
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void initState() {
     super.initState();
     getData();
@@ -90,13 +96,6 @@ class _RegisnextPageState extends State<RegisnextPage> {
             fontSize: 46,
             fontWeight: FontWeight.bold,
             color: purple,
-            shadows: [
-              Shadow(
-                blurRadius: 5,
-                color: unselected,
-                offset: Offset(3, 3),
-              ),
-            ],
           ),
         ),
         // ignore: prefer_const_constructors

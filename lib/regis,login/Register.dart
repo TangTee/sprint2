@@ -65,13 +65,6 @@ class _RegistrationScreen extends State<RegisterPage> {
             fontSize: 46,
             fontWeight: FontWeight.bold,
             color: purple,
-            shadows: [
-              Shadow(
-                blurRadius: 5,
-                color: unselected,
-                offset: Offset(3, 3),
-              ),
-            ],
           ),
         ),
         // ignore: prefer_const_constructors

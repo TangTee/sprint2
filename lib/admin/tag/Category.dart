@@ -123,6 +123,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   bool isLoading = false;
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void initState() {
     super.initState();
     getData();
