@@ -6,19 +6,33 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widgets/PostCard.dart';
 
-Future<String> requestToLoin(String postId, String uid, List waiting) async {
+Future<String> requestToLoin(
+    String postId, String uid, List waiting, int join) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
+  int count = join;
   try {
     if (waiting.contains(uid)) {
       // if the likes list contains the user uid, we need to remove it
+      count -= 1;
       _firestore.collection('post').doc(postId).update({
         'waiting': FieldValue.arrayRemove([uid])
+      }).whenComplete(() {
+        _firestore
+            .collection('post')
+            .doc(postId)
+            .update({'join': FieldValue.increment(count)});
       });
     } else {
       // else we need to add uid to the likes array
+      count += 1;
       _firestore.collection('post').doc(postId).update({
         'waiting': FieldValue.arrayUnion([uid])
+      }).whenComplete(() {
+        _firestore
+            .collection('post')
+            .doc(postId)
+            .update({'join': FieldValue.increment(count)});
       });
     }
     res = 'success';
