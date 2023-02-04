@@ -43,6 +43,12 @@ class _LoginState extends State<Login> {
       backgroundColor: lightPurple,
       extendBodyBehindAppBar: false,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         toolbarHeight: 171,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
@@ -67,15 +73,6 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // AppBar(
-                    //  centerTitle: true,
-                    //   flexibleSpace: Container(
-                    //       decoration: const BoxDecoration(
-                    //          image: DecorationImage(
-                    //    image: AssetImage("assets/login.png"),
-                    //   )))),
-                    //Image.asset("assets/login.png"),
-
                     const Text(
                       "WELCOME BACK",
                       style: TextStyle(

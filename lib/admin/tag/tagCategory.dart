@@ -91,6 +91,12 @@ class _TagCategoryState extends State<TagCategory> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void initState() {
     super.initState();
   }
