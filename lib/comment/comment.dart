@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/feed/EditAct.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../HomePage.dart';
 import '../Report.dart';
+import '../activity/Join.dart';
 import '../activity/waiting.dart';
 import '../utils/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -298,7 +300,9 @@ class _MyCommentState extends State<Comment> {
                                                                       InlineSpan>[
                                                                     TextSpan(
                                                                         text: '\t' +
-                                                                            '0 / ' +
+                                                                            documentSnapshot['join']
+                                                                                .toString() +
+                                                                            ' / ' +
                                                                             documentSnapshot[
                                                                                 'peopleLimit'],
                                                                         style:
@@ -518,7 +522,19 @@ class _MyCommentState extends State<Comment> {
                                                                   children: [
                                                                     ElevatedButton(
                                                                       onPressed:
-                                                                          () {},
+                                                                          () {
+                                                                        PersistentNavBarNavigator
+                                                                            .pushNewScreen(
+                                                                          context,
+                                                                          screen:
+                                                                              JoinPage(postid: widget.postid['postid']),
+
+                                                                          withNavBar:
+                                                                              false, // OPTIONAL VALUE. True by default.
+                                                                          pageTransitionAnimation:
+                                                                              PageTransitionAnimation.cupertino,
+                                                                        );
+                                                                      },
                                                                       style: ElevatedButton
                                                                           .styleFrom(
                                                                         backgroundColor:
@@ -606,18 +622,17 @@ class _MyCommentState extends State<Comment> {
                                                                                 fontWeight: FontWeight.bold,
                                                                               ),
                                                                             ),
-                                                                      onPressed:
-                                                                          () =>
-                                                                              requestToLoin(
-                                                                        documentSnapshot['postid']
-                                                                            .toString(),
-                                                                        FirebaseAuth
-                                                                            .instance
-                                                                            .currentUser!
-                                                                            .uid,
-                                                                        documentSnapshot[
-                                                                            'waiting'],
-                                                                      ),
+                                                                      onPressed: () => requestToLoin(
+                                                                          documentSnapshot['postid']
+                                                                              .toString(),
+                                                                          FirebaseAuth
+                                                                              .instance
+                                                                              .currentUser!
+                                                                              .uid,
+                                                                          documentSnapshot[
+                                                                              'waiting'],
+                                                                          documentSnapshot[
+                                                                              'join']),
                                                                     ),
                                                                   ],
                                                                 ),

@@ -29,6 +29,12 @@ class _PostCardState extends State<CardWidget> {
   bool isLoading = false;
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void initState() {
     super.initState();
     getData();
@@ -250,7 +256,10 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                           TextSpan(
-                            text: '\t\t' + '0 / ' + widget.snap['peopleLimit'],
+                            text: '\t\t' +
+                                widget.snap['join'].toString() +
+                                ' / ' +
+                                widget.snap['peopleLimit'],
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,

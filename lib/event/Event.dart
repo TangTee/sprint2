@@ -41,6 +41,7 @@ class _LoadTagState extends State<LoadTag> {
   bool isDateSelect = false;
 
   final _post = FirebaseFirestore.instance.collection('post').doc();
+  final _join = FirebaseFirestore.instance.collection('join');
   final _formKey = GlobalKey<FormState>();
   final _activityName = TextEditingController();
   final _place = TextEditingController();
@@ -401,16 +402,23 @@ class _LoadTagState extends State<LoadTag> {
                                   'peopleLimit': _peopleLimit.text,
                                   'likes': [],
                                   'waiting': [],
-                                  'join': [],
+                                  'join': 0,
                                   'tag': value['_tag2'],
                                   'tagColor': value['_tag2Color'],
                                   'open': true,
                                   'timeStamp': FieldValue.serverTimestamp(),
                                   'uid': FirebaseAuth.instance.currentUser?.uid,
                                 }).whenComplete(() {
-                                  nextScreenReplaceOut(context, MyHomePage());
+                                  _join.doc(_post.id).set({
+                                    'owner':
+                                        FirebaseAuth.instance.currentUser?.uid,
+                                    'member': [],
+                                    'groupid': _post.id,
+                                    'groupName': _activityName.text
+                                  }).whenComplete(() {
+                                    nextScreenReplaceOut(context, MyHomePage());
+                                  });
                                 });
-                                //await _post.set(post);
                               }
                             },
                           ),
