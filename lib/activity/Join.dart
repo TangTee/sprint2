@@ -1,9 +1,9 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/activity/Activity.dart';
 import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
@@ -11,7 +11,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/color.dart';
 import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
-
 import 'package:image_picker/image_picker.dart';
 
 class JoinPage extends StatefulWidget {
@@ -27,6 +26,7 @@ class JoinPageState extends State<JoinPage> {
   DatabaseService databaseService = DatabaseService();
   bool _isLoading = false;
   var postData = {};
+  var waiting = [];
   bool isLoading = false;
 
   @override
@@ -52,6 +52,7 @@ class JoinPageState extends State<JoinPage> {
           .get();
 
       postData = postSnap.data()!;
+      waiting = postSnap.data()!['waiting'];
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -78,9 +79,7 @@ class JoinPageState extends State<JoinPage> {
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back_ios,
                         color: mobileSearchColor, size: 30),
-                    onPressed: () => {
-                      Navigator.of(context).popUntil((route) => route.isFirst)
-                    },
+                    onPressed: () => {Navigator.of(context).pop()},
                   ),
                   toolbarHeight: MediaQuery.of(context).size.height * 0.13,
                   centerTitle: true,
@@ -112,7 +111,7 @@ class JoinPageState extends State<JoinPage> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: unselected)),
-                            Text("หรือกดเครื่องหมายกากบาทเพื่อปฐิเสธ",
+                            Text("หรือกดเครื่องหมายกากบาทเพื่อปฏิเสธ",
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -145,8 +144,7 @@ class JoinPageState extends State<JoinPage> {
                                       child: StreamBuilder<QuerySnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection('users')
-                                            .where('uid',
-                                                whereIn: postData['waiting'])
+                                            .where('uid', whereIn: waiting)
                                             .snapshots(),
                                         builder: (context,
                                             AsyncSnapshot<QuerySnapshot>
@@ -280,23 +278,32 @@ Future<String> joinActivity(String postId, String uid, List waiting) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
 
-  _firestore.collection('join').doc(postId).update({
-    'member': FieldValue.arrayUnion([uid])
-  }).whenComplete(() {
-    _firestore.collection('post').doc(postId).update({
-      'waiting': FieldValue.arrayRemove([uid])
+  try {
+    _firestore.collection('join').doc(postId).update({
+      'member': FieldValue.arrayUnion([uid])
+    }).whenComplete(() {
+      _firestore.collection('post').doc(postId).update({
+        'waiting': FieldValue.arrayRemove([uid])
+      });
     });
-  });
-  res = 'success';
+    res = 'success';
+  } catch (err) {
+    res = err.toString();
+  }
   return res;
 }
 
 Future<String> denyActivity(String postId, String uid, List waiting) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
-  _firestore.collection('post').doc(postId).update({
-    'waiting': FieldValue.arrayRemove([uid])
-  });
-  res = 'success';
+
+  try {
+    _firestore.collection('post').doc(postId).update({
+      'waiting': FieldValue.arrayRemove([uid])
+    });
+    res = 'success';
+  } catch (err) {
+    res = err.toString();
+  }
   return res;
 }

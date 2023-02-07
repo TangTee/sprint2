@@ -12,8 +12,6 @@ import 'package:intl/intl.dart';
 
 import '../widgets/tag.dart';
 
-// import 'AddTag.dart';
-
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({Key? key}) : super(key: key);
   @override
@@ -39,6 +37,7 @@ class LoadTag extends StatefulWidget {
 class _LoadTagState extends State<LoadTag> {
   bool _isLoading = false;
   bool isDateSelect = false;
+  bool isJoin = false;
 
   final _post = FirebaseFirestore.instance.collection('post').doc();
   final _join = FirebaseFirestore.instance.collection('join');
@@ -49,12 +48,8 @@ class _LoadTagState extends State<LoadTag> {
   final dateController = TextEditingController();
   final _time = TextEditingController();
   final _detail = TextEditingController();
-  // late var _tag = TextEditingController();
-  late String _tag = 'Tag';
   final _peopleLimit = TextEditingController();
-  var _tag2;
   var value;
-  var _tag2Color;
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -398,11 +393,11 @@ class _LoadTagState extends State<LoadTag> {
                                   'location': _location.text,
                                   'date': dateController.text,
                                   'time': _time.text,
+                                  'join': 0,
                                   'detail': _detail.text,
                                   'peopleLimit': _peopleLimit.text,
                                   'likes': [],
                                   'waiting': [],
-                                  'join': 0,
                                   'tag': value['_tag2'],
                                   'tagColor': value['_tag2Color'],
                                   'open': true,
@@ -412,10 +407,19 @@ class _LoadTagState extends State<LoadTag> {
                                   _join.doc(_post.id).set({
                                     'owner':
                                         FirebaseAuth.instance.currentUser?.uid,
-                                    'member': [],
+                                    'member': [
+                                      FirebaseAuth.instance.currentUser?.uid
+                                    ],
                                     'groupid': _post.id,
-                                    'groupName': _activityName.text
+                                    'groupName': _activityName.text,
+                                    "recentMessage": "",
+                                    "recentMessageSender": "",
                                   }).whenComplete(() {
+                                    var uid =
+                                        FirebaseAuth.instance.currentUser?.uid;
+                                    _join.doc(_post.id).update({
+                                      'member': FieldValue.arrayUnion([uid]),
+                                    });
                                     nextScreenReplaceOut(context, MyHomePage());
                                   });
                                 });

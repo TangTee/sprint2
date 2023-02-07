@@ -10,6 +10,9 @@ class DatabaseService {
   final CollectionReference groupCollection =
       FirebaseFirestore.instance.collection("groups");
 
+  final CollectionReference joinCollection =
+      FirebaseFirestore.instance.collection("join");
+
   // saving the userdata
   Future savingUserData(
     String fullName,
@@ -24,7 +27,10 @@ class DatabaseService {
     bool verify,
     String facebook,
     String instagram,
-    String twitter, String day, String month, String year,
+    String twitter,
+    String day,
+    String month,
+    String year,
   ) async {
     return await userCollection.doc(uid).set({
       "fullName": fullName,
@@ -64,8 +70,7 @@ class DatabaseService {
   Future createGroup(String userName, String id, String groupName) async {
     DocumentReference groupDocumentReference = await groupCollection.add({
       "groupName": groupName,
-      "groupIcon": "",
-      "admin": "${id}_$userName",
+      "owner": "${id}_$userName",
       "members": [],
       "groupId": "",
       "recentMessage": "",
@@ -82,15 +87,6 @@ class DatabaseService {
       "groups":
           FieldValue.arrayUnion(["${groupDocumentReference.id}_$groupName"])
     });
-  }
-
-  // getting the chats
-  getChats(String groupId) async {
-    return groupCollection
-        .doc(groupId)
-        .collection("messages")
-        .orderBy("time")
-        .snapshots();
   }
 
   Future getGroupAdmin(String groupId) async {
@@ -154,10 +150,10 @@ class DatabaseService {
   // send message
   sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
     groupCollection.doc(groupId).collection("messages").add(chatMessageData);
-    groupCollection.doc(groupId).update({
+    joinCollection.doc(groupId).update({
       "recentMessage": chatMessageData['message'],
       "recentMessageSender": chatMessageData['sender'],
-      "recentMessageTime": chatMessageData['time'].toString(),
+      // "recentMessageTime": chatMessageData['time'].toString(),
     });
   }
 }
