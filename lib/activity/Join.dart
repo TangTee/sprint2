@@ -28,7 +28,7 @@ class JoinPageState extends State<JoinPage> {
   DatabaseService databaseService = DatabaseService();
   bool _isLoading = false;
   var postData = {};
-  var waitingLen = 0;
+  var waiting = [];
   bool isLoading = false;
 
   @override
@@ -54,7 +54,7 @@ class JoinPageState extends State<JoinPage> {
           .get();
 
       postData = postSnap.data()!;
-      waitingLen = postSnap.data()!['waiting'].length;
+      waiting = postSnap.data()!['waiting'];
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -81,16 +81,14 @@ class JoinPageState extends State<JoinPage> {
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back_ios,
                         color: mobileSearchColor, size: 30),
-                    onPressed: () => {
-                      Navigator.of(context).popUntil((route) => route.isFirst)
-                    },
+                    onPressed: () => {Navigator.of(context).pop()},
                   ),
                   toolbarHeight: MediaQuery.of(context).size.height * 0.13,
                   centerTitle: true,
                   elevation: 0,
-                  title: Text(
-                    "$waitingLen Request List",
-                    style: const TextStyle(
+                  title: const Text(
+                    "Request List",
+                    style: TextStyle(
                       fontSize: 46,
                       fontWeight: FontWeight.bold,
                       color: purple,
@@ -148,8 +146,7 @@ class JoinPageState extends State<JoinPage> {
                                       child: StreamBuilder<QuerySnapshot>(
                                         stream: FirebaseFirestore.instance
                                             .collection('users')
-                                            .where('uid',
-                                                whereIn: postData['waiting'])
+                                            .where('uid', whereIn: waiting)
                                             .snapshots(),
                                         builder: (context,
                                             AsyncSnapshot<QuerySnapshot>

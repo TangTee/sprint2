@@ -410,6 +410,11 @@ class _LoadTagState extends State<LoadTag> {
                                     'groupid': _post.id,
                                     'groupName': _activityName.text
                                   }).whenComplete(() {
+                                    var uid =
+                                        FirebaseAuth.instance.currentUser?.uid;
+                                    _join.doc(_post.id).update({
+                                      'member': FieldValue.arrayUnion([uid]),
+                                    });
                                     nextScreenReplaceOut(context, MyHomePage());
                                   });
                                 });
