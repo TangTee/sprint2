@@ -25,7 +25,7 @@ class _PostCardState extends State<CardWidget> {
   var postData = {};
   var userData = {};
   var currentUser = {};
-  var commentLen = 0;
+  var joinLen = 0;
   bool isLoading = false;
 
   @override
@@ -61,12 +61,12 @@ class _PostCardState extends State<CardWidget> {
           .get();
 
       // get post Length
-      var commentSnap = await FirebaseFirestore.instance
-          .collection('comments')
-          .where('postid', isEqualTo: widget.snap['postid'])
+      var joinSnap = await FirebaseFirestore.instance
+          .collection('join')
+          .doc(widget.snap['postid'])
           .get();
 
-      commentLen = commentSnap.docs.length;
+      joinLen = joinSnap.data()!['member'].length;
       postData = postSnap.data()!;
       userData = userSnap.data()!;
       currentUser = currentSnap.data()!;
@@ -94,10 +94,6 @@ class _PostCardState extends State<CardWidget> {
   }
 
   Widget build(BuildContext context) {
-    // var Mytext = new Map();
-    // Mytext['tag'] = documentSnapshot['tag'];
-    // Mytext['tagColor'] = documentSnapshot['tagColor'];
-
     return SafeArea(
       child: Container(
         child: Card(
@@ -257,7 +253,7 @@ class _PostCardState extends State<CardWidget> {
                           ),
                           TextSpan(
                             text: '\t\t' +
-                                widget.snap['join'].toString() +
+                                joinLen.toString() +
                                 ' / ' +
                                 widget.snap['peopleLimit'],
                             style: const TextStyle(

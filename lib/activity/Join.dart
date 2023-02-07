@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/activity/Activity.dart';
 import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
@@ -27,6 +28,7 @@ class JoinPageState extends State<JoinPage> {
   DatabaseService databaseService = DatabaseService();
   bool _isLoading = false;
   var postData = {};
+  var waitingLen = 0;
   bool isLoading = false;
 
   @override
@@ -52,6 +54,7 @@ class JoinPageState extends State<JoinPage> {
           .get();
 
       postData = postSnap.data()!;
+      waitingLen = postSnap.data()!['waiting'].length;
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -85,9 +88,9 @@ class JoinPageState extends State<JoinPage> {
                   toolbarHeight: MediaQuery.of(context).size.height * 0.13,
                   centerTitle: true,
                   elevation: 0,
-                  title: const Text(
-                    "Request List",
-                    style: TextStyle(
+                  title: Text(
+                    "$waitingLen Request List",
+                    style: const TextStyle(
                       fontSize: 46,
                       fontWeight: FontWeight.bold,
                       color: purple,
@@ -112,7 +115,7 @@ class JoinPageState extends State<JoinPage> {
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                     color: unselected)),
-                            Text("หรือกดเครื่องหมายกากบาทเพื่อปฐิเสธ",
+                            Text("หรือกดเครื่องหมายกากบาทเพื่อปฏิเสธ",
                                 style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -280,23 +283,32 @@ Future<String> joinActivity(String postId, String uid, List waiting) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
 
-  _firestore.collection('join').doc(postId).update({
-    'member': FieldValue.arrayUnion([uid])
-  }).whenComplete(() {
-    _firestore.collection('post').doc(postId).update({
-      'waiting': FieldValue.arrayRemove([uid])
+  try {
+    _firestore.collection('join').doc(postId).update({
+      'member': FieldValue.arrayUnion([uid])
+    }).whenComplete(() {
+      _firestore.collection('post').doc(postId).update({
+        'waiting': FieldValue.arrayRemove([uid])
+      });
     });
-  });
-  res = 'success';
+    res = 'success';
+  } catch (err) {
+    res = err.toString();
+  }
   return res;
 }
 
 Future<String> denyActivity(String postId, String uid, List waiting) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
-  _firestore.collection('post').doc(postId).update({
-    'waiting': FieldValue.arrayRemove([uid])
-  });
-  res = 'success';
+
+  try {
+    _firestore.collection('post').doc(postId).update({
+      'waiting': FieldValue.arrayRemove([uid])
+    });
+    res = 'success';
+  } catch (err) {
+    res = err.toString();
+  }
   return res;
 }

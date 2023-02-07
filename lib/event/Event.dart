@@ -12,8 +12,6 @@ import 'package:intl/intl.dart';
 
 import '../widgets/tag.dart';
 
-// import 'AddTag.dart';
-
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({Key? key}) : super(key: key);
   @override
@@ -39,6 +37,7 @@ class LoadTag extends StatefulWidget {
 class _LoadTagState extends State<LoadTag> {
   bool _isLoading = false;
   bool isDateSelect = false;
+  bool isJoin = false;
 
   final _post = FirebaseFirestore.instance.collection('post').doc();
   final _join = FirebaseFirestore.instance.collection('join');
@@ -49,12 +48,8 @@ class _LoadTagState extends State<LoadTag> {
   final dateController = TextEditingController();
   final _time = TextEditingController();
   final _detail = TextEditingController();
-  // late var _tag = TextEditingController();
-  late String _tag = 'Tag';
   final _peopleLimit = TextEditingController();
-  var _tag2;
   var value;
-  var _tag2Color;
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -402,7 +397,6 @@ class _LoadTagState extends State<LoadTag> {
                                   'peopleLimit': _peopleLimit.text,
                                   'likes': [],
                                   'waiting': [],
-                                  'join': 0,
                                   'tag': value['_tag2'],
                                   'tagColor': value['_tag2Color'],
                                   'open': true,

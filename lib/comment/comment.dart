@@ -29,11 +29,10 @@ class _MyCommentState extends State<Comment> {
   var userData = {};
   var commentData = {};
   var currentUser = {};
-  var tagData = {};
-  var tagColorData = {};
-  var commentLen = 0;
+  var joinData = {};
+  var joinLen = 0;
+  var waitingLen = 0;
   bool isLoading = false;
-  bool _waiting = false;
   bool enable = false;
 
   @override
@@ -46,13 +45,6 @@ class _MyCommentState extends State<Comment> {
   void initState() {
     super.initState();
     getData();
-  }
-
-  void _onPress() {
-    setState(() {
-      _waiting = !_waiting;
-    });
-    // Do content here
   }
 
   getData() async {
@@ -81,7 +73,18 @@ class _MyCommentState extends State<Comment> {
           .where('postid', isEqualTo: widget.postid['postid'])
           .get();
 
-      commentLen = commentSnap.docs.length;
+      var joinSnap = await FirebaseFirestore.instance
+          .collection('join')
+          .doc(widget.postid['postid'])
+          .get();
+
+      var waitingSnap = await FirebaseFirestore.instance
+          .collection('post')
+          .doc(widget.postid['postid'])
+          .get();
+
+      waitingLen = postSnap.data()!['waiting'].length;
+      joinLen = joinSnap.data()!['member'].length;
       postData = postSnap.data()!;
       userData = userSnap.data()!;
       currentUser = currentSnap.data()!;
@@ -300,7 +303,7 @@ class _MyCommentState extends State<Comment> {
                                                                       InlineSpan>[
                                                                     TextSpan(
                                                                         text: '\t' +
-                                                                            documentSnapshot['join']
+                                                                            joinLen
                                                                                 .toString() +
                                                                             ' / ' +
                                                                             documentSnapshot[
@@ -520,47 +523,81 @@ class _MyCommentState extends State<Comment> {
                                                                       MainAxisAlignment
                                                                           .end,
                                                                   children: [
-                                                                    ElevatedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        PersistentNavBarNavigator
-                                                                            .pushNewScreen(
-                                                                          context,
-                                                                          screen:
-                                                                              JoinPage(postid: widget.postid['postid']),
-
-                                                                          withNavBar:
-                                                                              false, // OPTIONAL VALUE. True by default.
-                                                                          pageTransitionAnimation:
-                                                                              PageTransitionAnimation.cupertino,
-                                                                        );
-                                                                      },
-                                                                      style: ElevatedButton
-                                                                          .styleFrom(
-                                                                        backgroundColor:
-                                                                            lightGreen,
-                                                                        shape:
-                                                                            RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(10.0),
-                                                                        ),
-                                                                      ),
-                                                                      child:
-                                                                          const Text(
-                                                                        'Accepting',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontFamily:
-                                                                              'MyCustomFont',
-                                                                          color:
+                                                                    if (waitingLen ==
+                                                                        0)
+                                                                      ElevatedButton(
+                                                                        onPressed:
+                                                                            (() =>
+                                                                                null),
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
                                                                               unselected,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0),
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            const Text(
+                                                                          '0 Request',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontFamily:
+                                                                                'MyCustomFont',
+                                                                            color:
+                                                                                white,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
                                                                         ),
                                                                       ),
-                                                                    ),
+                                                                    if (waitingLen !=
+                                                                        0)
+                                                                      ElevatedButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          PersistentNavBarNavigator
+                                                                              .pushNewScreen(
+                                                                            context,
+                                                                            screen:
+                                                                                JoinPage(postid: widget.postid['postid']),
+
+                                                                            withNavBar:
+                                                                                false, // OPTIONAL VALUE. True by default.
+                                                                            pageTransitionAnimation:
+                                                                                PageTransitionAnimation.cupertino,
+                                                                          );
+                                                                        },
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              lightGreen,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0),
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            Text(
+                                                                          '$waitingLen Request',
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontFamily:
+                                                                                'MyCustomFont',
+                                                                            color:
+                                                                                unselected,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
+                                                                        ),
+                                                                      ),
                                                                   ],
                                                                 ),
                                                               ),
@@ -614,7 +651,7 @@ class _MyCommentState extends State<Comment> {
                                                                               ),
                                                                             )
                                                                           : const Text(
-                                                                              'Request',
+                                                                              'Join',
                                                                               style: TextStyle(
                                                                                 fontSize: 16,
                                                                                 fontFamily: 'MyCustomFont',
