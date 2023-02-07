@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/chat/chat-page.dart';
 import 'package:tangteevs/helper/helper_function.dart';
-import 'package:tangteevs/chat/search-page.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/widgets/group_tile.dart';
@@ -89,7 +88,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
               size: 30,
             ),
             onPressed: () {
-              nextScreen(context, const SearchPage());
+              //do action
             },
           )
         ],

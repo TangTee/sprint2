@@ -3,6 +3,7 @@ import 'package:tangteevs/utils/color.dart';
 
 class MessageBubble extends StatefulWidget {
   final String message;
+  final bool image;
   final String sender;
   final String profile;
   final bool sentByMe;
@@ -10,6 +11,7 @@ class MessageBubble extends StatefulWidget {
   const MessageBubble(
       {Key? key,
       required this.message,
+      required this.image,
       required this.sender,
       required this.sentByMe,
       required this.profile})
@@ -70,9 +72,20 @@ class _MessageBubbleState extends State<MessageBubble> {
             const SizedBox(
               height: 8,
             ),
-            Text(widget.message,
-                textAlign: TextAlign.start,
-                style: const TextStyle(fontSize: 16, color: white))
+            if (widget.image == true)
+              Container(
+                height: 250,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(widget.message),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+              ),
+            if (widget.image == false)
+              Text(widget.message,
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(fontSize: 16, color: white))
           ],
         ),
       ),
