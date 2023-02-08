@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/utils/color.dart';
+import 'chat/chat-landing.dart';
 import 'event/Event.dart';
 import 'feed/FeedPage.dart';
 import 'Profile/Profile.dart';
@@ -74,7 +75,7 @@ class MyHomePage extends StatelessWidget {
 
     PersistentTabController controller;
 
-    controller = PersistentTabController(initialIndex: 0);
+    controller = PersistentTabController(initialIndex: 3);
     return PersistentTabView(
       context,
       screens: _buildScreens(),
@@ -146,7 +147,9 @@ class ChatTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Add the content for the chat tab here');
+    return MaterialApp(
+      home: const ChatHomePage(),
+    );
   }
 }
 
