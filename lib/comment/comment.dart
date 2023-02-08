@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import '../widgets/TagResult.dart';
 import '../widgets/like.dart';
 
 class Comment extends StatefulWidget {
@@ -306,8 +307,8 @@ class _MyCommentState extends State<Comment> {
                                                                             joinLen
                                                                                 .toString() +
                                                                             ' / ' +
-                                                                            documentSnapshot[
-                                                                                'peopleLimit'],
+                                                                            documentSnapshot['peopleLimit']
+                                                                                .toString(),
                                                                         style:
                                                                             const TextStyle(
                                                                           fontSize:
@@ -480,7 +481,20 @@ class _MyCommentState extends State<Comment> {
                                                                       children: [
                                                                         OutlinedButton(
                                                                           onPressed:
-                                                                              () {},
+                                                                              () {
+                                                                            Navigator.of(context).push(
+                                                                              MaterialPageRoute(
+                                                                                builder: (context) => TagResult(Tag: widget.postid['tag'].toString()),
+                                                                              ),
+                                                                            );
+                                                                          },
+                                                                          style: OutlinedButton.styleFrom(
+                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                                                                              side: BorderSide(
+                                                                                  color: HexColor(
+                                                                                    postData['tagColor'],
+                                                                                  ),
+                                                                                  width: 1.5)),
                                                                           child:
                                                                               Padding(
                                                                             padding:
@@ -492,13 +506,6 @@ class _MyCommentState extends State<Comment> {
                                                                               textAlign: TextAlign.center,
                                                                             ),
                                                                           ),
-                                                                          style: OutlinedButton.styleFrom(
-                                                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                                                              side: BorderSide(
-                                                                                  color: HexColor(
-                                                                                    postData['tagColor'],
-                                                                                  ),
-                                                                                  width: 1.5)),
                                                                         ),
                                                                       ],
                                                                     ),
@@ -618,59 +625,81 @@ class _MyCommentState extends State<Comment> {
                                                                       MainAxisAlignment
                                                                           .end,
                                                                   children: [
-                                                                    ElevatedButton(
-                                                                      style: documentSnapshot['waiting'].contains(FirebaseAuth
-                                                                              .instance
-                                                                              .currentUser!
-                                                                              .uid)
-                                                                          ? ElevatedButton
-                                                                              .styleFrom(
-                                                                              backgroundColor: lightPurple,
-                                                                              shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                    if (documentSnapshot[
+                                                                            'open'] ==
+                                                                        true)
+                                                                      ElevatedButton(
+                                                                        style: documentSnapshot['waiting'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                                                            ? ElevatedButton.styleFrom(
+                                                                                backgroundColor: lightPurple,
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(10.0),
+                                                                                ),
+                                                                              )
+                                                                            : ElevatedButton.styleFrom(
+                                                                                backgroundColor: lightGreen,
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.circular(10.0),
+                                                                                ),
                                                                               ),
-                                                                            )
-                                                                          : ElevatedButton
-                                                                              .styleFrom(
-                                                                              backgroundColor: lightGreen,
-                                                                              shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                        child: documentSnapshot['waiting'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                                                            ? const Text(
+                                                                                'Waiting',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                  fontFamily: 'MyCustomFont',
+                                                                                  color: mobileBackgroundColor,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
+                                                                              )
+                                                                            : const Text(
+                                                                                'Join',
+                                                                                style: TextStyle(
+                                                                                  fontSize: 16,
+                                                                                  fontFamily: 'MyCustomFont',
+                                                                                  color: unselected,
+                                                                                  fontWeight: FontWeight.bold,
+                                                                                ),
                                                                               ),
-                                                                            ),
-                                                                      child: documentSnapshot['waiting'].contains(FirebaseAuth
-                                                                              .instance
-                                                                              .currentUser!
-                                                                              .uid)
-                                                                          ? const Text(
-                                                                              'Waiting',
-                                                                              style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                fontFamily: 'MyCustomFont',
-                                                                                color: mobileBackgroundColor,
-                                                                                fontWeight: FontWeight.bold,
-                                                                              ),
-                                                                            )
-                                                                          : const Text(
-                                                                              'Join',
-                                                                              style: TextStyle(
-                                                                                fontSize: 16,
-                                                                                fontFamily: 'MyCustomFont',
-                                                                                color: unselected,
-                                                                                fontWeight: FontWeight.bold,
-                                                                              ),
-                                                                            ),
-                                                                      onPressed: () => requestToLoin(
-                                                                          documentSnapshot['postid']
-                                                                              .toString(),
-                                                                          FirebaseAuth
-                                                                              .instance
-                                                                              .currentUser!
-                                                                              .uid,
-                                                                          documentSnapshot[
-                                                                              'waiting'],
-                                                                          documentSnapshot[
-                                                                              'join']),
-                                                                    ),
+                                                                        onPressed: () => requestToLoin(
+                                                                            documentSnapshot['postid'].toString(),
+                                                                            FirebaseAuth.instance.currentUser!.uid,
+                                                                            documentSnapshot['waiting'],
+                                                                            documentSnapshot['join']),
+                                                                      ),
+                                                                    if (documentSnapshot[
+                                                                            'open'] ==
+                                                                        false)
+                                                                      ElevatedButton(
+                                                                        onPressed:
+                                                                            (() =>
+                                                                                null),
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              unselected,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0),
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            const Text(
+                                                                          'Full',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontFamily:
+                                                                                'MyCustomFont',
+                                                                            color:
+                                                                                white,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
+                                                                        ),
+                                                                      ),
                                                                   ],
                                                                 ),
                                                               ),
