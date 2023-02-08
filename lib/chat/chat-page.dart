@@ -1,5 +1,7 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tangteevs/chat/group_info.dart';
@@ -35,6 +37,8 @@ class _ChatPageState extends State<ChatPage> {
   bool isLoading = false;
   bool text = false;
   bool image = true;
+  var groupData = {};
+  var member = [];
 
   var userData = {};
   File? media;
@@ -55,6 +59,14 @@ class _ChatPageState extends State<ChatPage> {
           .get();
 
       userData = userSnap.data()!;
+
+      var groupSnap = await FirebaseFirestore.instance
+          .collection('join')
+          .doc(widget.groupId)
+          .get();
+
+      groupData = groupSnap.data()!;
+      member = groupSnap.data()?['member'];
 
       setState(() {});
     } catch (e) {
@@ -85,6 +97,7 @@ class _ChatPageState extends State<ChatPage> {
                     GroupInfo(
                       groupId: widget.groupId,
                       groupName: widget.groupName,
+                      groupMember: member,
                     ));
               },
               icon: const Icon(Icons.people))

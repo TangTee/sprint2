@@ -255,7 +255,7 @@ class _PostCardState extends State<CardWidget> {
                             text: '\t\t' +
                                 joinLen.toString() +
                                 ' / ' +
-                                widget.snap['peopleLimit'],
+                                widget.snap['peopleLimit'].toString(),
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,

@@ -1,16 +1,21 @@
-import 'package:tangteevs/services/database_service.dart';
-import 'package:tangteevs/widgets/custom_textfield.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:tangteevs/profile/Profile.dart';
 import 'package:flutter/material.dart';
-
 import '../utils/color.dart';
+import '../utils/showSnackbar.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
   final String groupName;
+  final List groupMember;
 
-  const GroupInfo({Key? key, required this.groupName, required this.groupId})
-      : super(key: key);
+  const GroupInfo({
+    Key? key,
+    required this.groupName,
+    required this.groupId,
+    required this.groupMember,
+  }) : super(key: key);
 
   @override
   State<GroupInfo> createState() => _GroupInfoState();
@@ -18,24 +23,37 @@ class GroupInfo extends StatefulWidget {
 
 class _GroupInfoState extends State<GroupInfo> {
   Stream? members;
+  var groupData = {};
+  var member = [];
+  bool isLoading = false;
   @override
   void initState() {
-    getMembers();
+    getData();
     super.initState();
   }
 
-  getMembers() async {
-    DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getGroupMembers(widget.groupId)
-        .then((val) {
-      setState(() {
-        members = val;
-      });
+  getData() async {
+    setState(() {
+      isLoading = true;
     });
-  }
+    try {
+      var groupSnap = await FirebaseFirestore.instance
+          .collection('join')
+          .doc(widget.groupId)
+          .get();
 
-  String getName(String r) {
-    return r.substring(r.indexOf("_") + 1);
+      groupData = groupSnap.data()!;
+      member = groupSnap.data()?['member'];
+      setState(() {});
+    } catch (e) {
+      showSnackBar(
+        context,
+        e.toString(),
+      );
+    }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -46,53 +64,60 @@ class _GroupInfoState extends State<GroupInfo> {
           elevation: 0,
           backgroundColor: lightPurple,
           title: Text("${widget.groupName}"),
+          // actions: [
+          //   ElevatedButton(
+          //       onPressed: () {
+          //         //
+          //       },
+          //       child: const Text('text'))
+          // ],
         ),
         body: memberList());
   }
 
   memberList() {
     return StreamBuilder(
-      stream: members,
-      builder: (context, AsyncSnapshot snapshot) {
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .where('uid', whereIn: widget.groupMember)
+          .snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data['member'] != null) {
-            if (snapshot.data['member'].length != 0) {
-              return ListView.builder(
-                itemCount: snapshot.data['member'].length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+          return ListView.builder(
+            itemCount: snapshot.data!.docs.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              final DocumentSnapshot documentSnapshot =
+                  snapshot.data!.docs[index];
+              return Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: ProfilePage(
+                          uid: documentSnapshot['uid'],
+                        ),
+                        withNavBar: false, // OPTIONAL VALUE. True by default.
+                      );
+                    },
                     child: ListTile(
                       leading: CircleAvatar(
-                        radius: 30,
-                        backgroundColor: lightPurple,
-                        child: Text(
-                          getName(snapshot.data['member'][index])
-                              .substring(0, 1)
-                              .toUpperCase(),
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
+                        backgroundColor: green,
+                        backgroundImage: NetworkImage(
+                          documentSnapshot['profile'].toString(),
                         ),
+                        radius: 25,
                       ),
-                      title: Text(getName(snapshot.data['member'][index])),
+                      title: Text(documentSnapshot['Displayname']),
                     ),
-                  );
-                },
+                  ),
+                ),
               );
-            } else {
-              return const Center(
-                child: Text("NO MEMBERS"),
-              );
-            }
-          } else {
-            return const Center(
-              child: Text("NO MEMBERS"),
-            );
-          }
+            },
+          );
         } else {
           return Center(
               child: CircularProgressIndicator(

@@ -158,8 +158,6 @@ class _ChatHomePageState extends State<ChatHomePage> {
                         groupName: documentSnapshot['groupName'],
                       ),
                       withNavBar: false, // OPTIONAL VALUE. True by default.
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
                     );
                   },
                   child: ListTile(

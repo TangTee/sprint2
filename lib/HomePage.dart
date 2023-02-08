@@ -148,8 +148,7 @@ class ChatTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const ChatHomePage(
-      ),
+      home: const ChatHomePage(),
     );
   }
 }
