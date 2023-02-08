@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
 
+import '../utils/my_date_util.dart';
+
 class MessageBubble extends StatefulWidget {
   final String message;
   final bool image;
   final String sender;
   final String profile;
+  final String time;
   final bool sentByMe;
 
   const MessageBubble(
@@ -13,6 +16,7 @@ class MessageBubble extends StatefulWidget {
       required this.message,
       required this.image,
       required this.sender,
+      required this.time,
       required this.sentByMe,
       required this.profile})
       : super(key: key);
@@ -85,7 +89,16 @@ class _MessageBubbleState extends State<MessageBubble> {
             if (widget.image == false)
               Text(widget.message,
                   textAlign: TextAlign.start,
-                  style: const TextStyle(fontSize: 16, color: white))
+                  style: const TextStyle(fontSize: 16, color: white)),
+            Padding(
+              padding: EdgeInsets.only(
+                  right: MediaQuery.of(context).size.height * .04),
+              child: Text(
+                MyDateUtil.getFormattedTime(
+                    context: context, time: widget.time),
+                style: const TextStyle(fontSize: 13, color: Colors.black54),
+              ),
+            ),
           ],
         ),
       ),

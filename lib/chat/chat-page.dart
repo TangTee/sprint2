@@ -200,6 +200,7 @@ class _ChatPageState extends State<ChatPage> {
                         message: snapshot.data.docs[index]['message'],
                         sender: snapshot.data.docs[index]['sender'],
                         profile: snapshot.data.docs[index]['profile'],
+                        time: snapshot.data.docs[index]['time'].toString(),
                         sentByMe: userData['Displayname'].toString() ==
                             snapshot.data.docs[index]['sender']);
                   },
@@ -215,7 +216,7 @@ class _ChatPageState extends State<ChatPage> {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
         "sender": userData['Displayname'].toString(),
-        "time": DateTime.now(),
+        "time": DateTime.now().millisecondsSinceEpoch,
         "profile": userData['profile'].toString(),
         "image": text
       };
@@ -232,7 +233,7 @@ class _ChatPageState extends State<ChatPage> {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
         "sender": userData['Displayname'].toString(),
-        "time": DateTime.now(),
+        "time": DateTime.now().millisecondsSinceEpoch,
         "profile": userData['profile'].toString(),
         "image": image
       };
