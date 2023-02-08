@@ -414,6 +414,7 @@ class _LoadTagState extends State<LoadTag> {
                                     'groupName': _activityName.text,
                                     "recentMessage": "",
                                     "recentMessageSender": "",
+                                    "recentMessageTime": "",
                                   }).whenComplete(() {
                                     var uid =
                                         FirebaseAuth.instance.currentUser?.uid;

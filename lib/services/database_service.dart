@@ -68,7 +68,6 @@ class DatabaseService {
     return userCollection.doc(uid).snapshots();
   }
 
-
   // get group members
   getGroupMembers(groupId) async {
     return joinCollection.doc(groupId).snapshots();
@@ -99,9 +98,7 @@ class DatabaseService {
     joinCollection.doc(groupId).update({
       "recentMessage": chatMessageData['message'],
       "recentMessageSender": chatMessageData['sender'],
-      // "recentMessageTime": chatMessageData['time'].toString(),
+      "recentMessageTime": chatMessageData['time'].toString(),
     });
   }
 }
-
- 

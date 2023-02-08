@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/Landing.dart';
 import 'package:tangteevs/admin/home.dart';
 import 'package:tangteevs/profile/edit.dart';
@@ -10,7 +11,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:age_calculator/age_calculator.dart';
 import '../widgets/PostCard.dart';
 import '../widgets/custom_textfield.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -31,6 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
   DateTime birthday = DateTime(1);
   DateDuration duration = DateDuration();
 
+  @override
   void initState() {
     super.initState();
     getData();

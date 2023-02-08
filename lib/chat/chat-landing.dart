@@ -11,7 +11,9 @@ import 'package:flutter/material.dart';
 
 import '../profile/edit.dart';
 import '../utils/color.dart';
+import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
+import '../widgets/message-landing.dart';
 
 class ChatHomePage extends StatefulWidget {
   const ChatHomePage({Key? key}) : super(key: key);
@@ -160,10 +162,14 @@ class _ChatHomePageState extends State<ChatHomePage> {
                       withNavBar: false, // OPTIONAL VALUE. True by default.
                     );
                   },
-                  child: ListTile(
-                    title: Text(documentSnapshot['groupName'].toString()),
-                    subtitle:
-                        Text(documentSnapshot['recentMessage'].toString()),
+                  child: MessagePreviewWidget(
+                    messageTitle: documentSnapshot['groupName'],
+                    messageContent: documentSnapshot['recentMessage'],
+                    messageTime: MyDateUtil.getFormattedTime(
+                        context: context,
+                        time: documentSnapshot['recentMessageTime']),
+                    isUnread: false,
+                    messageImage: documentSnapshot['owner'],
                   ),
                 ),
               ); // GroupTile(
