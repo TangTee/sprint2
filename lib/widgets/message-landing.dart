@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../utils/my_date_util.dart';
 import '../utils/color.dart';
 
 class MessagePreviewWidget extends StatefulWidget {
@@ -9,16 +9,16 @@ class MessagePreviewWidget extends StatefulWidget {
     Key? key,
     required this.messageTitle,
     required this.messageContent,
-    required this.isUnread,
+    required this.timer,
     required this.messageTime,
     required this.messageImage,
   }) : super(key: key);
 
-  final String? messageTitle;
-  final String? messageImage;
+  final String messageTitle;
+  final String messageImage;
   final String messageContent;
-  final bool? isUnread;
-  final String? messageTime;
+  final bool timer;
+  final String messageTime;
 
   @override
   _MessagePreviewWidgetState createState() => _MessagePreviewWidgetState();
@@ -41,132 +41,135 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
               final DocumentSnapshot documentSnapshot =
                   snapshot.data!.docs[index];
               return Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 6, 0, 0),
+                padding: const EdgeInsets.all(10),
                 child: Container(
-                  width: double.infinity,
-                  height: 95,
-                  decoration: BoxDecoration(),
+                  height: MediaQuery.of(context).size.height * 0.10,
                   child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(12, 0, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    padding: const EdgeInsets.all(2),
+                    child: Column(
                       children: [
-                        // if (widget.isUnread ?? true)
-                        Container(
-                          width: 10,
-                          height: 10,
-                          decoration: const BoxDecoration(
-                            color: primaryColor,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Expanded(
-                          child: Stack(
-                            children: [
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: green,
+                              backgroundImage: NetworkImage(
+                                documentSnapshot['profile'].toString(),
+                              ),
+                              radius: 25,
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
                                 children: [
                                   Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                      color: primaryColor,
-                                      shape: BoxShape.circle,
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      left: 30,
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        10, 0, 12, 0),
-                                    child: Container(
-                                      width: 45,
-                                      height: 45,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Image.network(
-                                        documentSnapshot['profile'].toString(),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsetsDirectional.fromSTEB(
-                                          0, 0, 12, 0),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisSize: MainAxisSize.max,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                    widget.messageTitle!,
-                                                    maxLines: 1,
-                                                    style: TextStyle(
-                                                        fontFamily:
-                                                            'MyCustomFont',
-                                                        fontSize: 16)),
-                                              ),
-                                              Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Text(widget.messageTime!,
-                                                      style: TextStyle(
-                                                          fontFamily:
-                                                              'MyCustomFont',
-                                                          fontSize: 14)),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(
-                                                                6, 0, 0, 0),
-                                                    child: Icon(
-                                                      Icons
-                                                          .chevron_right_rounded,
-                                                      color: primaryColor,
-                                                      size: 20,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.6,
+                                          child: Text(
+                                            widget.messageTitle,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              fontFamily: 'MyCustomFont',
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0, 0, 22, 0),
+                                        ),
+
+                                        // if (widget.isUnread ?? true)
+                                        SizedBox(
+                                          child: Container(
                                             child: Text(
-                                                '' + widget.messageContent,
-                                                maxLines: 2,
-                                                style: TextStyle(
-                                                    fontFamily: 'MyCustomFont',
-                                                    fontSize: 14)),
+                                              "1",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.06,
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
+                                                0.025,
+                                            decoration: const BoxDecoration(
+                                              color: purple,
+                                              shape: BoxShape.circle,
+                                            ),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 1,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xFFE8E8E8),
+                                    alignment: Alignment.centerLeft,
+                                    padding: const EdgeInsets.only(
+                                      left: 30,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.52,
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.05,
+                                          child: Text(
+                                            '' + widget.messageContent,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              fontFamily: 'MyCustomFont',
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
+                                          child: Text(
+                                              widget.timer
+                                                  ? ''
+                                                  : MyDateUtil.getFormattedTime(
+                                                      context: context,
+                                                      time: widget.messageTime),
+                                              style: TextStyle(
+                                                  fontFamily: 'MyCustomFont',
+                                                  fontSize: 14)),
+                                        ),
+                                        SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.02,
+                                          child: Icon(
+                                            Icons.chevron_right_rounded,
+                                            color: purple,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

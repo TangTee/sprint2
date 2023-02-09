@@ -35,7 +35,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
   @override
   void initState() {
     super.initState();
-    gettingUserData();
+    //gettingUserData();
   }
 
   // string manipulation
@@ -47,92 +47,95 @@ class _ChatHomePageState extends State<ChatHomePage> {
     return res.substring(res.indexOf("_") + 1);
   }
 
-  gettingUserData() async {
-    await HelperFunctions.getUserEmailFromSF().then((value) {
-      setState(() {
-        email = value!;
-      });
-    });
-    await HelperFunctions.getUserNameFromSF().then((val) {
-      setState(() {
-        userName = val!;
-      });
-    });
-    // getting the list of snapshots in our stream
-    await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
-        .getUserGroups()
-        .then((snapshot) {
-      setState(() {
-        groups = snapshot;
-      });
-    });
-  }
+  // gettingUserData() async {
+  //   await HelperFunctions.getUserEmailFromSF().then((value) {
+  //     setState(() {
+  //       email = value!;
+  //     });
+  //   });
+  //   await HelperFunctions.getUserNameFromSF().then((val) {
+  //     setState(() {
+  //       userName = val!;
+  //     });
+  //   });
+  //   // getting the list of snapshots in our stream
+  //   await DatabaseService(uid: FirebaseAuth.instance.currentUser!.uid)
+  //       .getUserGroups()
+  //       .then((snapshot) {
+  //     setState(() {
+  //       groups = snapshot;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 50,
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: mobileBackgroundColor,
-        elevation: 1,
-        leadingWidth: 130,
-        centerTitle: true,
-        leading: Container(
-          padding: const EdgeInsets.all(0),
-          child: Image.asset('assets/images/logo with name.png',
-              fit: BoxFit.scaleDown),
+        appBar: AppBar(
+          toolbarHeight: 50,
+          backgroundColor: mobileBackgroundColor,
+          elevation: 1,
+          leadingWidth: 130,
+          centerTitle: true,
+          leading: Container(
+            padding: const EdgeInsets.all(0),
+            child: Image.asset('assets/images/logo with name.png',
+                fit: BoxFit.scaleDown),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.notifications_none,
+                color: purple,
+                size: 30,
+              ),
+              onPressed: () {
+                //do action
+              },
+            )
+          ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications_none,
-              color: purple,
-              size: 30,
+        drawer: Drawer(
+            child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 50),
+          children: <Widget>[
+            Icon(
+              Icons.account_circle,
+              size: 150,
+              color: Colors.grey[700],
             ),
-            onPressed: () {
-              //do action
-            },
-          )
-        ],
+            const SizedBox(
+              height: 15,
+            ),
+            Text(
+              userName,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const Divider(
+              height: 2,
+            ),
+            ListTile(
+              onTap: () {},
+              selectedColor: Theme.of(context).primaryColor,
+              selected: true,
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              leading: const Icon(Icons.group),
+              title: const Text(
+                "Groups",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ],
+        )),
+        body: groupList(),
       ),
-      drawer: Drawer(
-          child: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 50),
-        children: <Widget>[
-          Icon(
-            Icons.account_circle,
-            size: 150,
-            color: Colors.grey[700],
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Text(
-            userName,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          const Divider(
-            height: 2,
-          ),
-          ListTile(
-            onTap: () {},
-            selectedColor: Theme.of(context).primaryColor,
-            selected: true,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            leading: const Icon(Icons.group),
-            title: const Text(
-              "Groups",
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
-      )),
-      body: groupList(),
     );
   }
 
@@ -159,16 +162,16 @@ class _ChatHomePageState extends State<ChatHomePage> {
                         userName: FirebaseAuth.instance.currentUser!.uid,
                         groupName: documentSnapshot['groupName'],
                       ),
-                      withNavBar: false, // OPTIONAL VALUE. True by default.
+                      withNavBar: false,
+                      pageTransitionAnimation: PageTransitionAnimation
+                          .cupertino, // OPTIONAL VALUE. True by default.
                     );
                   },
                   child: MessagePreviewWidget(
                     messageTitle: documentSnapshot['groupName'],
                     messageContent: documentSnapshot['recentMessage'],
-                    messageTime: MyDateUtil.getFormattedTime(
-                        context: context,
-                        time: documentSnapshot['recentMessageTime']),
-                    isUnread: false,
+                   messageTime: documentSnapshot['recentMessageTime'],
+                    timer: documentSnapshot['recentMessageTime'] == '',
                     messageImage: documentSnapshot['owner'],
                   ),
                 ),
@@ -195,7 +198,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
-          SizedBox(
+          SizedBox(   
             height: 20,
           ),
           Text(

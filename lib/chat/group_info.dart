@@ -90,30 +90,81 @@ class _GroupInfoState extends State<GroupInfo> {
               final DocumentSnapshot documentSnapshot =
                   snapshot.data!.docs[index];
               return Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                child: Card(
-                  child: InkWell(
-                    onTap: () {
-                      PersistentNavBarNavigator.pushNewScreen(
-                        context,
-                        screen: ProfilePage(
-                          uid: documentSnapshot['uid'],
+                height: MediaQuery.of(context).size.height * 0.08,
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(
+                  vertical: 3,
+                  horizontal: 20,
+                ),
+                alignment: Alignment.topLeft,
+                child: Column(
+                  children: <Widget>[
+                    InkWell(
+                      onTap: () {
+                        PersistentNavBarNavigator.pushNewScreen(
+                          context,
+                          screen: ProfilePage(
+                            uid: documentSnapshot['uid'],
+                          ),
+                          withNavBar: false, // OPTIONAL VALUE. True by default.
+                        );
+                      },
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.08,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 1),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: green,
+                                  backgroundImage: NetworkImage(
+                                    documentSnapshot['profile'].toString(),
+                                  ),
+                                  radius: 25,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.02,
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.64,
+                                  child: Text(
+                                    documentSnapshot['Displayname'],
+                                    style: const TextStyle(
+                                      color: mobileSearchColor,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.02,
+                                ),
+                                SizedBox(
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.more_horiz,
+                                      color: unselected,
+                                      size: 30,
+                                    ),
+                                    onPressed: (() {
+                                      //add action
+                                      _showModalBottomSheet(
+                                          context, documentSnapshot['uid']);
+                                    }),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        withNavBar: false, // OPTIONAL VALUE. True by default.
-                      );
-                    },
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: green,
-                        backgroundImage: NetworkImage(
-                          documentSnapshot['profile'].toString(),
-                        ),
-                        radius: 25,
                       ),
-                      title: Text(documentSnapshot['Displayname']),
                     ),
-                  ),
+                  ],
                 ),
               );
             },
@@ -124,6 +175,116 @@ class _GroupInfoState extends State<GroupInfo> {
             color: Theme.of(context).primaryColor,
           ));
         }
+      },
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context, uid) {
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              // if (documentSnapshot['uid'].toString() == uid)
+              //   ListTile(
+              //     contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+              //     title: Center(
+              //       child: Text(
+              //         'Edit Activity',
+              //         style:
+              //             TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+              //       ),
+              //     ),
+              //     onTap: () {
+              //       PersistentNavBarNavigator.pushNewScreen(
+              //         context,
+              //         screen: EditAct(
+              //           postid: widget.snap['postid'],
+              //         ),
+              //         withNavBar: false, // OPTIONAL VALUE. True by default.
+              //         pageTransitionAnimation:
+              //             PageTransitionAnimation.cupertino,
+              //       );
+              //     },
+              //   ),
+              // if (postData['uid'].toString() == uid)
+              //   ListTile(
+              //     contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+              //     title: const Center(
+              //       child: Text(
+              //         'Delete',
+              //         style: TextStyle(
+              //             fontFamily: 'MyCustomFont',
+              //             fontSize: 20,
+              //             color: redColor),
+              //       ),
+              //     ),
+              //     onTap: () {
+              //       showDialog(
+              //           context: context,
+              //           builder: (context) => AlertDialog(
+              //                 title: Text('Delete Activity'),
+              //                 content: Text(
+              //                     'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
+              //                 actions: [
+              //                   TextButton(
+              //                       onPressed: () => Navigator.pop(context),
+              //                       child: Text('Cancle')),
+              //                   TextButton(
+              //                       onPressed: (() {
+              //                         FirebaseFirestore.instance
+              //                             .collection('post')
+              //                             .doc(widget.snap['postid'])
+              //                             .delete()
+              //                             .whenComplete(() {
+              //                           Navigator.push(
+              //                             context,
+              //                             MaterialPageRoute(
+              //                               builder: (context) => MyHomePage(),
+              //                             ),
+              //                           );
+              //                         });
+              //                       }),
+              //                       child: Text('Delete'))
+              //                 ],
+              //               ));
+              //     },
+              //   ),
+              // if (postData['uid'].toString() != uid)
+              //   ListTile(
+              //     contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+              //     title: const Center(
+              //         child: Text(
+              //       'Report',
+              //       style: TextStyle(
+              //           color: redColor,
+              //           fontFamily: 'MyCustomFont',
+              //           fontSize: 20),
+              //     )),
+              //     onTap: () {
+              //       return showModalBottomSheetRP(context, postData);
+              //     },
+              //   ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
       },
     );
   }

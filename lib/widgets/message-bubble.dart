@@ -30,55 +30,72 @@ class _MessageBubbleState extends State<MessageBubble> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: 4,
-          bottom: 4,
-          left: widget.sentByMe ? 0 : 24,
-          right: widget.sentByMe ? 24 : 0),
+        top: widget.sentByMe ? 0 : 4,
+        bottom: 4,
+        left: widget.sentByMe ? 0 : 24,
+        right: widget.sentByMe ? 24 : 0,
+      ),
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: widget.sentByMe
             ? const EdgeInsets.only(left: 30)
             : const EdgeInsets.only(right: 30),
-        padding:
-            const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+        padding: EdgeInsets.only(
+          top: widget.sentByMe ? 0 : 7,
+          bottom: 10,
+          left: 10,
+          right: widget.sentByMe ? 0 : 10,
+        ),
         decoration: BoxDecoration(
-            borderRadius: widget.sentByMe
-                ? const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomLeft: Radius.circular(20),
-                  )
-                : const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
-                  ),
-            color:
-                widget.sentByMe ? Theme.of(context).primaryColor : unselected),
+          borderRadius: widget.sentByMe
+              ? const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                )
+              : const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomRight: Radius.circular(20),
+                ),
+          color: widget.sentByMe ? lightPurple : disable,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CircleAvatar(
-              backgroundImage: NetworkImage(
-                widget.profile,
+            SizedBox(
+              width:
+                  widget.sentByMe ? 0 : MediaQuery.of(context).size.width * 0.3,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      widget.profile,
+                    ),
+                    radius: widget.sentByMe ? 0 : 15,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.02,
+                  ),
+                  Text(
+                    widget.sentByMe ? '' : widget.sender.toUpperCase(),
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: mobileSearchColor,
+                        letterSpacing: -0.5),
+                  ),
+                ],
               ),
-              radius: widget.sentByMe ? 0 : 15,
             ),
-            Text(
-              widget.sentByMe ? '' : widget.sender.toUpperCase(),
-              textAlign: TextAlign.start,
-              style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: white,
-                  letterSpacing: -0.5),
-            ),
-            const SizedBox(
-              height: 8,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             if (widget.image == true)
               Container(
-                height: 250,
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: MediaQuery.of(context).size.width * 0.65,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(widget.message),
@@ -87,16 +104,22 @@ class _MessageBubbleState extends State<MessageBubble> {
                 ),
               ),
             if (widget.image == false)
-              Text(widget.message,
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(fontSize: 16, color: white)),
-            Padding(
-              padding: EdgeInsets.only(
-                  right: MediaQuery.of(context).size.height * .04),
-              child: Text(
-                MyDateUtil.getFormattedTime(
-                    context: context, time: widget.time),
-                style: const TextStyle(fontSize: 13, color: Colors.black54),
+              Text(
+                widget.message,
+                textAlign: TextAlign.start,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: mobileSearchColor,
+                ),
+              ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.2,
+            ),
+            Text(
+              MyDateUtil.getFormattedTime(context: context, time: widget.time),
+              style: const TextStyle(
+                fontSize: 13,
+                color: unselected,
               ),
             ),
           ],

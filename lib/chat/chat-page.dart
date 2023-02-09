@@ -83,6 +83,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: mobileBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
@@ -110,48 +111,51 @@ class _ChatPageState extends State<ChatPage> {
             alignment: Alignment.bottomCenter,
             width: MediaQuery.of(context).size.width,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-              width: MediaQuery.of(context).size.width,
-              color: lightPurple,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.05,
+              height: MediaQuery.of(context).size.height * 0.075,
+              color: white,
+              child: Form(
                 child: Row(children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.01,
+                  ),
                   GestureDetector(
                     onTap: () {
-                      takePhoto(ImageSource.gallery);
+                      showModalBottomSheet(
+                        context: context,
+                        builder: ((builder) => bottomSheet()),
+                      );
                     },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const Center(
-                          child: Icon(
-                        Icons.camera_alt_outlined,
-                        color: Colors.white,
-                      )),
+                    child: const Icon(
+                      Icons.attach_file_outlined,
+                      color: purple,
+                      size: 30,
                     ),
                   ),
                   SizedBox(
-                    width: 5,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.56,
-                    child: Expanded(
-                        child: TextFormField(
+                    width: MediaQuery.of(context).size.width * 0.78,
+                    child: TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      maxLines: 5,
+                      minLines: 1,
                       controller: messageController,
-                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
-                        hintText: "Send a message...",
-                        hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          borderSide: BorderSide(width: 2, color: unselected),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(70)),
+                          borderSide: BorderSide(width: 2, color: unselected),
+                        ),
+                        hintText: 'Send a message...',
+                        hintStyle: TextStyle(
+                          color: unselected,
+                          fontFamily: 'MyCustomFont',
+                        ),
                       ),
-                    )),
-                  ),
-                  const SizedBox(
-                    width: 20,
+                    ),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -160,14 +164,11 @@ class _ChatPageState extends State<ChatPage> {
                     child: Container(
                       height: 50,
                       width: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
                       child: const Center(
                           child: Icon(
-                        Icons.send,
-                        color: Colors.white,
+                        Icons.send_outlined,
+                        size: 30,
+                        color: purple,
                       )),
                     ),
                   )
@@ -191,7 +192,7 @@ class _ChatPageState extends State<ChatPage> {
       builder: (context, AsyncSnapshot snapshot) {
         return snapshot.hasData
             ? SizedBox(
-                height: MediaQuery.of(context).size.height * 0.78,
+                height: MediaQuery.of(context).size.height * 0.8,
                 child: ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
