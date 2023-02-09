@@ -147,23 +147,24 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: SizedBox(
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.more_horiz,
-                                color: unselected,
-                                size: 30,
+                        if (widget.snap['open'] == true)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: SizedBox(
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.more_horiz,
+                                  color: unselected,
+                                  size: 30,
+                                ),
+                                onPressed: (() {
+                                  //add action
+                                  _showModalBottomSheet(
+                                      context, currentUser['uid']);
+                                }),
                               ),
-                              onPressed: (() {
-                                //add action
-                                _showModalBottomSheet(
-                                    context, currentUser['uid']);
-                              }),
                             ),
                           ),
-                        ),
                       ],
                     ),
                     Text.rich(
@@ -357,7 +358,7 @@ class _PostCardState extends State<CardWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              if (postData['uid'].toString() == uid)
+              if (postData['open'] == true && postData['uid'].toString() == uid)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                   title: Center(
@@ -422,7 +423,52 @@ class _PostCardState extends State<CardWidget> {
                             ));
                   },
                 ),
-              if (postData['uid'].toString() != uid)
+              if (postData['open'] == false &&
+                  postData['uid'].toString() != uid)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                          fontFamily: 'MyCustomFont',
+                          fontSize: 20,
+                          color: redColor),
+                    ),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Delete Activity'),
+                              content: Text(
+                                  'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Cancle')),
+                                TextButton(
+                                    onPressed: (() {
+                                      FirebaseFirestore.instance
+                                          .collection('post')
+                                          .doc(widget.snap['postid'])
+                                          .update({
+                                        'history': FieldValue.arrayUnion([uid])
+                                      }).whenComplete(() {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MyHomePage(),
+                                          ),
+                                        );
+                                      });
+                                    }),
+                                    child: Text('Delete'))
+                              ],
+                            ));
+                  },
+                ),
+              if (postData['open'] == true && postData['uid'].toString() != uid)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                   title: const Center(
