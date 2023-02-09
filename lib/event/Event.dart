@@ -393,11 +393,11 @@ class _LoadTagState extends State<LoadTag> {
                                   'location': _location.text,
                                   'date': dateController.text,
                                   'time': _time.text,
-                                  'join': 0,
                                   'detail': _detail.text,
-                                  'peopleLimit': _peopleLimit.text,
+                                  'peopleLimit': _peopleLimit,
                                   'likes': [],
                                   'waiting': [],
+                                  'history': [],
                                   'tag': value['_tag2'],
                                   'tagColor': value['_tag2Color'],
                                   'open': true,
@@ -414,7 +414,6 @@ class _LoadTagState extends State<LoadTag> {
                                     'groupName': _activityName.text,
                                     "recentMessage": "",
                                     "recentMessageSender": "",
-                                    "recentMessageTime": "",
                                   }).whenComplete(() {
                                     var uid =
                                         FirebaseAuth.instance.currentUser?.uid;
