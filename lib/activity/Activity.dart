@@ -70,8 +70,8 @@ class Favorite extends StatelessWidget {
 class History extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HistoryPage(),
+    return Scaffold(
+      body: HistoryPage(),
     );
   }
 }
@@ -80,7 +80,7 @@ class Waiting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WaitingCard(),
+      body: WaitingPage(),
     );
   }
 }
