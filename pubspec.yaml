@@ -78,6 +78,7 @@ dependencies:
   url_launcher: ^6.1.7
   firebase_database: ^10.0.9
   persistent_bottom_nav_bar: ^5.0.2
+  multiple_stream_builder: ^3.0.2
 
 flutter_icons:
  android: true

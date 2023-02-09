@@ -462,8 +462,8 @@ class _EditPageState extends State<EditPage> {
       _facebookController.text = '';
       _genderController.text = '';
       _ImageProfileController = '';
+      // ignore: use_build_context_synchronously
       Navigator.of(context).popUntil((route) => route.isFirst);
-      ;
     }
   }
 }

@@ -264,7 +264,6 @@ class _LoginState extends State<Login> {
           // saving the values to our shared preferences
           await HelperFunctions.saveUserLoggedInStatus(true);
           await HelperFunctions.saveUserEmailSF(email);
-          await HelperFunctions.saveUserNameSF(snapshot.docs[0]['fullName']);
           var snap = await FirebaseFirestore.instance
               .collection('users')
               .doc(widget.uid)

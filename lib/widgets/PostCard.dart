@@ -25,7 +25,7 @@ class _PostCardState extends State<CardWidget> {
   var postData = {};
   var userData = {};
   var currentUser = {};
-  var commentLen = 0;
+  var joinLen = 0;
   bool isLoading = false;
 
   @override
@@ -61,12 +61,12 @@ class _PostCardState extends State<CardWidget> {
           .get();
 
       // get post Length
-      var commentSnap = await FirebaseFirestore.instance
-          .collection('comments')
-          .where('postid', isEqualTo: widget.snap['postid'])
+      var joinSnap = await FirebaseFirestore.instance
+          .collection('join')
+          .doc(widget.snap['postid'])
           .get();
 
-      commentLen = commentSnap.docs.length;
+      joinLen = joinSnap.data()!['member'].length - 1;
       postData = postSnap.data()!;
       userData = userSnap.data()!;
       currentUser = currentSnap.data()!;
@@ -147,23 +147,24 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: SizedBox(
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.more_horiz,
-                                color: unselected,
-                                size: 30,
+                        if (widget.snap['open'] == true)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: SizedBox(
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.more_horiz,
+                                  color: unselected,
+                                  size: 30,
+                                ),
+                                onPressed: (() {
+                                  //add action
+                                  _showModalBottomSheet(
+                                      context, currentUser['uid']);
+                                }),
                               ),
-                              onPressed: (() {
-                                //add action
-                                _showModalBottomSheet(
-                                    context, currentUser['uid']);
-                              }),
                             ),
                           ),
-                        ),
                       ],
                     ),
                     Text.rich(
@@ -257,7 +258,10 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                           TextSpan(
-                            text: '\t\t' + '0 / ' + widget.snap['peopleLimit'],
+                            text: '\t\t' +
+                                joinLen.toString() +
+                                ' / ' +
+                                widget.snap['peopleLimit'].toString(),
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,
@@ -300,9 +304,8 @@ class _PostCardState extends State<CardWidget> {
                                               borderRadius:
                                                   BorderRadius.circular(30)),
                                           side: BorderSide(
-                                              color: HexColor(
-                                                widget.snap['tagColor'],
-                                              ),
+                                              color: Color(int.parse(
+                                                  widget.snap['tagColor'])),
                                               width: 1.5)),
                                     ),
                                   ),
@@ -359,7 +362,7 @@ class _PostCardState extends State<CardWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              if (postData['uid'].toString() == uid)
+              if (postData['open'] == true && postData['uid'].toString() == uid)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                   title: Center(
@@ -424,7 +427,52 @@ class _PostCardState extends State<CardWidget> {
                             ));
                   },
                 ),
-              if (postData['uid'].toString() != uid)
+              if (postData['open'] == false &&
+                  postData['uid'].toString() != uid)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                    child: Text(
+                      'Delete',
+                      style: TextStyle(
+                          fontFamily: 'MyCustomFont',
+                          fontSize: 20,
+                          color: redColor),
+                    ),
+                  ),
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Delete Activity'),
+                              content: Text(
+                                  'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Cancle')),
+                                TextButton(
+                                    onPressed: (() {
+                                      FirebaseFirestore.instance
+                                          .collection('post')
+                                          .doc(widget.snap['postid'])
+                                          .update({
+                                        'history': FieldValue.arrayUnion([uid])
+                                      }).whenComplete(() {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MyHomePage(),
+                                          ),
+                                        );
+                                      });
+                                    }),
+                                    child: Text('Delete'))
+                              ],
+                            ));
+                  },
+                ),
+              if (postData['open'] == true && postData['uid'].toString() != uid)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                   title: const Center(
