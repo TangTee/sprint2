@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:tangteevs/pickers/block_picker.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../../widgets/custom_textfield.dart';
 import 'Category.dart';
+import 'hsv_picker.dart';
 
 class BeforeTagPage extends StatefulWidget {
   const BeforeTagPage({Key? key}) : super(key: key);
@@ -21,82 +23,14 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
   final TextEditingController _colorController = TextEditingController();
   final categorysSet = FirebaseFirestore.instance.collection('categorys').doc();
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
-    await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: 20,
-                  left: 20,
-                  right: 20,
-                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextField(
-                    controller: _CategoryController,
-                    decoration: textInputDecorationp.copyWith(
-                        hintText: 'category'.toString()),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: TextField(
-                      controller: _colorController,
-                      decoration: textInputDecorationp.copyWith(
-                          hintText: 'color (Hex color)'.toString()),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: ElevatedButton(
-                      child: const Text(
-                        'Create',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'MyCustomFont',
-                          color: white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: lightGreen,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      onPressed: () async {
-                        final String Category = _CategoryController.text;
-                        final String color = _colorController.text;
-                        if (color != null) {
-                          await categorysSet.set({
-                            "Category": Category,
-                            "color": color,
-                            "categoryId": categorysSet.id
-                          });
-
-                          _CategoryController.text = '';
-                          _colorController.text = '';
-                          Navigator.of(context).pop();
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
+  bool lightTheme = true;
+  Color currentColor = purple;
+  List<Color> colorHistory = [];
 
   @override
   Widget build(BuildContext context) {
+    final foregroundColor =
+        useWhiteForeground(currentColor) ? Colors.white : Colors.black;
     return MaterialApp(
       home: DismissKeyboard(
         child: Scaffold(
@@ -121,6 +55,87 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
         ),
       ),
     );
+  }
+
+  changeColor(Color color) => setState(() => currentColor = color);
+
+  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+    var value;
+    Color pickerColor2;
+    ValueChanged<Color> onColorChanged = changeColor;
+    await showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: (BuildContext ctx) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextField(
+                    controller: _CategoryController,
+                    decoration: textInputDecorationp.copyWith(
+                        hintText: 'category'.toString()),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  HSVColorPicker(
+                    pickerColor: currentColor,
+                    onColorChanged: changeColor,
+                    colorHistory: colorHistory,
+                    onHistoryChanged: (List<Color> colors) =>
+                        colorHistory = colors,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: lightGreen,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        final String Category = _CategoryController.text;
+                        // final String color = _colorController.text;
+                        print(currentColor);
+                        if (Category != null) {
+                          await categorysSet.set({
+                            "Category": Category,
+                            "color": '#' +
+                                currentColor.toString().substring(
+                                    10, currentColor.toString().length - 1),
+                            "categoryId": categorysSet.id
+                          });
+
+                          _CategoryController.text = '';
+                          _colorController.text = '';
+                          Navigator.of(context).pop();
+                        }
+                      },
+                      child: const Text(
+                        'Create',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'MyCustomFont',
+                          color: white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
 

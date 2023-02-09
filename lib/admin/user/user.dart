@@ -1,11 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:tangteevs/Landing.dart';
 import 'package:tangteevs/admin/user/data.dart';
 import 'package:tangteevs/admin/user/verify.dart';
+import 'package:tangteevs/testhwak.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import '../../HomePage.dart';
 import '../../Profile/Profile.dart';
+import '../../notification/api/notification_api.dart';
+import '../../notification/screens/second_screen.dart';
+import '../../notification/services/local_notification_service.dart';
 import '../../utils/color.dart';
 import '../../widgets/custom_textfield.dart';
 
@@ -17,64 +23,155 @@ class UserPage extends StatefulWidget {
 }
 
 class _UserPageState extends State<UserPage> {
+  bool lightTheme = true;
+  Color currentColor = white;
+  void changeColor(Color color) => setState(() => currentColor = color);
+  late final LocalNotificationService service;
+  bool theme = true;
+
+  @override
+  void initState() {
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+    super.initState();
+  }
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => SecondScreen(payload: payload))));
+    }
+  }
+
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
+      backgroundColor: lightTheme ? white : Colors.black,
       useRootNavigator: true,
       context: context,
       builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: Center(
-                  child: Text(
-                    'Go to User page',
-                    style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) {
-                        return MyHomePage();
-                      },
+        return AnimatedTheme(
+          data: lightTheme ? ThemeData.light() : ThemeData.dark(),
+          child: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                // hwak 1
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Center(
+                    child: Text(
+                      'test hwak',
+                      style:
+                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                     ),
-                    (_) => false,
-                  );
-                },
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: const Center(
+                  ),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return const testColor();
+                        },
+                      ),
+                      (_) => false,
+                    );
+                  },
+                ),
+
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Center(
                     child: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20,
-                      color: redColor),
-                )),
-                onTap: () {
-                  FirebaseAuth.instance.signOut();
-                  nextScreenReplaceOut(context, const LandingPage());
-                },
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: const Center(
-                    child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: redColor,
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20),
-                )),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+                      'Go to User page',
+                      style:
+                          TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return MyHomePage();
+                        },
+                      ),
+                      (_) => false,
+                    );
+                  },
+                ),
+                // hwak2
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(lightTheme
+                          ? Icons.dark_mode_rounded
+                          : Icons.light_mode_rounded),
+                      Text(
+                        lightTheme ? 'Dark Mode' : '  Light ',
+                        style: TextStyle(
+                          fontFamily: 'MyCustomFont',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    setState(() {
+                      lightTheme = !lightTheme;
+                    });
+                    theme = lightTheme;
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                      child: Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontFamily: 'MyCustomFont',
+                        fontSize: 20,
+                        color: redColor),
+                  )),
+                  onTap: () {
+                    FirebaseAuth.instance.signOut();
+                    nextScreenReplaceOut(context, const LandingPage());
+                  },
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      await service.showNotification(
+                          id: 0,
+                          title: 'Notification Title',
+                          body: 'Some body');
+                    },
+                    child: Text("Item 1")),
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  title: const Center(
+                      child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                        color: redColor,
+                        fontFamily: 'MyCustomFont',
+                        fontSize: 20),
+                  )),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
         );
       },
@@ -83,16 +180,18 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    final foregroundColor =
+        useWhiteForeground(currentColor) ? Colors.white : Colors.black;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
           toolbarHeight: 50,
-          backgroundColor: mobileBackgroundColor,
+          backgroundColor:
+              lightTheme ? mobileBackgroundColor : mobileSearchColor,
           elevation: 1,
           leadingWidth: 130,
           centerTitle: true,
-          title: const Text('test'),
           leading: Container(
             padding: const EdgeInsets.all(0),
             child: Image.asset('assets/images/logo with name.png',
@@ -115,11 +214,9 @@ class _UserPageState extends State<UserPage> {
             labelColor: green,
             labelPadding: EdgeInsets.symmetric(horizontal: 30),
             unselectedLabelColor: unselected,
-            labelStyle: TextStyle(
-                fontSize: 20.0, fontFamily: 'MyCustomFont'), //For Selected tab
-            unselectedLabelStyle: TextStyle(
-                fontSize: 20.0,
-                fontFamily: 'MyCustomFont'), //For Un-selected Tabs
+            labelStyle: TextStyle(fontSize: 20.0, fontFamily: 'MyCustomFont'),
+            unselectedLabelStyle:
+                TextStyle(fontSize: 20.0, fontFamily: 'MyCustomFont'),
             tabs: [
               Tab(text: 'Verify'),
               Tab(text: 'Data'),
@@ -128,29 +225,15 @@ class _UserPageState extends State<UserPage> {
         ),
         body: TabBarView(
           children: [
-            verify(),
-            data(),
+            VerifyPage(
+              lightTheme: theme,
+            ),
+            SearchData(
+              lightTheme: theme,
+            ),
           ],
         ),
       ),
-    );
-  }
-}
-
-class verify extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: VerifyPage(),
-    );
-  }
-}
-
-class data extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SearchUser(),
     );
   }
 }

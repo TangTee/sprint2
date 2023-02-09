@@ -20,7 +20,6 @@ class TagCategory extends StatefulWidget {
 class _TagCategoryState extends State<TagCategory> {
   var categoryData = {};
   var categoryNameData = {};
-  var categoryColorData = {};
   bool isLoading = false;
 
   final CollectionReference _tags =
@@ -231,9 +230,10 @@ class _TagCategoryState extends State<TagCategory> {
                                                   decoration: BoxDecoration(
                                                       border: Border(
                                                           left: BorderSide(
-                                                              color: HexColor(
-                                                                  Mytext[
-                                                                      'tagColor']),
+                                                              // color: HexColor(
+                                                              //     Mytext[
+                                                              //         'tagColor']),
+                                                              color: Colors.red,
                                                               width: 10))),
                                                   child: ListTile(
                                                     title: Text(Mytext['tag']),

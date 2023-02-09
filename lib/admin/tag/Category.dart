@@ -189,7 +189,9 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           decoration: BoxDecoration(
               border: Border(
                   left: BorderSide(
-                      color: HexColor(widget.snap['color']), width: 10))),
+                      // color: HexColor(widget.snap['color']), width: 10))),
+                      color: Colors.red,
+                      width: 10))),
           child: ListTile(
             title: Text(widget.snap['Category']),
             subtitle: Text(widget.snap['color']),

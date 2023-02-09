@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tangteevs/notification/notification.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/PostCard.dart';
@@ -19,6 +20,7 @@ class _FeedPageState extends State<FeedPage> {
     return MaterialApp(
       home: DismissKeyboard(
         child: Scaffold(
+          endDrawer: new notification(),
           resizeToAvoidBottomInset: false,
           backgroundColor: mobileBackgroundColor,
           appBar: AppBar(
@@ -30,14 +32,16 @@ class _FeedPageState extends State<FeedPage> {
               width: MediaQuery.of(context).size.width * 0.31,
             ),
             actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.notifications_none,
-                  color: purple,
-                  size: 30,
-                ),
-                onPressed: () {},
-              ),
+              Builder(
+                  builder: (context) => IconButton(
+                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      tooltip: MaterialLocalizations.of(context)
+                          .openAppDrawerTooltip,
+                      icon: Icon(
+                        Icons.notifications_none,
+                        color: purple,
+                        size: 30,
+                      )))
             ],
           ),
           body: SearchForm(),
@@ -205,4 +209,3 @@ class PostCard extends StatelessWidget {
         });
   }
 }
-

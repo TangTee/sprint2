@@ -271,9 +271,6 @@ class _LoadTagState extends State<LoadTag> {
                                             _time.text =
                                                 pickedTime.format(context);
                                           });
-                                          // } else {
-                                          //   print("Time is not selected");
-                                          // }
                                         } else if (pickedInMinutes <
                                             nowInMinutes) {
                                           return print("Please selec time ...");
@@ -347,9 +344,7 @@ class _LoadTagState extends State<LoadTag> {
                             TextButton(
                               onPressed: () {
                                 value = showModalBottomSheetC(context);
-                                setState(() {
-                                  // _tag = _tag2.toString();
-                                });
+                                setState(() {});
                               },
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: mobileSearchColor,

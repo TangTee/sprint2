@@ -63,7 +63,18 @@ showModalBottomSheetC(BuildContext context) {
                 },
               );
             }
-            return const Text('helo');
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                    width: 30.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              ),
+            );
           }),
         ),
       );
@@ -145,7 +156,18 @@ showModalBottomSheetT(BuildContext context, categoryId, value) {
                 ),
               );
             }
-            return const Text('helo');
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const <Widget>[
+                  SizedBox(
+                    height: 30.0,
+                    width: 30.0,
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              ),
+            );
           }),
         ),
       );
