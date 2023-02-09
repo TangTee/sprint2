@@ -4,7 +4,8 @@ import '../../utils/color.dart';
 import '../../widgets/custom_textfield.dart';
 
 class VerifyPage extends StatefulWidget {
-  const VerifyPage({Key? key}) : super(key: key);
+  dynamic lightTheme;
+  VerifyPage({Key? key, this.lightTheme}) : super(key: key);
 
   @override
   _VerifyPageState createState() => _VerifyPageState();
@@ -171,6 +172,7 @@ class _VerifyPageState extends State<VerifyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: widget.lightTheme ? white : disable,
         body: StreamBuilder(
           stream: _users.where('verify', isEqualTo: false).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
@@ -181,6 +183,7 @@ class _VerifyPageState extends State<VerifyPage> {
                   final DocumentSnapshot documentSnapshot =
                       streamSnapshot.data!.docs[index];
                   return Card(
+                    color: widget.lightTheme ? white : unselected,
                     margin: const EdgeInsets.all(10),
                     child: InkWell(
                       onTap: () {
@@ -189,8 +192,20 @@ class _VerifyPageState extends State<VerifyPage> {
                       child: SizedBox(
                         width: 70,
                         child: ListTile(
-                          title: Text(documentSnapshot['Displayname']),
-                          subtitle: Text(documentSnapshot['email']),
+                          title: Text(
+                            documentSnapshot['Displayname'],
+                            style: TextStyle(
+                                color: widget.lightTheme
+                                    ? mobileSearchColor
+                                    : white),
+                          ),
+                          subtitle: Text(
+                            documentSnapshot['email'],
+                            style: TextStyle(
+                                color: widget.lightTheme
+                                    ? mobileSearchColor
+                                    : white),
+                          ),
                         ),
                       ),
                     ),
@@ -204,11 +219,6 @@ class _VerifyPageState extends State<VerifyPage> {
             );
           },
         ),
-// Add new users
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () => _create(),
-        //   child: const Icon(Icons.add),
-        // ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 }

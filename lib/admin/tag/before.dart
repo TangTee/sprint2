@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../../widgets/custom_textfield.dart';
 import 'Category.dart';
+import 'hsv_picker.dart';
 
 class BeforeTagPage extends StatefulWidget {
   const BeforeTagPage({Key? key}) : super(key: key);
@@ -21,7 +22,15 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
   final TextEditingController _colorController = TextEditingController();
   final categorysSet = FirebaseFirestore.instance.collection('categorys').doc();
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+  bool lightTheme = true;
+  Color currentColor = purple;
+  List<Color> colorHistory = [];
+
+  void changeColor(Color color) => setState(() => currentColor = color);
+
+  Future<void> _create([DocumentSnapshot? documentSnapshot, value]) async {
+    Color pickerColor2;
+    ValueChanged<Color> onColorChanged = changeColor;
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -42,16 +51,15 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
                     decoration: textInputDecorationp.copyWith(
                         hintText: 'category'.toString()),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: TextField(
-                      controller: _colorController,
-                      decoration: textInputDecorationp.copyWith(
-                          hintText: 'color (Hex color)'.toString()),
-                    ),
-                  ),
                   const SizedBox(
                     height: 10,
+                  ),
+                  HSVColorPicker(
+                    pickerColor: currentColor,
+                    onColorChanged: changeColor,
+                    colorHistory: colorHistory,
+                    onHistoryChanged: (List<Color> colors) =>
+                        colorHistory = colors,
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
@@ -73,11 +81,11 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
                       ),
                       onPressed: () async {
                         final String Category = _CategoryController.text;
-                        final String color = _colorController.text;
-                        if (color != null) {
+                        // final String color = _colorController.text;
+                        if (Category != null) {
                           await categorysSet.set({
                             "Category": Category,
-                            "color": color,
+                            "color": value,
                             "categoryId": categorysSet.id
                           });
 
@@ -95,8 +103,53 @@ class _BeforeTagPageState extends State<BeforeTagPage> {
         });
   }
 
+  hsvPicker(BuildContext context) {
+    Color value = white;
+    ValueChanged<Color> onColorChanged = changeColor;
+    SizedBox(
+      width: MediaQuery.of(context).size.width * 0.85,
+      child: ElevatedButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                titlePadding: const EdgeInsets.all(0),
+                contentPadding: const EdgeInsets.all(0),
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? const BorderRadius.vertical(
+                              top: Radius.circular(500),
+                              bottom: Radius.circular(100),
+                            )
+                          : const BorderRadius.horizontal(
+                              right: Radius.circular(500)),
+                ),
+                content: SingleChildScrollView(
+                  child: HueRingPicker(
+                    pickerColor: value,
+                    onColorChanged: onColorChanged,
+                    enableAlpha: true,
+                    displayThumbColor: true,
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        child: Text(
+          'Color',
+        ),
+      ),
+    );
+    return value;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final foregroundColor =
+        useWhiteForeground(currentColor) ? Colors.white : Colors.black;
     return MaterialApp(
       home: DismissKeyboard(
         child: Scaffold(

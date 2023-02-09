@@ -94,10 +94,6 @@ class _PostCardState extends State<CardWidget> {
   }
 
   Widget build(BuildContext context) {
-    // var Mytext = new Map();
-    // Mytext['tag'] = documentSnapshot['tag'];
-    // Mytext['tagColor'] = documentSnapshot['tagColor'];
-
     return SafeArea(
       child: Container(
         child: Card(
@@ -199,50 +195,55 @@ class _PostCardState extends State<CardWidget> {
                     const SizedBox(
                       height: 5,
                     ),
-                    Text.rich(
-                      TextSpan(
-                        children: <InlineSpan>[
-                          const TextSpan(
-                            text: '',
-                          ),
-                          const WidgetSpan(
-                            child: Icon(
-                              Icons.maps_home_work,
-                            ),
-                          ),
+                    Row(
+                      children: [
+                        Text.rich(
                           TextSpan(
-                            text: '\t\t' + widget.snap['place'],
-                            style: const TextStyle(
-                              fontFamily: 'MyCustomFont',
-                              color: unselected,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.place,
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Uri uri = Uri.parse(widget.snap['location']);
-                              _launchUrl(uri);
-                            },
-                            child: Text(
-                              'Location',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: purple,
+                            children: <InlineSpan>[
+                              const TextSpan(
+                                text: '',
                               ),
+                              const WidgetSpan(
+                                child: Icon(
+                                  Icons.maps_home_work,
+                                ),
+                              ),
+                              TextSpan(
+                                text: '\t\t' + widget.snap['place'] + ' /',
+                                style: const TextStyle(
+                                  fontFamily: 'MyCustomFont',
+                                  color: unselected,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.05,
+                            child: Row(
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Uri uri =
+                                        Uri.parse(widget.snap['location']);
+                                    _launchUrl(uri);
+                                  },
+                                  child: Text(
+                                    'Location',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: purple,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     Text.rich(
                       TextSpan(

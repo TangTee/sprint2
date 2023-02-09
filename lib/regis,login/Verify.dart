@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tangteevs/HomePage.dart';
 
+import '../notification/api/notification_api.dart';
 import '../widgets/custom_textfield.dart';
 
 void main() => runApp(Verify());
@@ -47,11 +48,11 @@ class _VerifyState extends State<Verify> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  height: 350,
-                  child: id_card != null
-                      ? Image.file(id_card!)
-                      : Image.asset("assets/login.png"),
-                        ),
+                height: 350,
+                child: id_card != null
+                    ? Image.file(id_card!)
+                    : Image.asset("assets/login.png"),
+              ),
               ElevatedButton(
                 onPressed: () {
                   pickImagefromCamera();
@@ -60,6 +61,11 @@ class _VerifyState extends State<Verify> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  // NotificationApi.showNotifcation(
+                  //   title: 'Tung Tee',
+                  //   body: 'Welcome to Tung Tee, Have a nice day!',
+                  //   payload: 'admin',
+                  // );
                   nextScreen(context, MyHomePage());
                 },
                 child: const Text('Next'),
