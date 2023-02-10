@@ -7,7 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/PostCard.dart';
 
 Future<String> requestToLoin(
-    String postId, String uid, List waiting, int join) async {
+    String postId, String uid, List waiting) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
   try {
