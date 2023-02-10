@@ -1,9 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/profile/Profile.dart';
 import 'package:flutter/material.dart';
+
 import '../utils/color.dart';
 import '../utils/showSnackbar.dart';
+import '../widgets/custom_textfield.dart';
+import '../Report.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
@@ -58,21 +62,29 @@ class _GroupInfoState extends State<GroupInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          backgroundColor: lightPurple,
-          title: Text("${widget.groupName}"),
-          // actions: [
-          //   ElevatedButton(
-          //       onPressed: () {
-          //         //
-          //       },
-          //       child: const Text('text'))
-          // ],
+    return SafeArea(
+      child: MaterialApp(
+        home: DismissKeyboard(
+          child: Scaffold(
+            backgroundColor: mobileBackgroundColor,
+            appBar: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              backgroundColor: lightPurple,
+              title: Text("${widget.groupName}"),
+              // actions: [
+              //   ElevatedButton(
+              //       onPressed: () {
+              //         //
+              //       },
+              //       child: const Text('text'))
+              // ],
+            ),
+            body: memberList(),
+          ),
         ),
-        body: memberList());
+      ),
+    );
   }
 
   memberList() {
@@ -89,82 +101,117 @@ class _GroupInfoState extends State<GroupInfo> {
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot =
                   snapshot.data!.docs[index];
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.08,
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(
-                  vertical: 3,
-                  horizontal: 20,
-                ),
-                alignment: Alignment.topLeft,
-                child: Column(
-                  children: <Widget>[
-                    InkWell(
-                      onTap: () {
-                        PersistentNavBarNavigator.pushNewScreen(
-                          context,
-                          screen: ProfilePage(
-                            uid: documentSnapshot['uid'],
-                          ),
-                          withNavBar: false, // OPTIONAL VALUE. True by default.
-                        );
-                      },
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height * 0.08,
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 1),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: [
-                                CircleAvatar(
-                                  backgroundColor: green,
-                                  backgroundImage: NetworkImage(
-                                    documentSnapshot['profile'].toString(),
-                                  ),
-                                  radius: 25,
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.02,
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.64,
-                                  child: Text(
-                                    documentSnapshot['Displayname'],
-                                    style: const TextStyle(
-                                      color: mobileSearchColor,
-                                      fontSize: 14,
+              return SafeArea(
+                child: Container(
+                  color: mobileBackgroundColor,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  margin: EdgeInsets.symmetric(
+                    vertical: 3,
+                    horizontal: 20,
+                  ),
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () {
+                          PersistentNavBarNavigator.pushNewScreen(
+                            context,
+                            screen: ProfilePage(
+                              uid: documentSnapshot['uid'],
+                            ),
+                            withNavBar:
+                                false, // OPTIONAL VALUE. True by default.
+                          );
+                        },
+                        child: SafeArea(
+                          child: SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.08,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 1),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: green,
+                                      backgroundImage: NetworkImage(
+                                        documentSnapshot['profile'].toString(),
+                                      ),
+                                      radius: 25,
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.02,
-                                ),
-                                SizedBox(
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.more_horiz,
-                                      color: unselected,
-                                      size: 30,
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.02,
                                     ),
-                                    onPressed: (() {
-                                      //add action
-                                      _showModalBottomSheet(
-                                          context, documentSnapshot['uid']);
-                                    }),
-                                  ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.58,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            documentSnapshot['Displayname'],
+                                            style: const TextStyle(
+                                              color: mobileSearchColor,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.02,
+                                          ),
+                                          if (documentSnapshot['uid'] ==
+                                              groupData['owner'])
+                                            Text(
+                                              '[Host]',
+                                              style: const TextStyle(
+                                                color: unselected,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.02,
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.02,
+                                    ),
+                                    if (documentSnapshot['uid'] !=
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid ||
+                                        groupData['owner'] ==
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                      SizedBox(
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.more_horiz,
+                                            color: unselected,
+                                            size: 30,
+                                          ),
+                                          onPressed: (() {
+                                            //add action
+                                            return _showModalBottomSheetP(
+                                                context,
+                                                documentSnapshot,
+                                                groupData);
+                                          }),
+                                        ),
+                                      ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -178,114 +225,123 @@ class _GroupInfoState extends State<GroupInfo> {
       },
     );
   }
+}
 
-  void _showModalBottomSheet(BuildContext context, uid) {
-    showModalBottomSheet(
-      useRootNavigator: true,
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              // if (documentSnapshot['uid'].toString() == uid)
-              //   ListTile(
-              //     contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-              //     title: Center(
-              //       child: Text(
-              //         'Edit Activity',
-              //         style:
-              //             TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
-              //       ),
-              //     ),
-              //     onTap: () {
-              //       PersistentNavBarNavigator.pushNewScreen(
-              //         context,
-              //         screen: EditAct(
-              //           postid: widget.snap['postid'],
-              //         ),
-              //         withNavBar: false, // OPTIONAL VALUE. True by default.
-              //         pageTransitionAnimation:
-              //             PageTransitionAnimation.cupertino,
-              //       );
-              //     },
-              //   ),
-              // if (postData['uid'].toString() == uid)
-              //   ListTile(
-              //     contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-              //     title: const Center(
-              //       child: Text(
-              //         'Delete',
-              //         style: TextStyle(
-              //             fontFamily: 'MyCustomFont',
-              //             fontSize: 20,
-              //             color: redColor),
-              //       ),
-              //     ),
-              //     onTap: () {
-              //       showDialog(
-              //           context: context,
-              //           builder: (context) => AlertDialog(
-              //                 title: Text('Delete Activity'),
-              //                 content: Text(
-              //                     'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
-              //                 actions: [
-              //                   TextButton(
-              //                       onPressed: () => Navigator.pop(context),
-              //                       child: Text('Cancle')),
-              //                   TextButton(
-              //                       onPressed: (() {
-              //                         FirebaseFirestore.instance
-              //                             .collection('post')
-              //                             .doc(widget.snap['postid'])
-              //                             .delete()
-              //                             .whenComplete(() {
-              //                           Navigator.push(
-              //                             context,
-              //                             MaterialPageRoute(
-              //                               builder: (context) => MyHomePage(),
-              //                             ),
-              //                           );
-              //                         });
-              //                       }),
-              //                       child: Text('Delete'))
-              //                 ],
-              //               ));
-              //     },
-              //   ),
-              // if (postData['uid'].toString() != uid)
-              //   ListTile(
-              //     contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-              //     title: const Center(
-              //         child: Text(
-              //       'Report',
-              //       style: TextStyle(
-              //           color: redColor,
-              //           fontFamily: 'MyCustomFont',
-              //           fontSize: 20),
-              //     )),
-              //     onTap: () {
-              //       return showModalBottomSheetRP(context, postData);
-              //     },
-              //   ),
+void _showModalBottomSheetP(
+    BuildContext context, DocumentSnapshot<Object?> userData, groupdata) {
+  final _report = FirebaseFirestore.instance.collection('report').doc();
+  final TextEditingController _ReportController = TextEditingController();
+
+  showModalBottomSheet(
+    useRootNavigator: true,
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (FirebaseAuth.instance.currentUser!.uid != userData['uid'])
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                 title: const Center(
                     child: Text(
-                  'Cancel',
+                  'Report',
                   style: TextStyle(
                       color: redColor,
                       fontFamily: 'MyCustomFont',
                       fontSize: 20),
                 )),
                 onTap: () {
-                  Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: Text('Report Information'),
+                            content: Form(
+                              child: TextFormField(
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 5,
+                                minLines: 1,
+                                controller: _ReportController,
+                                decoration: textInputDecorationp.copyWith(
+                                  hintText: 'Describe Problems',
+                                ),
+                                validator: (val) {
+                                  if (val!.isNotEmpty) {
+                                    return null;
+                                  } else {
+                                    return "plase Enter comment";
+                                  }
+                                },
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () => Navigator.of(context)
+                                      .popUntil((route) => route.isFirst),
+                                  child: Text('Cancle')),
+                              TextButton(
+                                onPressed: (() {
+                                  _report.set({
+                                    'rid': _report.id,
+                                    'detail': _ReportController.text,
+                                    'uid': userData['uid'],
+                                    'profile': userData['profile'],
+                                    'Displayname': userData['Displayname'],
+                                    'type': 'people',
+                                    'reportBy':
+                                        FirebaseAuth.instance.currentUser?.uid,
+                                    'timeStamp': FieldValue.serverTimestamp(),
+                                  }).whenComplete(() {
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  });
+                                }),
+                                child: Text(
+                                  'Submit',
+                                  style: const TextStyle(
+                                    color: redColor,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ));
                 },
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+            if (FirebaseAuth.instance.currentUser!.uid == groupdata['owner'])
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'End Activity',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  FirebaseFirestore.instance
+                      .collection('post')
+                      .doc(groupdata['groupid'])
+                      .update({
+                    'open': false,
+                  });
+                },
+              ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+              title: const Center(
+                  child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: redColor, fontFamily: 'MyCustomFont', fontSize: 20),
+              )),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
