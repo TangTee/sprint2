@@ -93,8 +93,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
                 size: 30,
               ),
               onPressed: () {
-                FirebaseAuth.instance.signOut();
-                nextScreenReplaceOut(context, const LandingPage());
+                //do action
               },
             )
           ],

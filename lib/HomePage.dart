@@ -75,7 +75,7 @@ class MyHomePage extends StatelessWidget {
 
     PersistentTabController controller;
 
-    controller = PersistentTabController(initialIndex: 3);
+    controller = PersistentTabController(initialIndex: 0);
     return PersistentTabView(
       context,
       screens: _buildScreens(),
