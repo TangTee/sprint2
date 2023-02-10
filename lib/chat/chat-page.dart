@@ -88,6 +88,15 @@ class _ChatPageState extends State<ChatPage> {
           backgroundColor: mobileBackgroundColor,
           appBar: AppBar(
             centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: white,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
             elevation: 0,
             toolbarHeight: MediaQuery.of(context).size.height * 0.08,
             title: Text(widget.groupName),
