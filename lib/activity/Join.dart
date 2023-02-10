@@ -223,8 +223,8 @@ class JoinPageState extends State<JoinPage> {
                                                                         postData[
                                                                             'waiting'],
                                                                         joinLen,
-                                                                        postData[
-                                                                            'peopleLimit'],
+                                                                        int.parse(
+                                                                            postData['peopleLimit']),
                                                                       ).whenComplete(() {
                                                                         setState(
                                                                             () {
