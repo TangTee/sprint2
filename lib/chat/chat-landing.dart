@@ -9,7 +9,6 @@ import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Landing.dart';
 import '../profile/edit.dart';
 import '../utils/color.dart';
 import '../utils/my_date_util.dart';
@@ -173,9 +172,9 @@ class _ChatHomePageState extends State<ChatHomePage> {
                     messageContent: documentSnapshot['recentMessage'],
                     messageTime: documentSnapshot['recentMessageTime'],
                     timer: documentSnapshot['recentMessageTime'] == '',
+                    messageImage: documentSnapshot['owner'],
                     isunread: documentSnapshot['recentMessageUID'] ==
                         FirebaseAuth.instance.currentUser!.uid,
-                    messageImage: documentSnapshot['owner'],
                   ),
                 ),
               ); // GroupTile(
