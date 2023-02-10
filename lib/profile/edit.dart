@@ -42,6 +42,10 @@ class _EditPageState extends State<EditPage> {
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
 
+  String _enteredTextU = '';
+  Color TextU = mobileSearchColor;
+  String _enteredTextB = '';
+  Color TextB = mobileSearchColor;
   var userData = {};
   bool isLoading = false;
 
@@ -219,22 +223,31 @@ class _EditPageState extends State<EditPage> {
                                     child: TextFormField(
                                       controller: _DisplaynameController,
                                       decoration: textInputDecorationp.copyWith(
+                                          counterText:
+                                              '${_enteredTextU.length.toString()} /12',
                                           hintText: 'Display Name',
+                                          counterStyle: TextStyle(color: TextU),
                                           prefixIcon: Icon(
                                             Icons.person_pin_circle_sharp,
                                             color: lightPurple,
-                                            //color: Theme.of(context).primaryColor,
                                           )),
                                       validator: (val) {
                                         if (val!.isNotEmpty) {
                                           return null;
-                                        } else {
-                                          return "plase Enter Display Name";
+                                        }
+                                        if (val.length > 12) {
+                                          return 'Limit at 12 characters ';
                                         }
                                       },
                                       onChanged: (val) {
                                         setState(() {
                                           Displayname = val;
+                                          _enteredTextU = val;
+                                          if (val.length > 12) {
+                                            TextU = redColor;
+                                          } else {
+                                            TextU = mobileSearchColor;
+                                          }
                                         });
                                       },
                                     ),
@@ -252,6 +265,9 @@ class _EditPageState extends State<EditPage> {
                                     controller: _bioController,
                                     maxLines: 3,
                                     decoration: textInputDecorationp.copyWith(
+                                        counterText:
+                                            '${_enteredTextB.length.toString()} /160',
+                                        counterStyle: TextStyle(color: TextB),
                                         hintText: 'bio',
                                         prefixIcon: Icon(
                                           Icons.pending,
@@ -260,13 +276,20 @@ class _EditPageState extends State<EditPage> {
                                     validator: (val) {
                                       if (val!.isNotEmpty) {
                                         return null;
-                                      } else {
-                                        return "plase Enter Your bio";
+                                      }
+                                      if (val.length > 160) {
+                                        return 'Limit at 160 characters ';
                                       }
                                     },
                                     onChanged: (val) {
                                       setState(() {
                                         bio = val;
+                                        _enteredTextB = val;
+                                        if (val.length > 160) {
+                                          TextB = redColor;
+                                        } else {
+                                          TextB = mobileSearchColor;
+                                        }
                                       });
                                     },
                                   ),
