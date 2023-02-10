@@ -308,6 +308,9 @@ Future<dynamic> joinActivity(String postId, String uid, List waiting,
     _firestore.collection('post').doc(postId).update({
       'waiting': FieldValue.arrayRemove([uid])
     });
+    _firestore.collection('post').doc(postId).update({
+      'history': FieldValue.arrayUnion([uid])
+    });
     //}
     res = 'success';
   } catch (err) {
