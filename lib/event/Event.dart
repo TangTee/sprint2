@@ -1,5 +1,3 @@
-Aimport 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -389,7 +387,7 @@ class _LoadTagState extends State<LoadTag> {
                                   'date': dateController.text,
                                   'time': _time.text,
                                   'detail': _detail.text,
-                                  'peopleLimit': _peopleLimit,
+                                  'peopleLimit': _peopleLimit.text,
                                   'likes': [],
                                   'waiting': [],
                                   'history': [],
@@ -409,6 +407,8 @@ class _LoadTagState extends State<LoadTag> {
                                     'groupName': _activityName.text,
                                     "recentMessage": "",
                                     "recentMessageSender": "",
+                                    "recentMessageTime": "",
+                                    "recentMessageUID": "",
                                   }).whenComplete(() {
                                     var uid =
                                         FirebaseAuth.instance.currentUser?.uid;
