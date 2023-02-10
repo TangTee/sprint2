@@ -5,9 +5,9 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../tag/before.dart';
+import 'MainPage.dart';
 import '../../utils/color.dart';
-import '../tag/tagCategory.dart';
+import 'Tag.dart';
 
 class CategoryWidget extends StatefulWidget {
   final snap;
@@ -20,7 +20,6 @@ class CategoryWidget extends StatefulWidget {
 class _CategoryWidgetState extends State<CategoryWidget> {
   // create category
   final TextEditingController _CategoryController = TextEditingController();
-  // final TextEditingController _colorController = TextEditingController();
 
   final CollectionReference _categorys =
       FirebaseFirestore.instance.collection('categorys');
@@ -46,14 +45,6 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                   decoration: textInputDecorationp.copyWith(
                       hintText: widget.snap['Category'].toString()),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 8.0),
-                //   child: TextFormField(
-                //     // controller: _colorController,
-                //     decoration: textInputDecorationp.copyWith(
-                //         hintText: widget.snap['color'].toString()),
-                //   ),
-                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -77,13 +68,13 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     ),
                     onPressed: () async {
                       final String Category = _CategoryController.text;
-                      // final String color = _colorController.text;
+
                       if (Category != null) {
-                        await _categorys.doc(categoryId)
-                            // .update({"Category": Category, "color": color});
+                        await _categorys
+                            .doc(categoryId)
                             .update({"Category": Category});
                         _CategoryController.text = '';
-                        // _colorController.text = '';
+
                         Navigator.of(context).pop();
                       }
                     },
@@ -105,15 +96,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   final _formKey = GlobalKey<FormState>();
   Updata() async {
     final String Category = _CategoryController.text;
-    // final String color = _colorController.text;
 
     await _categorys.doc().update({
       "Category": Category,
-      // "color": color,
     });
     _CategoryController.text = '';
-    // _colorController.text = '';
-    nextScreen(context, BeforeTagPage());
+    nextScreen(context, MainPage());
   }
 
   // call
@@ -189,9 +177,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
           decoration: BoxDecoration(
               border: Border(
                   left: BorderSide(
-                      // color: HexColor(widget.snap['color']), width: 10))),
-                      color: Colors.red,
-                      width: 10))),
+                      color: HexColor(widget.snap['color']), width: 10))),
           child: ListTile(
             title: Text(widget.snap['Category']),
             subtitle: Text(widget.snap['color']),
