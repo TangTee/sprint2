@@ -12,6 +12,8 @@ import 'package:intl/intl.dart';
 
 import '../widgets/tag.dart';
 
+// import 'AddTag.dart';
+
 class CreateEventScreen extends StatefulWidget {
   const CreateEventScreen({Key? key}) : super(key: key);
   @override
@@ -37,7 +39,6 @@ class LoadTag extends StatefulWidget {
 class _LoadTagState extends State<LoadTag> {
   bool _isLoading = false;
   bool isDateSelect = false;
-  bool isJoin = false;
 
   final _post = FirebaseFirestore.instance.collection('post').doc();
   final _join = FirebaseFirestore.instance.collection('join');
@@ -48,8 +49,20 @@ class _LoadTagState extends State<LoadTag> {
   final dateController = TextEditingController();
   final _time = TextEditingController();
   final _detail = TextEditingController();
+  // late var _tag = TextEditingController();
+  late String _tag = 'Tag';
   final _peopleLimit = TextEditingController();
+  var _tag2;
   var value;
+  var _tag2Color;
+  String _enteredTextA = '';
+  Color TextA = mobileSearchColor;
+  String _enteredTextP = '';
+  Color TextP = mobileSearchColor;
+  String _enteredTextD = '';
+  Color TextD = mobileSearchColor;
+  String _enteredTextL = '';
+  Color TextL = mobileSearchColor;
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -68,18 +81,18 @@ class _LoadTagState extends State<LoadTag> {
                     children: [
                       TextFormField(
                         controller: _activityName,
-                        style: const TextStyle(
-                          fontSize: 20,
-                        ),
-                        decoration: const InputDecoration(
-                          labelStyle: TextStyle(
-                              color: mobileSearchColor,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "MyCustomFont"),
-                          suffixIcon: Icon(Icons.edit),
-                          border: InputBorder.none,
-                          hintText: 'Write your activity name',
-                        ),
+                        style: const TextStyle(fontSize: 20),
+                        decoration: InputDecoration(
+                            labelStyle: TextStyle(
+                                color: mobileSearchColor,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "MyCustomFont"),
+                            suffixIcon: Icon(Icons.edit),
+                            border: InputBorder.none,
+                            hintText: 'Write your activity name',
+                            counterText:
+                                '${_enteredTextA.length.toString()} /25',
+                            counterStyle: TextStyle(color: TextA)),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter a valid activity name';
@@ -88,6 +101,16 @@ class _LoadTagState extends State<LoadTag> {
                             return 'Limit at 25 characters ';
                           }
                           return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _enteredTextA = value;
+                            if (value.length > 25) {
+                              TextA = redColor;
+                            } else {
+                              TextA = mobileSearchColor;
+                            }
+                          });
                         },
                       ),
                       TextFormField(
@@ -98,6 +121,7 @@ class _LoadTagState extends State<LoadTag> {
                             fontFamily: "MyCustomFont",
                           ),
                           hintText: 'Place',
+                          counterText: '${_enteredTextP.length.toString()} /25',
                         ),
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -107,6 +131,16 @@ class _LoadTagState extends State<LoadTag> {
                             return 'Limit at 25 characters ';
                           }
                           return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            _enteredTextP = value;
+                            if (value.length > 25) {
+                              TextP = redColor;
+                            } else {
+                              TextP = mobileSearchColor;
+                            }
+                          });
                         },
                       ),
                       Padding(
@@ -221,9 +255,6 @@ class _LoadTagState extends State<LoadTag> {
                                             _time.text =
                                                 pickedTime.format(context);
                                           });
-                                          // } else {
-                                          //   print("Time is not selected");
-                                          // }
                                         } else if (pickedInMinutes <
                                             nowInMinutes) {
                                           return print("Please selec time ...");
@@ -301,6 +332,8 @@ class _LoadTagState extends State<LoadTag> {
                                   fontFamily: "MyCustomFont",
                                 ),
                                 hintText: 'Detail',
+                                counterText:
+                                    '${_enteredTextD.length.toString()} /25',
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -310,6 +343,16 @@ class _LoadTagState extends State<LoadTag> {
                                   return 'Limit at 150 characters ';
                                 }
                                 return null;
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  _enteredTextD = value;
+                                  if (value.length > 25) {
+                                    TextD = redColor;
+                                  } else {
+                                    TextD = mobileSearchColor;
+                                  }
+                                });
                               },
                             ),
                           ),
@@ -325,7 +368,19 @@ class _LoadTagState extends State<LoadTag> {
                                 fontFamily: "MyCustomFont",
                               ),
                               hintText: 'People Limit',
+                              counterText:
+                                  '${_enteredTextL.length.toString()} /100',
                             ),
+                            onChanged: (value) {
+                              setState(() {
+                                _enteredTextL = value;
+                                if (int.parse(value) > 100) {
+                                  TextL = redColor;
+                                } else {
+                                  TextL = mobileSearchColor;
+                                }
+                              });
+                            },
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -389,7 +444,7 @@ class _LoadTagState extends State<LoadTag> {
                                   'date': dateController.text,
                                   'time': _time.text,
                                   'detail': _detail.text,
-                                  'peopleLimit': _peopleLimit,
+                                  'peopleLimit': _peopleLimit.text,
                                   'likes': [],
                                   'waiting': [],
                                   'history': [],
@@ -409,6 +464,8 @@ class _LoadTagState extends State<LoadTag> {
                                     'groupName': _activityName.text,
                                     "recentMessage": "",
                                     "recentMessageSender": "",
+                                    "recentMessageTime": "",
+                                    "recentMessageUID": "",
                                   }).whenComplete(() {
                                     var uid =
                                         FirebaseAuth.instance.currentUser?.uid;
