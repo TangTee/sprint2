@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../utils/color.dart';
-import '../../utils/showSnackbar.dart';
 import '../../widgets/custom_textfield.dart';
+import '../utils/color.dart';
 
 class TagCategory extends StatefulWidget {
   // final String categoryId; ต้องget data
@@ -230,10 +230,9 @@ class _TagCategoryState extends State<TagCategory> {
                                                   decoration: BoxDecoration(
                                                       border: Border(
                                                           left: BorderSide(
-                                                              // color: HexColor(
-                                                              //     Mytext[
-                                                              //         'tagColor']),
-                                                              color: Colors.red,
+                                                              color: HexColor(
+                                                                  Mytext[
+                                                                      'tagColor']),
                                                               width: 10))),
                                                   child: ListTile(
                                                     title: Text(Mytext['tag']),
