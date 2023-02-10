@@ -147,7 +147,6 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                         ),
-                        if (widget.snap['open'] == true)
                           Padding(
                             padding: const EdgeInsets.only(left: 0),
                             child: SizedBox(
