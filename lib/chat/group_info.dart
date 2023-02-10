@@ -182,11 +182,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                           0.02,
                                     ),
                                     if (documentSnapshot['uid'] !=
-                                            FirebaseAuth
-                                                .instance.currentUser!.uid ||
-                                        groupData['owner'] ==
-                                            FirebaseAuth
-                                                .instance.currentUser!.uid)
+                                        FirebaseAuth.instance.currentUser!.uid)
                                       SizedBox(
                                         child: IconButton(
                                           icon: const Icon(
@@ -197,6 +193,24 @@ class _GroupInfoState extends State<GroupInfo> {
                                           onPressed: (() {
                                             //add action
                                             return _showModalBottomSheetP(
+                                                context,
+                                                documentSnapshot,
+                                                groupData);
+                                          }),
+                                        ),
+                                      ),
+                                    if (groupData['uid'] !=
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                      SizedBox(
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.more_horiz,
+                                            color: unselected,
+                                            size: 30,
+                                          ),
+                                          onPressed: (() {
+                                            //add action
+                                            return _showModalBottomSheetE(
                                                 context,
                                                 documentSnapshot,
                                                 groupData);
@@ -225,6 +239,58 @@ class _GroupInfoState extends State<GroupInfo> {
       },
     );
   }
+}
+
+void _showModalBottomSheetE(
+    BuildContext context, DocumentSnapshot<Object?> userData, groupdata) {
+  final _report = FirebaseFirestore.instance.collection('report').doc();
+  final TextEditingController _ReportController = TextEditingController();
+
+  showModalBottomSheet(
+    useRootNavigator: true,
+    context: context,
+    builder: (BuildContext context) {
+      return Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            if (FirebaseAuth.instance.currentUser!.uid == groupdata['owner'])
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'End Activity',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  FirebaseFirestore.instance
+                      .collection('post')
+                      .doc(groupdata['groupid'])
+                      .update({
+                    'open': false,
+                  }).whenComplete(() => Navigator.of(context).pop());
+                },
+              ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+              title: const Center(
+                  child: Text(
+                'Cancel',
+                style: TextStyle(
+                    color: redColor, fontFamily: 'MyCustomFont', fontSize: 20),
+              )),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 void _showModalBottomSheetP(
@@ -305,26 +371,6 @@ void _showModalBottomSheetP(
                               )
                             ],
                           ));
-                },
-              ),
-            if (FirebaseAuth.instance.currentUser!.uid == groupdata['owner'])
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: const Center(
-                    child: Text(
-                  'End Activity',
-                  style: TextStyle(
-                      color: redColor,
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20),
-                )),
-                onTap: () {
-                  FirebaseFirestore.instance
-                      .collection('post')
-                      .doc(groupdata['groupid'])
-                      .update({
-                    'open': false,
-                  });
                 },
               ),
             ListTile(
