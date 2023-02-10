@@ -225,7 +225,11 @@ class JoinPageState extends State<JoinPage> {
                                                                         joinLen,
                                                                         postData[
                                                                             'peopleLimit'],
-                                                                      ),
+                                                                      ).whenComplete(() {
+                                                                                      setState(() {
+                                                                                        _isLoading == false;
+                                                                                      });
+                                                                                    }),
                                                                     ),
                                                                   IconButton(
                                                                     icon:
