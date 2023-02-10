@@ -93,7 +93,7 @@ class _SearchFormState extends State<SearchForm> {
                     setState(() {});
                   },
                   decoration: searchInputDecoration.copyWith(
-                    hintText: 'ค้นหากิจกรรม หรือ Tag ที่คุณสนใจ',
+                    hintText: 'ค้นหากิจกรรมที่คุณสนใจ',
                     hintStyle: TextStyle(
                       color: unselected,
                       fontFamily: 'MyCustomFont',
@@ -188,7 +188,10 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _post.orderBy('timeStamp', descending: true).snapshots(),
+        stream: _post
+            .where('open', isEqualTo: true)
+            .orderBy('timeStamp', descending: true)
+            .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
