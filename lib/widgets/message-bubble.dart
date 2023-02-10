@@ -58,7 +58,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   topRight: Radius.circular(20),
                   bottomRight: Radius.circular(20),
                 ),
-          color: widget.sentByMe ? lightPurple : disable,
+          color: widget.sentByMe ? orange : disable,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,33 +68,37 @@ class _MessageBubbleState extends State<MessageBubble> {
                   widget.sentByMe ? 0 : MediaQuery.of(context).size.width * 0.3,
               child: Row(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      widget.profile,
-                    ),
-                    radius: widget.sentByMe ? 0 : 15,
-                  ),
+                  widget.sentByMe
+                      ? SizedBox()
+                      : CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            widget.profile,
+                          ),
+                          radius: 15,
+                        ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.02,
                   ),
-                  Text(
-                    widget.sentByMe ? '' : widget.sender.toUpperCase(),
-                    textAlign: TextAlign.start,
-                    style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: mobileSearchColor,
-                        letterSpacing: -0.5),
-                  ),
+                  widget.sentByMe
+                      ? SizedBox()
+                      : Text(
+                          widget.sender.toUpperCase(),
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: mobileSearchColor,
+                              letterSpacing: -0.5),
+                        ),
                 ],
               ),
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
+              height: MediaQuery.of(context).size.height * 0.005,
             ),
             if (widget.image == true)
               Container(
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.4,
                 width: MediaQuery.of(context).size.width * 0.65,
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -112,9 +116,6 @@ class _MessageBubbleState extends State<MessageBubble> {
                   color: mobileSearchColor,
                 ),
               ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.2,
-            ),
             Text(
               MyDateUtil.getFormattedTime(context: context, time: widget.time),
               style: const TextStyle(
