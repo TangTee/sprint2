@@ -179,6 +179,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 bottomNavigationBar: null,
                 backgroundColor: mobileBackgroundColor,
                 appBar: AppBar(
+                  leading:
+                      userData['uid'] != FirebaseAuth.instance.currentUser!.uid
+                          ? IconButton(
+                              icon: const Icon(Icons.arrow_back_ios,
+                                  color: unselected),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            )
+                          : Container(),
                   backgroundColor: mobileBackgroundColor,
                   title: Text(
                     userData['Displayname'].toString(),
@@ -187,16 +197,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   centerTitle: true,
                   actions: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.settings,
-                        color: purple,
-                        size: 30,
+                    if (userData['uid'] ==
+                        FirebaseAuth.instance.currentUser!.uid)
+                      IconButton(
+                        icon: const Icon(
+                          Icons.settings,
+                          color: purple,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          _showModalBottomSheet(context);
+                        },
                       ),
-                      onPressed: () {
-                        _showModalBottomSheet(context);
-                      },
-                    ),
                   ],
                 ),
                 body: SafeArea(
