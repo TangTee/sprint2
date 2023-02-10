@@ -42,6 +42,11 @@ class _RegisnextPageState extends State<RegisnextPage> {
   var postLen = 0;
   bool isLoading = false;
 
+  String _enteredTextU = '';
+  Color TextU = mobileSearchColor;
+  String _enteredTextB = '';
+  Color TextB = mobileSearchColor;
+
   @override
   void setState(VoidCallback fn) {
     if (mounted) {
@@ -170,6 +175,9 @@ class _RegisnextPageState extends State<RegisnextPage> {
                         child: TextFormField(
                           controller: _DisplaynameController,
                           decoration: textInputDecorationp.copyWith(
+                              counterText:
+                                  '${_enteredTextU.length.toString()} /12',
+                              counterStyle: TextStyle(color: TextU),
                               hintText: "Display Name",
                               prefixIcon: Icon(
                                 Icons.person_pin_circle_sharp,
@@ -178,9 +186,21 @@ class _RegisnextPageState extends State<RegisnextPage> {
                           validator: (val) {
                             if (val!.isNotEmpty) {
                               return null;
-                            } else {
-                              return "plase Enter Display Name";
                             }
+                            if (val.length > 12) {
+                              return 'Limit at 12 characters ';
+                            }
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              Displayname = val;
+                              _enteredTextU = val;
+                              if (val.length > 12) {
+                                TextU = redColor;
+                              } else {
+                                TextU = mobileSearchColor;
+                              }
+                            });
                           },
                         ),
                       ),
@@ -195,6 +215,9 @@ class _RegisnextPageState extends State<RegisnextPage> {
                         controller: _bioController,
                         maxLines: 5,
                         decoration: textInputDecorationp.copyWith(
+                            counterText:
+                                '${_enteredTextB.length.toString()} /160',
+                            counterStyle: TextStyle(color: TextB),
                             hintText: 'bio',
                             prefixIcon: Icon(
                               Icons.pending,
@@ -203,9 +226,21 @@ class _RegisnextPageState extends State<RegisnextPage> {
                         validator: (val) {
                           if (val!.isNotEmpty) {
                             return null;
-                          } else {
-                            return "plase Enter Your bio";
                           }
+                          if (val.length > 160) {
+                            return 'Limit at 160 characters ';
+                          }
+                        },
+                        onChanged: (val) {
+                          setState(() {
+                            bio = val;
+                            _enteredTextB = val;
+                            if (val.length > 160) {
+                              TextB = redColor;
+                            } else {
+                              TextB = mobileSearchColor;
+                            }
+                          });
                         },
                       ),
                     ),
@@ -304,3 +339,4 @@ class _RegisnextPageState extends State<RegisnextPage> {
     }
   }
 }
+
