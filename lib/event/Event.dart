@@ -433,7 +433,9 @@ class _LoadTagState extends State<LoadTag> {
                                   'peopleLimit': _peopleLimit.text,
                                   'likes': [],
                                   'waiting': [],
-                                  'history': [],
+                                  'history': [
+                                    FirebaseAuth.instance.currentUser?.uid
+                                  ],
                                   'tag': value['_tag2'],
                                   'tagColor': value['_tag2Color'],
                                   'open': true,
@@ -457,7 +459,10 @@ class _LoadTagState extends State<LoadTag> {
                                         FirebaseAuth.instance.currentUser?.uid;
                                     _join.doc(_post.id).update({
                                       'member': FieldValue.arrayUnion([uid]),
+                                      // FirebaseAuth.instance.c//.doc(_post.id).update({
+                                      //   'member': FieldValue.arrayUnion([uid]),
                                     });
+
                                     nextScreenReplaceOut(context, MyHomePage());
                                   });
                                 });
