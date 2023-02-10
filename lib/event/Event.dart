@@ -61,8 +61,6 @@ class _LoadTagState extends State<LoadTag> {
   Color TextP = mobileSearchColor;
   String _enteredTextD = '';
   Color TextD = mobileSearchColor;
-  String _enteredTextL = '';
-  Color TextL = mobileSearchColor;
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -368,19 +366,7 @@ class _LoadTagState extends State<LoadTag> {
                                 fontFamily: "MyCustomFont",
                               ),
                               hintText: 'People Limit',
-                              counterText:
-                                  '${_enteredTextL.length.toString()} /100',
                             ),
-                            onChanged: (value) {
-                              setState(() {
-                                _enteredTextL = value;
-                                if (int.parse(value) > 100) {
-                                  TextL = redColor;
-                                } else {
-                                  TextL = mobileSearchColor;
-                                }
-                              });
-                            },
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
