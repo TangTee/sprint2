@@ -9,6 +9,7 @@ import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../Landing.dart';
 import '../profile/edit.dart';
 import '../utils/color.dart';
 import '../utils/my_date_util.dart';
@@ -92,7 +93,8 @@ class _ChatHomePageState extends State<ChatHomePage> {
                 size: 30,
               ),
               onPressed: () {
-                //do action
+                FirebaseAuth.instance.signOut();
+                nextScreenReplaceOut(context, const LandingPage());
               },
             )
           ],
@@ -170,8 +172,10 @@ class _ChatHomePageState extends State<ChatHomePage> {
                   child: MessagePreviewWidget(
                     messageTitle: documentSnapshot['groupName'],
                     messageContent: documentSnapshot['recentMessage'],
-                   messageTime: documentSnapshot['recentMessageTime'],
+                    messageTime: documentSnapshot['recentMessageTime'],
                     timer: documentSnapshot['recentMessageTime'] == '',
+                    isunread: documentSnapshot['recentMessageUID'] ==
+                        FirebaseAuth.instance.currentUser!.uid,
                     messageImage: documentSnapshot['owner'],
                   ),
                 ),
@@ -198,7 +202,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: const [
-          SizedBox(   
+          SizedBox(
             height: 20,
           ),
           Text(

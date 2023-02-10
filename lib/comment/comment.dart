@@ -490,11 +490,7 @@ class _MyCommentState extends State<Comment> {
                                                                           },
                                                                           style: OutlinedButton.styleFrom(
                                                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                                                                              side: BorderSide(
-                                                                                  color: Color(
-                                                                                    int.parse(postData['tagColor']),
-                                                                                  ),
-                                                                                  width: 1.5)),
+                                                                              side: BorderSide(color: HexColor(postData['tagColor']), width: 1.5)),
                                                                           child:
                                                                               Padding(
                                                                             padding:
