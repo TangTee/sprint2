@@ -82,101 +82,109 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: mobileBackgroundColor,
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        toolbarHeight: MediaQuery.of(context).size.height * 0.08,
-        title: Text(widget.groupName),
-        backgroundColor: lightPurple,
-        actions: [
-          IconButton(
-              onPressed: () {
-                nextScreen(
-                    context,
-                    GroupInfo(
-                      groupId: widget.groupId,
-                      groupName: widget.groupName,
-                      groupMember: member,
-                    ));
-              },
-              icon: const Icon(Icons.people))
-        ],
-      ),
-      body: Stack(
-        children: <Widget>[
-          chatMessages(),
-          Container(
-            alignment: Alignment.bottomCenter,
-            width: MediaQuery.of(context).size.width,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.075,
-              color: white,
-              child: Form(
-                child: Row(children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.01,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: ((builder) => bottomSheet()),
-                      );
-                    },
-                    child: const Icon(
-                      Icons.attach_file_outlined,
-                      color: purple,
-                      size: 30,
-                    ),
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.78,
-                    child: TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 5,
-                      minLines: 1,
-                      controller: messageController,
-                      decoration: const InputDecoration(
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          borderSide: BorderSide(width: 2, color: unselected),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(70)),
-                          borderSide: BorderSide(width: 2, color: unselected),
-                        ),
-                        hintText: 'Send a message...',
-                        hintStyle: TextStyle(
-                          color: unselected,
-                          fontFamily: 'MyCustomFont',
+    return MaterialApp(
+      home: DismissKeyboard(
+        child: Scaffold(
+          backgroundColor: mobileBackgroundColor,
+          appBar: AppBar(
+            centerTitle: true,
+            elevation: 0,
+            toolbarHeight: MediaQuery.of(context).size.height * 0.08,
+            title: Text(widget.groupName),
+            backgroundColor: lightPurple,
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    nextScreen(
+                        context,
+                        GroupInfo(
+                          groupId: widget.groupId,
+                          groupName: widget.groupName,
+                          groupMember: member,
+                        ));
+                  },
+                  icon: const Icon(Icons.people))
+            ],
+          ),
+          body: Stack(
+            children: <Widget>[
+              chatMessages(),
+              Container(
+                alignment: Alignment.bottomCenter,
+                width: MediaQuery.of(context).size.width,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.075,
+                  color: white,
+                  child: Form(
+                    child: Row(children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.01,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: ((builder) => bottomSheet()),
+                          );
+                        },
+                        child: const Icon(
+                          Icons.attach_file_outlined,
+                          color: purple,
+                          size: 30,
                         ),
                       ),
-                    ),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.78,
+                        child: TextFormField(
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          minLines: 1,
+                          controller: messageController,
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 10),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                              borderSide:
+                                  BorderSide(width: 2, color: unselected),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(70)),
+                              borderSide:
+                                  BorderSide(width: 2, color: unselected),
+                            ),
+                            hintText: 'Send a message...',
+                            hintStyle: TextStyle(
+                              color: unselected,
+                              fontFamily: 'MyCustomFont',
+                            ),
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          sendMessage();
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 50,
+                          child: const Center(
+                              child: Icon(
+                            Icons.send_outlined,
+                            size: 30,
+                            color: purple,
+                          )),
+                        ),
+                      )
+                    ]),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      sendMessage();
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      child: const Center(
-                          child: Icon(
-                        Icons.send_outlined,
-                        size: 30,
-                        color: purple,
-                      )),
-                    ),
-                  )
-                ]),
-              ),
-            ),
-          )
-        ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
