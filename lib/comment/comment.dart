@@ -660,8 +660,7 @@ class _MyCommentState extends State<Comment> {
                                                                         onPressed: () => requestToLoin(
                                                                             documentSnapshot['postid'].toString(),
                                                                             FirebaseAuth.instance.currentUser!.uid,
-                                                                            documentSnapshot['waiting'],
-                                                                            documentSnapshot['join']),
+                                                                            documentSnapshot['waiting']),
                                                                       ),
                                                                     if (documentSnapshot[
                                                                             'open'] ==
