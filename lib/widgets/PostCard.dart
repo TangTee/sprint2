@@ -304,8 +304,8 @@ class _PostCardState extends State<CardWidget> {
                                               borderRadius:
                                                   BorderRadius.circular(30)),
                                           side: BorderSide(
-                                              color: Color(int.parse(
-                                                  widget.snap['tagColor'])),
+                                              color: HexColor(
+                                                  widget.snap['tagColor']),
                                               width: 1.5)),
                                     ),
                                   ),
