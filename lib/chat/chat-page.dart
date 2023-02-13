@@ -268,6 +268,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   sendImage() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: Duration(microseconds: 300), curve: Curves.easeOut);
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
