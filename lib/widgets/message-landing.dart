@@ -125,7 +125,7 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.52,
+                                              0.55,
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
@@ -143,10 +143,6 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.04,
                                           child: Text(
                                               widget.timer
                                                   ? ''
@@ -158,10 +154,6 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                                   fontSize: 14)),
                                         ),
                                         SizedBox(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.02,
                                           child: Icon(
                                             Icons.chevron_right_rounded,
                                             color: purple,
