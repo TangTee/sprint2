@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/utils/color.dart';
 
+import '../Profile/Profile.dart';
 import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
 
@@ -80,38 +82,50 @@ class _MessageBubbleState extends State<MessageBubble> {
       padding: EdgeInsets.only(
         top: widget.sentByMe ? 0 : 4,
         bottom: 4,
-        left: widget.sentByMe ? 0 : 24,
-        right: widget.sentByMe ? 24 : 0,
+        left: widget.sentByMe ? 0 : 18,
+        right: widget.sentByMe ? 18 : 0,
       ),
-      alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: widget.sentByMe ? Alignment.topRight : Alignment.topLeft,
       child: Container(
         padding: widget.image == true
-            ? EdgeInsets.only(
-                top: widget.sentByMe ? 0 : 7,
-              )
+            ? EdgeInsets.all(0)
             : EdgeInsets.only(
-                top: widget.sentByMe ? 2 : 7,
+                top: 2,
                 bottom: 7,
-                left: 10,
-                right: 10,
+                left: widget.sentByMe ? 80 : 0,
+                right: widget.sentByMe ? 0 : 80,
               ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: widget.sentByMe
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
           children: [
             SizedBox(
               width:
-                  widget.sentByMe ? 0 : MediaQuery.of(context).size.width * 0.3,
+                  widget.sentByMe ? 0 : MediaQuery.of(context).size.width * 0.6,
               child: Row(
                 children: [
                   widget.sentByMe
                       ? SizedBox()
                       : Container(
                           color: mobileBackgroundColor,
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                              userData['profile'].toString(),
+                          child: InkWell(
+                            onTap: () {
+                              PersistentNavBarNavigator.pushNewScreen(
+                                context,
+                                screen: ProfilePage(
+                                  uid: userData['uid'],
+                                ),
+                                withNavBar:
+                                    false, // OPTIONAL VALUE. True by default.
+                              );
+                            },
+                            child: CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                userData['profile'].toString(),
+                              ),
+                              radius: 15,
                             ),
-                            radius: 15,
                           ),
                         ),
                   SizedBox(
@@ -136,13 +150,37 @@ class _MessageBubbleState extends State<MessageBubble> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.005,
             ),
-            Container(
-              child: widget.image == true
-                  ? Padding(
-                      padding: EdgeInsets.all(0),
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        width: MediaQuery.of(context).size.width * 0.65,
+            InkWell(
+              onTap: () {
+                return _showModalBottomSheet(context, userData, groupData);
+              },
+              child: Container(
+                child: widget.image == true
+                    ? Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          decoration: BoxDecoration(
+                            borderRadius: widget.sentByMe
+                                ? const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                    bottomLeft: Radius.circular(20),
+                                  )
+                                : const BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  ),
+                            image: DecorationImage(
+                              image: NetworkImage(widget.message),
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
                         decoration: BoxDecoration(
                           borderRadius: widget.sentByMe
                               ? const BorderRadius.only(
@@ -155,51 +193,119 @@ class _MessageBubbleState extends State<MessageBubble> {
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20),
                                 ),
-                          image: DecorationImage(
-                            image: NetworkImage(widget.message),
-                            fit: BoxFit.fill,
+                          color: widget.sentByMe ? orange : disable,
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            widget.message,
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: mobileSearchColor,
+                            ),
                           ),
                         ),
                       ),
-                    )
-                  : Container(
-                      decoration: BoxDecoration(
-                        borderRadius: widget.sentByMe
-                            ? const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                              )
-                            : const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                        color: widget.sentByMe ? orange : disable,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          widget.message,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: mobileSearchColor,
-                          ),
-                        ),
-                      ),
-                    ),
+              ),
             ),
-            Text(
-              MyDateUtil.getFormattedTime(context: context, time: widget.time),
-              style: const TextStyle(
-                fontSize: 12,
-                color: unselected,
+            Container(
+              child: Text(
+                MyDateUtil.getFormattedTime(
+                    context: context, time: widget.time),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: unselected,
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showModalBottomSheet(BuildContext context, userData, groupdata) {
+    final _report = FirebaseFirestore.instance.collection('report').doc();
+    final TextEditingController _ReportController = TextEditingController();
+
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              widget.image == false
+                  ? ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                      title: const Center(
+                          child: Text(
+                        'Copy Text',
+                        style:
+                            TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                      )),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  : ListTile(
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                      title: const Center(
+                          child: Text(
+                        'Save Image',
+                        style:
+                            TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                      )),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                    child: Text(
+                  'Reply',
+                  style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              if (widget.sentByMe == false)
+                ListTile(
+                  contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                  title: const Center(
+                      child: Text(
+                    'Report',
+                    style: TextStyle(
+                        color: redColor,
+                        fontFamily: 'MyCustomFont',
+                        fontSize: 20),
+                  )),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
