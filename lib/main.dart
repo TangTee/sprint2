@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/Landing.dart';
+import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/regis,login/Login.dart';
 import 'package:tangteevs/regis,login/Register.dart';
 
@@ -58,12 +59,20 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: initialRoute ? MyHomePage() : const LandingPage(),
+      home: initialRoute
+          ? const MyHomePage(
+              index: 0,
+            )
+          : const LandingPage(),
       routes: {
         '/Landing': (context) => const LandingPage(),
         '/Login': (context) => Login(),
         '/Register': (context) => const RegisterPage(),
-        '/HomePage': (context) => MyHomePage(),
+        '/HomePage': (context) => const MyHomePage(index: 0),
+        '/Activity': (context) => const MyHomePage(index: 1),
+        '/Post': (context) => const MyHomePage(index: 2),
+        '/Chat': (context) => const MyHomePage(index: 3),
+        '/Profile': (context) => const MyHomePage(index: 4),
       },
     );
   }

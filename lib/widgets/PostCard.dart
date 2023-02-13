@@ -147,23 +147,23 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                         ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0),
-                            child: SizedBox(
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.more_horiz,
-                                  color: unselected,
-                                  size: 30,
-                                ),
-                                onPressed: (() {
-                                  //add action
-                                  _showModalBottomSheet(
-                                      context, currentUser['uid']);
-                                }),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 0),
+                          child: SizedBox(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.more_horiz,
+                                color: unselected,
+                                size: 30,
                               ),
+                              onPressed: (() {
+                                //add action
+                                _showModalBottomSheet(
+                                    context, currentUser['uid']);
+                              }),
                             ),
                           ),
+                        ),
                       ],
                     ),
                     Text.rich(
@@ -416,7 +416,9 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(),
+                                            builder: (context) => MyHomePage(
+                                              index: 0,
+                                            ),
                                           ),
                                         );
                                       });
@@ -461,7 +463,9 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(),
+                                            builder: (context) => MyHomePage(
+                                              index: 0,
+                                            ),
                                           ),
                                         );
                                       });

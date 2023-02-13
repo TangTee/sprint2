@@ -128,8 +128,8 @@ showModalBottomSheetT(BuildContext context, categoryId, value) {
                                       value['_tag2'] = Mytext['tag'].toString();
                                       value['_tag2Color'] =
                                           Mytext['tagColor'].toString();
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).pop();
                                     },
                                     child: Text(
                                       Mytext['tag'],

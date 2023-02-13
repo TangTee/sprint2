@@ -100,7 +100,9 @@ class _UserPageState extends State<UserPage> {
                         .pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return MyHomePage();
+                          return MyHomePage(
+                            index: 4,
+                          );
                         },
                       ),
                       (_) => false,

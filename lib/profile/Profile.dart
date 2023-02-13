@@ -30,6 +30,13 @@ class _ProfilePageState extends State<ProfilePage> {
   String d = "";
   DateTime birthday = DateTime(1);
   DateDuration duration = DateDuration();
+  int _count = 0;
+
+  void _incrementCount() {
+    setState(() {
+      _count++;
+    });
+  }
 
   @override
   void initState() {
@@ -117,13 +124,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 onTap: () {
-                  PersistentNavBarNavigator.pushNewScreen(
+                  Navigator.push(
                     context,
-                    screen: EditPage(
-                      uid: FirebaseAuth.instance.currentUser!.uid,
+                    MaterialPageRoute(
+                      builder: (_) => EditPage(
+                        uid: FirebaseAuth.instance.currentUser!.uid,
+                      ),
                     ),
-                    withNavBar: false, // OPTIONAL VALUE. True by default.
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
                 },
               ),

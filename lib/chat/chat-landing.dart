@@ -35,25 +35,20 @@ class _ChatHomePageState extends State<ChatHomePage> {
   @override
   void initState() {
     super.initState();
-    //gettingUserData();
+    // gettingUserData();
   }
 
   // string manipulation
-  String getId(String res) {
-    return res.substring(0, res.indexOf("_"));
-  }
+  // String getId(String res) {
+  //   return res.substring(0, res.indexOf("_"));
+  // }
 
-  String getName(String res) {
-    return res.substring(res.indexOf("_") + 1);
-  }
+  // String getName(String res) {
+  //   return res.substring(res.indexOf("_") + 1);
+  // }
 
   // gettingUserData() async {
-  //   await HelperFunctions.getUserEmailFromSF().then((value) {
-  //     setState(() {
-  //       email = value!;
-  //     });
-  //   });
-  //   await HelperFunctions.getUserNameFromSF().then((val) {
+  //   await HelperFunctions.getUserDisplayFromSF().then((val) {
   //     setState(() {
   //       userName = val!;
   //     });
@@ -92,7 +87,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
                 size: 30,
               ),
               onPressed: () {
-                //do action
+                print((FirebaseAuth.instance.currentUser!.uid));
               },
             )
           ],

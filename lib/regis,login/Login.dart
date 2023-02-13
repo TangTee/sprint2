@@ -273,7 +273,7 @@ class _LoginState extends State<Login> {
           if (a == true) {
             nextScreenReplace(context, AdminHomePage());
           } else {
-            nextScreenReplace(context, MyHomePage());
+            nextScreenReplace(context, MyHomePage(index: 0,));
           }
           //nextScreenReplace(context, MyHomePage());
         } else {

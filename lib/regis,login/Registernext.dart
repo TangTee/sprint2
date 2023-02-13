@@ -335,7 +335,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
       _ageController.text = '';
       _genderController.text = '';
       _ImageProfileController = '';
-      nextScreen(context, MyHomePage());
+      nextScreen(context, MyHomePage(index: 0,));
     }
   }
 }

@@ -9,7 +9,8 @@ import 'Profile/Profile.dart';
 import 'activity/Activity.dart';
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final int index ;
+  const MyHomePage({Key? key, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class MyHomePage extends StatelessWidget {
 
     PersistentTabController controller;
 
-    controller = PersistentTabController(initialIndex: 0);
+    controller = PersistentTabController(initialIndex: index);
     return PersistentTabView(
       context,
       screens: _buildScreens(),
@@ -159,9 +160,6 @@ class ProfileTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ProfilePage(
-        uid: FirebaseAuth.instance.currentUser!.uid,
-      ),
-    );
+        home: ProfilePage(uid: FirebaseAuth.instance.currentUser!.uid));
   }
 }

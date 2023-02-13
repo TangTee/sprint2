@@ -36,7 +36,7 @@ class _ReportPageState extends State<ReportPage> {
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return MyHomePage();
+                        return MyHomePage(index: 4,);
                       },
                     ),
                     (_) => false,

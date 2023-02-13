@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
@@ -104,8 +106,9 @@ class _EditPageState extends State<EditPage> {
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back_ios,
                         color: mobileSearchColor, size: 30),
-                    onPressed: () => {
-                      Navigator.of(context).popUntil((route) => route.isFirst)
+                    onPressed: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
                     },
                   ),
                   toolbarHeight: MediaQuery.of(context).size.height * 0.13,
@@ -486,7 +489,7 @@ class _EditPageState extends State<EditPage> {
       _genderController.text = '';
       _ImageProfileController = '';
       // ignore: use_build_context_synchronously
-      Navigator.of(context).popUntil((route) => route.isFirst);
+      Navigator.popAndPushNamed(context, '/Profile');
     }
   }
 }

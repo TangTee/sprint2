@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
 
 import '../utils/my_date_util.dart';
+import '../utils/showSnackbar.dart';
 
 class MessageBubble extends StatefulWidget {
   final String message;
@@ -26,6 +28,44 @@ class MessageBubble extends StatefulWidget {
 }
 
 class _MessageBubbleState extends State<MessageBubble> {
+  TextEditingController messageController = TextEditingController();
+  bool isLoading = false;
+  bool text = false;
+  bool image = true;
+  var groupData = {};
+  var member = [];
+
+  var userData = {};
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.sender)
+          .get();
+
+      userData = userSnap.data()!;
+
+      setState(() {});
+    } catch (e) {
+      showSnackBar(
+        context,
+        e.toString(),
+      );
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +112,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                       ? SizedBox()
                       : CircleAvatar(
                           backgroundImage: NetworkImage(
-                            widget.profile,
+                            userData['profile'].toString(),
                           ),
                           radius: 15,
                         ),
@@ -82,7 +122,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   widget.sentByMe
                       ? SizedBox()
                       : Text(
-                          widget.sender.toUpperCase(),
+                          userData['Displayname'].toString().toUpperCase(),
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                               fontSize: 13,

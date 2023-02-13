@@ -1084,6 +1084,7 @@ class _MyCommentState extends State<Comment> {
                         builder: (BuildContext context) {
                           return EditAct(
                             postid: postData['postid'],
+                          
                           );
                         },
                       ),
@@ -1124,7 +1125,9 @@ class _MyCommentState extends State<Comment> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(),
+                                            builder: (context) => MyHomePage(
+                                              index: 0,
+                                            ),
                                           ),
                                         );
                                       });

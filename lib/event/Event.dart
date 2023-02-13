@@ -463,7 +463,7 @@ class _LoadTagState extends State<LoadTag> {
                                       //   'member': FieldValue.arrayUnion([uid]),
                                     });
 
-                                    nextScreenReplaceOut(context, MyHomePage());
+                                    nextScreenReplaceOut(context, const MyHomePage(index: 0,));
                                   });
                                 });
                               }

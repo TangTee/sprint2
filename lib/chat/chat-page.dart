@@ -219,7 +219,7 @@ class _ChatPageState extends State<ChatPage> {
                         sender: snapshot.data.docs[index]['sender'],
                         profile: snapshot.data.docs[index]['profile'],
                         time: snapshot.data.docs[index]['time'].toString(),
-                        sentByMe: userData['Displayname'].toString() ==
+                        sentByMe: FirebaseAuth.instance.currentUser!.uid ==
                             snapshot.data.docs[index]['sender']);
                   },
                 ),
@@ -233,10 +233,10 @@ class _ChatPageState extends State<ChatPage> {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
-        "sender": userData['Displayname'].toString(),
+        "sender": FirebaseAuth.instance.currentUser!.uid,
         "time": DateTime.now().millisecondsSinceEpoch,
         "profile": userData['profile'].toString(),
-        "image": text
+        "image": text,
       };
 
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
@@ -250,10 +250,10 @@ class _ChatPageState extends State<ChatPage> {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
-        "sender": userData['Displayname'].toString(),
+        "sender": FirebaseAuth.instance.currentUser!.uid,
         "time": DateTime.now().millisecondsSinceEpoch,
         "profile": userData['profile'].toString(),
-        "image": image
+        "image": image,
       };
 
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
