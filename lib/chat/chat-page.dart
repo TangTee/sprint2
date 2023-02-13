@@ -123,83 +123,85 @@ class _ChatPageState extends State<ChatPage> {
                   icon: const Icon(Icons.people))
             ],
           ),
-          body: Stack(
-            children: <Widget>[
-              chatMessages(),
-              Container(
-                alignment: Alignment.bottomCenter,
-                width: MediaQuery.of(context).size.width,
-                child: Container(
-                  height: MediaQuery.of(context).size.height * 0.075,
-                  color: white,
-                  child: Form(
-                    child: Row(children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.01,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet(
-                            context: context,
-                            builder: ((builder) => bottomSheet()),
-                          );
-                        },
-                        child: const Icon(
-                          Icons.attach_file_outlined,
-                          color: purple,
-                          size: 30,
+          body: SafeArea(
+            child: Stack(
+              children: <Widget>[
+                chatMessages(),
+                Container(
+                  alignment: Alignment.bottomCenter,
+                  width: MediaQuery.of(context).size.width,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.075,
+                    color: white,
+                    child: Form(
+                      child: Row(children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
                         ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.78,
-                        child: TextFormField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          minLines: 1,
-                          controller: messageController,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                              borderSide:
-                                  BorderSide(width: 2, color: unselected),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(70)),
-                              borderSide:
-                                  BorderSide(width: 2, color: unselected),
-                            ),
-                            hintText: 'Send a message...',
-                            hintStyle: TextStyle(
-                              color: unselected,
-                              fontFamily: 'MyCustomFont',
+                        GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: ((builder) => bottomSheet()),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.attach_file_outlined,
+                            color: purple,
+                            size: 30,
+                          ),
+                        ),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.78,
+                          child: TextFormField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 5,
+                            minLines: 1,
+                            controller: messageController,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                borderSide:
+                                    BorderSide(width: 2, color: unselected),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(70)),
+                                borderSide:
+                                    BorderSide(width: 2, color: unselected),
+                              ),
+                              hintText: 'Send a message...',
+                              hintStyle: TextStyle(
+                                color: unselected,
+                                fontFamily: 'MyCustomFont',
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          sendMessage();
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          child: const Center(
-                              child: Icon(
-                            Icons.send_outlined,
-                            size: 30,
-                            color: purple,
-                          )),
-                        ),
-                      )
-                    ]),
+                        GestureDetector(
+                          onTap: () {
+                            sendMessage();
+                          },
+                          child: Container(
+                            height: 50,
+                            width: 50,
+                            child: const Center(
+                                child: Icon(
+                              Icons.send_outlined,
+                              size: 30,
+                              color: purple,
+                            )),
+                          ),
+                        )
+                      ]),
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
