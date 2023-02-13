@@ -16,8 +16,15 @@ import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
 
 class IdcardPage extends StatefulWidget {
-  final String uid;
-  const IdcardPage({Key? key, required this.uid}) : super(key: key);
+  final String fullName;
+  final String password;
+  final String email;
+  const IdcardPage({
+    Key? key,
+    required this.fullName,
+    required this.password,
+    required this.email,
+  }) : super(key: key);
 
   @override
   _IdcardPageState createState() => _IdcardPageState();
@@ -53,33 +60,6 @@ class _IdcardPageState extends State<IdcardPage> {
 
   void initState() {
     super.initState();
-    getData();
-  }
-
-  getData() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.uid)
-          .get();
-      userData = userSnap.data()!;
-      _ImageidcardController = userData['idcard'].toString();
-      _dayController.text = userData['day'].toString();
-      _monthController.text = userData['month'].toString();
-      _yearController.text = userData['year'].toString();
-      setState(() {});
-    } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
-    }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -362,6 +342,11 @@ class _IdcardPageState extends State<IdcardPage> {
                     const SizedBox(
                       height: 20,
                     ),
+                    // ElevatedButton(
+                    //     onPressed: () {
+                    //       print(widget.password);
+                    //     },
+                    //     child: Text('test')),
                     const Text(
                         "ข้อแนะนำ:\nหลีกเลี่ยงแสงสะท้อน และความมืดเกินไป \nรูปไม่เบลอ เห็นตัวอักษรชัดเจน ",
                         style: TextStyle(
@@ -460,7 +445,7 @@ class _IdcardPageState extends State<IdcardPage> {
                         ),
                         onPressed: () {
                           if (isChecked == true) {
-                            Updata();
+                            register();
                           } else {
                             return null;
                           }
@@ -474,25 +459,19 @@ class _IdcardPageState extends State<IdcardPage> {
     );
   }
 
-  Updata() async {
-    final String Imageidcard = _ImageidcardController.toString();
-    final String day = _dayController.text;
-    final String month = _monthController.text;
-    final String year = _yearController.text;
-
-    if (_formKey.currentState!.validate()) {
-      await _users.doc(widget.uid).update({
-        "idcard": Imageidcard,
-        "day": day,
-        "month": month,
-        "year": year,
-      });
-      _ImageidcardController = '';
-      _dayController.text = '';
-      _monthController.text = '';
-      _yearController.text = '';
+  register() {
+    if (_formKey.currentState!.validate() == true) {
       nextScreen(
-          context, RegisnextPage(uid: FirebaseAuth.instance.currentUser!.uid));
+          this.context,
+          RegisnextPage(
+            Imageidcard: _ImageidcardController.toString(),
+            day: _dayController.text,
+            email: widget.email,
+            fullName: widget.fullName,
+            month: _monthController.text,
+            password: widget.password,
+            year: _yearController.text,
+          ));
     }
   }
 }

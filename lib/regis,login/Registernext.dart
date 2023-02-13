@@ -9,12 +9,28 @@ import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/utils/color.dart';
+import '../helper/helper_function.dart';
 import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
 
 class RegisnextPage extends StatefulWidget {
-  final String uid;
-  const RegisnextPage({Key? key, required this.uid}) : super(key: key);
+  final String fullName;
+  final String email;
+  final String password;
+  final String Imageidcard;
+  final String day;
+  final String month;
+  final String year;
+  const RegisnextPage(
+      {Key? key,
+      required this.fullName,
+      required this.email,
+      required this.password,
+      required this.Imageidcard,
+      required this.day,
+      required this.month,
+      required this.year})
+      : super(key: key);
 
   @override
   _RegisnextPageState createState() => _RegisnextPageState();
@@ -37,6 +53,16 @@ class _RegisnextPageState extends State<RegisnextPage> {
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
   File? media1;
+  String age = "";
+  String gender = "";
+  String ImageProfile = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+  String instagram = "";
+  String facebook = "";
+  String twitter = "";
+  bool ban = false;
+  bool verify = false;
+  bool isadmin = false;
+  int points = 100;
 
   var userData = {};
   var postLen = 0;
@@ -47,6 +73,20 @@ class _RegisnextPageState extends State<RegisnextPage> {
   String _enteredTextB = '';
   Color TextB = mobileSearchColor;
 
+  String get fullName => widget.fullName;
+
+  String get email => widget.email;
+
+  String get password => widget.password;
+
+  String get Imageidcard => widget.Imageidcard;
+
+  String get day => widget.day;
+
+  String get month => widget.month;
+
+  String get year => widget.year;
+
   @override
   void setState(VoidCallback fn) {
     if (mounted) {
@@ -56,34 +96,6 @@ class _RegisnextPageState extends State<RegisnextPage> {
 
   void initState() {
     super.initState();
-    getData();
-  }
-
-  getData() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(widget.uid)
-          .get();
-      userData = userSnap.data()!;
-      _DisplaynameController.text = userData['Displayname'].toString();
-      _ageController.text = userData['age'].toString();
-      _genderController.text = userData['gender'].toString();
-      _bioController.text = userData['bio'].toString();
-      _ImageProfileController = userData['profile'].toString();
-      setState(() {});
-    } catch (e) {
-      showSnackBar(
-        context,
-        e.toString(),
-      );
-    }
-    setState(() {
-      isLoading = false;
-    });
   }
 
   @override
@@ -252,31 +264,31 @@ class _RegisnextPageState extends State<RegisnextPage> {
                       children: <Widget>[
                         Text('Gender: '),
                         Radio(
-                          value: 'male',
-                          groupValue: _genderController.text,
+                          value: 'Male',
+                          groupValue: gender,
                           onChanged: (value) {
                             setState(() {
-                              _genderController.text = value!;
+                              gender = value!;
                             });
                           },
                         ),
                         Text('Male'),
                         Radio(
-                          value: 'female',
-                          groupValue: _genderController.text,
+                          value: 'Female',
+                          groupValue: gender,
                           onChanged: (value) {
                             setState(() {
-                              _genderController.text = value!;
+                              gender = value!;
                             });
                           },
                         ),
                         Text('Female'),
                         Radio(
-                          value: 'other',
-                          groupValue: _genderController.text,
+                          value: 'Other',
+                          groupValue: gender,
                           onChanged: (value) {
                             setState(() {
-                              _genderController.text = value!;
+                              gender = value!;
                             });
                           },
                         ),
@@ -303,7 +315,8 @@ class _RegisnextPageState extends State<RegisnextPage> {
                             style: TextStyle(color: white, fontSize: 16),
                           ),
                           onPressed: () {
-                            Updata();
+                            register();
+                            // print(widget.fullName);
                           },
                         ),
                       ),
@@ -315,28 +328,57 @@ class _RegisnextPageState extends State<RegisnextPage> {
     );
   }
 
-  Updata() async {
-    final String Displayname = _DisplaynameController.text;
-    final String age = _ageController.text;
-    final String gender = _genderController.text;
-    final String bio = _bioController.text;
-    final String ImageProfile = _ImageProfileController.toString();
-
+  register() async {
     if (_formKey.currentState!.validate()) {
-      await _users.doc(widget.uid).update({
-        "Displayname": Displayname,
-        "age": age,
-        "gender": gender,
-        "bio": bio,
-        "profile": ImageProfile,
+      setState(() {
+        _isLoading = true;
       });
-      _DisplaynameController.text = '';
-      _bioController.text = '';
-      _ageController.text = '';
-      _genderController.text = '';
-      _ImageProfileController = '';
-      nextScreen(context, MyHomePage(index: 0,));
+      await authService
+          .registerUserWithEmailandPassword(
+              fullName,
+              email,
+              password,
+              Imageidcard,
+              age,
+              ImageProfile,
+              Displayname,
+              gender,
+              bio,
+              isadmin,
+              verify,
+              facebook,
+              twitter,
+              instagram,
+              day,
+              month,
+              year,
+              points,
+              ban)
+          .then((value) async {
+        if (value == true) {
+          // saving the shared preference state
+          await HelperFunctions.saveUserLoggedInStatus(true);
+          await HelperFunctions.saveUserEmailSF(email);
+          await HelperFunctions.saveUserNameSF(fullName);
+          await HelperFunctions.saveUserImageidcardSF(Imageidcard);
+          await HelperFunctions.saveUserAgeSF(age);
+          await HelperFunctions.saveUserImageprofileSF(ImageProfile);
+          await HelperFunctions.saveUserDisplaySF(Displayname);
+          await HelperFunctions.saveUserGenderSF(gender);
+          await HelperFunctions.saveUserBioSF(bio);
+
+          nextScreen(
+              this.context,
+              MyHomePage(
+                index: 0,
+              ));
+        } else {
+          showSnackbar(context, redColor, value);
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      });
     }
   }
 }
-

@@ -56,6 +56,7 @@ class AuthService {
     String day,
     String month,
     String year,
+    int points, bool ban,
   ) async {
     try {
       User user = (await firebaseAuth.createUserWithEmailAndPassword(
@@ -80,7 +81,9 @@ class AuthService {
             instagram,
             day,
             month,
-            year);
+            year,
+            points,
+            ban);
         return true;
       }
     } on FirebaseAuthException catch (e) {

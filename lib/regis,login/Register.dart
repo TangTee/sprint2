@@ -29,18 +29,6 @@ class _RegistrationScreen extends State<RegisterPage> {
   String password2 = "";
   String fullName = "";
   AuthService authService = AuthService();
-  String Displayname = "";
-  String age = "";
-  String gender = "";
-  String Imageidcard = "";
-  String ImageProfile = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-  String bio = "";
-  String instagram = "";
-  String facebook = "";
-  String twitter = "";
-  String day = "";
-  String month = "";
-  String year = "";
   bool verify = false;
   bool isadmin = false;
   final textEditingController = TextEditingController();
@@ -272,55 +260,15 @@ class _RegistrationScreen extends State<RegisterPage> {
     );
   }
 
-  register() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
-      await authService
-          .registerUserWithEmailandPassword(
-              fullName,
-              email,
-              password,
-              Imageidcard,
-              age,
-              ImageProfile,
-              Displayname,
-              gender,
-              bio,
-              isadmin,
-              verify,
-              facebook,
-              twitter,
-              instagram,
-              day,
-              month,
-              year)
-          .then((value) async {
-        if (value == true) {
-          // saving the shared preference state
-          await HelperFunctions.saveUserLoggedInStatus(true);
-          await HelperFunctions.saveUserEmailSF(email);
-          await HelperFunctions.saveUserNameSF(fullName);
-          await HelperFunctions.saveUserImageidcardSF(Imageidcard);
-          await HelperFunctions.saveUserAgeSF(age);
-          await HelperFunctions.saveUserImageprofileSF(ImageProfile);
-          await HelperFunctions.saveUserDisplaySF(Displayname);
-          await HelperFunctions.saveUserGenderSF(gender);
-          await HelperFunctions.saveUserBioSF(bio);
-
-          nextScreen(
-              this.context,
-              IdcardPage(
-                uid: FirebaseAuth.instance.currentUser!.uid,
-              ));
-        } else {
-          showSnackbar(context, redColor, value);
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      });
+  register() {
+    if (_formKey.currentState!.validate() == true) {
+      nextScreen(
+          this.context,
+          IdcardPage(
+            email: email,
+            fullName: fullName,
+            password: password,
+          ));
     }
   }
 }
