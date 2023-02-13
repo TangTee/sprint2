@@ -62,25 +62,34 @@ class _GroupInfoState extends State<GroupInfo> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: MaterialApp(
-        home: DismissKeyboard(
-          child: Scaffold(
-            backgroundColor: mobileBackgroundColor,
-            appBar: AppBar(
-              centerTitle: true,
-              elevation: 0,
-              backgroundColor: lightPurple,
-              title: Text("${widget.groupName}"),
-              // actions: [
-              //   ElevatedButton(
-              //       onPressed: () {
-              //         //
-              //       },
-              //       child: const Text('text'))
-              // ],
+    return MaterialApp(
+      home: DismissKeyboard(
+        child: Scaffold(
+          backgroundColor: mobileBackgroundColor,
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: white,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            body: memberList(),
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: lightPurple,
+            title: Text("${widget.groupName}"),
+            // actions: [
+            //   ElevatedButton(
+            //       onPressed: () {
+            //         //
+            //       },
+            //       child: const Text('text'))
+            // ],
+          ),
+          body: SafeArea(
+            child: memberList(),
           ),
         ),
       ),
