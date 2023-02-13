@@ -36,12 +36,14 @@ class _MessageBubbleState extends State<MessageBubble> {
   var member = [];
 
   var userData = {};
-  @override 
- void setState(VoidCallback fn) {
+
+  @override
+  void setState(VoidCallback fn) {
     if (mounted) {
       super.setState(fn);
     }
   }
+
   @override
   void initState() {
     super.initState();
@@ -105,14 +107,12 @@ class _MessageBubbleState extends State<MessageBubble> {
                       ? SizedBox()
                       : Container(
                           color: mobileBackgroundColor,
-                          child: widget.sentByMe
-                              ? Text('')
-                              : CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                    userData['profile'].toString(),
-                                  ),
-                                  radius: 15,
-                                ),
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              userData['profile'].toString(),
+                            ),
+                            radius: 15,
+                          ),
                         ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.02,
