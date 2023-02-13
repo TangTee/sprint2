@@ -33,7 +33,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
       FirebaseFirestore.instance.collection('join');
 
   @override
-   void setState(VoidCallback fn) {
+  void setState(VoidCallback fn) {
     if (mounted) {
       super.setState(fn);
     }
@@ -136,7 +136,9 @@ class _ChatHomePageState extends State<ChatHomePage> {
             ),
           ],
         )),
-        body: groupList(),
+        body: SafeArea(
+          child: groupList(),
+        ),
       ),
     );
   }
