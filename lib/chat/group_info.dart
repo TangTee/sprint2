@@ -199,7 +199,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                           }),
                                         ),
                                       ),
-                                    if (groupData['uid'] !=
+                                    if (groupData['owner'] ==
                                         FirebaseAuth.instance.currentUser!.uid)
                                       SizedBox(
                                         child: IconButton(
@@ -254,26 +254,23 @@ void _showModalBottomSheetE(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (FirebaseAuth.instance.currentUser!.uid == groupdata['owner'])
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: const Center(
-                    child: Text(
-                  'End Activity',
-                  style: TextStyle(
-                      color: redColor,
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20),
-                )),
-                onTap: () {
-                  FirebaseFirestore.instance
-                      .collection('post')
-                      .doc(groupdata['groupid'])
-                      .update({
-                    'open': false,
-                  }).whenComplete(() => Navigator.of(context).pop());
-                },
-              ),
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+              title: const Center(
+                  child: Text(
+                'End Activity',
+                style: TextStyle(
+                    color: redColor, fontFamily: 'MyCustomFont', fontSize: 20),
+              )),
+              onTap: () {
+                FirebaseFirestore.instance
+                    .collection('post')
+                    .doc(groupdata['groupid'])
+                    .update({
+                  'open': false,
+                }).whenComplete(() => Navigator.of(context).pop());
+              },
+            ),
             ListTile(
               contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
               title: const Center(
