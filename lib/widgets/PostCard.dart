@@ -35,6 +35,7 @@ class _PostCardState extends State<CardWidget> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();

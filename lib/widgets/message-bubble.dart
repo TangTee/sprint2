@@ -36,6 +36,12 @@ class _MessageBubbleState extends State<MessageBubble> {
   var member = [];
 
   var userData = {};
+  @override 
+ void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -77,29 +83,16 @@ class _MessageBubbleState extends State<MessageBubble> {
       ),
       alignment: widget.sentByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: widget.sentByMe
-            ? const EdgeInsets.only(left: 30)
-            : const EdgeInsets.only(right: 30),
-        padding: EdgeInsets.only(
-          top: widget.sentByMe ? 0 : 7,
-          bottom: 10,
-          left: 10,
-          right: widget.sentByMe ? 0 : 10,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: widget.sentByMe
-              ? const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(20),
-                )
-              : const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomRight: Radius.circular(20),
-                ),
-          color: widget.sentByMe ? orange : disable,
-        ),
+        padding: widget.image == true
+            ? EdgeInsets.only(
+                top: widget.sentByMe ? 0 : 7,
+              )
+            : EdgeInsets.only(
+                top: widget.sentByMe ? 2 : 7,
+                bottom: 7,
+                left: 10,
+                right: 10,
+              ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -110,25 +103,32 @@ class _MessageBubbleState extends State<MessageBubble> {
                 children: [
                   widget.sentByMe
                       ? SizedBox()
-                      : CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            userData['profile'].toString(),
-                          ),
-                          radius: 15,
+                      : Container(
+                          color: mobileBackgroundColor,
+                          child: widget.sentByMe
+                              ? Text('')
+                              : CircleAvatar(
+                                  backgroundImage: NetworkImage(
+                                    userData['profile'].toString(),
+                                  ),
+                                  radius: 15,
+                                ),
                         ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.02,
                   ),
                   widget.sentByMe
                       ? SizedBox()
-                      : Text(
-                          userData['Displayname'].toString().toUpperCase(),
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold,
-                              color: mobileSearchColor,
-                              letterSpacing: -0.5),
+                      : Container(
+                          color: mobileBackgroundColor,
+                          child: Text(
+                            userData['Displayname'].toString().toUpperCase(),
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: -0.5),
+                          ),
                         ),
                 ],
               ),
@@ -136,30 +136,64 @@ class _MessageBubbleState extends State<MessageBubble> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.005,
             ),
-            if (widget.image == true)
-              Container(
-                height: MediaQuery.of(context).size.height * 0.4,
-                width: MediaQuery.of(context).size.width * 0.65,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(widget.message),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ),
-            if (widget.image == false)
-              Text(
-                widget.message,
-                textAlign: TextAlign.start,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: mobileSearchColor,
-                ),
-              ),
+            Container(
+              child: widget.image == true
+                  ? Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        decoration: BoxDecoration(
+                          borderRadius: widget.sentByMe
+                              ? const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                )
+                              : const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.message),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        borderRadius: widget.sentByMe
+                            ? const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                              )
+                            : const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                        color: widget.sentByMe ? orange : disable,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          widget.message,
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: mobileSearchColor,
+                          ),
+                        ),
+                      ),
+                    ),
+            ),
             Text(
               MyDateUtil.getFormattedTime(context: context, time: widget.time),
               style: const TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 color: unselected,
               ),
             ),

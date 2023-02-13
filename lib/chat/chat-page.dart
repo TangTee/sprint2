@@ -11,7 +11,9 @@ import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../utils/color.dart';
+import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
+import '../widgets/message-time.dart';
 
 class ChatPage extends StatefulWidget {
   final String groupId;
@@ -39,10 +41,16 @@ class _ChatPageState extends State<ChatPage> {
   bool image = true;
   var groupData = {};
   var member = [];
-
+  ScrollController _scrollController = ScrollController();
   var userData = {};
   File? media;
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
   void initState() {
     super.initState();
     getData();
@@ -211,16 +219,27 @@ class _ChatPageState extends State<ChatPage> {
             ? SizedBox(
                 height: MediaQuery.of(context).size.height * 0.8,
                 child: ListView.builder(
+                  controller: _scrollController,
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
-                    return MessageBubble(
-                        image: snapshot.data.docs[index]['image'],
-                        message: snapshot.data.docs[index]['message'],
-                        sender: snapshot.data.docs[index]['sender'],
-                        profile: snapshot.data.docs[index]['profile'],
-                        time: snapshot.data.docs[index]['time'].toString(),
-                        sentByMe: FirebaseAuth.instance.currentUser!.uid ==
-                            snapshot.data.docs[index]['sender']);
+                    return Column(
+                      children: [
+                        MessageBubble(
+                            image: snapshot.data.docs[index]['image'],
+                            message: snapshot.data.docs[index]['message'],
+                            sender: snapshot.data.docs[index]['sender'],
+                            profile: snapshot.data.docs[index]['profile'],
+                            time: snapshot.data.docs[index]['time'].toString(),
+                            sentByMe: FirebaseAuth.instance.currentUser!.uid ==
+                                snapshot.data.docs[index]['sender']),
+                        // MessageTime(
+                        //   image: snapshot.data.docs[index]['image'],
+                        //   time: snapshot.data.docs[index]['time'].toString(),
+                        //   sentByMe: FirebaseAuth.instance.currentUser!.uid ==
+                        //       snapshot.data.docs[index]['sender'],
+                        // ),
+                      ],
+                    );
                   },
                 ),
               )
@@ -230,6 +249,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   sendMessage() {
+    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+        duration: Duration(microseconds: 300), curve: Curves.easeOut);
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,

@@ -33,6 +33,13 @@ class _ChatHomePageState extends State<ChatHomePage> {
       FirebaseFirestore.instance.collection('join');
 
   @override
+   void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     // gettingUserData();
