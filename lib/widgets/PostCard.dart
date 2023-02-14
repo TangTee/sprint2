@@ -419,7 +419,9 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(),
+                                            builder: (context) => MyHomePage(
+                                              index: 0,
+                                            ),
                                           ),
                                         );
                                       });
@@ -464,7 +466,9 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(),
+                                            builder: (context) => MyHomePage(
+                                              index: 0,
+                                            ),
                                           ),
                                         );
                                       });
