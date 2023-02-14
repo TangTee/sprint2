@@ -167,6 +167,17 @@ class _PostCardState extends State<CardWidget> {
                               ),
                             ),
                           ),
+                        if (widget.snap['open'] == false)
+                          const Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: SizedBox(
+                              child: Icon(
+                                Icons.favorite,
+                                color: white,
+                                size: 30,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                     Text.rich(
