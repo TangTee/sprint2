@@ -605,11 +605,14 @@ class _MyCommentState extends State<Comment> {
                                                                 ),
                                                               ),
                                                             if (FirebaseAuth
-                                                                    .instance
-                                                                    .currentUser!
-                                                                    .uid !=
+                                                                        .instance
+                                                                        .currentUser!
+                                                                        .uid !=
+                                                                    documentSnapshot[
+                                                                        'uid'] &&
                                                                 documentSnapshot[
-                                                                    'uid'])
+                                                                        'open'] ==
+                                                                    true)
                                                               Container(
                                                                 width: MediaQuery.of(
                                                                             context)
@@ -621,9 +624,10 @@ class _MyCommentState extends State<Comment> {
                                                                       MainAxisAlignment
                                                                           .end,
                                                                   children: [
-                                                                    if (documentSnapshot[
-                                                                            'open'] ==
-                                                                        true)
+                                                                    if (documentSnapshot['open'] ==
+                                                                            true &&
+                                                                        int.parse(documentSnapshot['peopleLimit']) !=
+                                                                            joinLen)
                                                                       ElevatedButton(
                                                                         style: documentSnapshot['waiting'].contains(FirebaseAuth.instance.currentUser!.uid)
                                                                             ? ElevatedButton.styleFrom(
@@ -662,9 +666,9 @@ class _MyCommentState extends State<Comment> {
                                                                             FirebaseAuth.instance.currentUser!.uid,
                                                                             documentSnapshot['waiting']),
                                                                       ),
-                                                                    if (documentSnapshot[
-                                                                            'open'] ==
-                                                                        false)
+                                                                    if (int.parse(
+                                                                            documentSnapshot['peopleLimit']) ==
+                                                                        joinLen)
                                                                       ElevatedButton(
                                                                         onPressed:
                                                                             (() =>
@@ -750,36 +754,6 @@ class _MyCommentState extends State<Comment> {
                                                         var postidD =
                                                             postData['postid'];
 
-                                                        var Mytext = new Map();
-                                                        Mytext['Displayname'] =
-                                                            documentSnapshot[
-                                                                'Displayname'];
-                                                        Mytext['cid'] =
-                                                            documentSnapshot[
-                                                                'cid'];
-                                                        Mytext['comment'] =
-                                                            documentSnapshot[
-                                                                'comment'];
-                                                        Mytext['postid'] =
-                                                            documentSnapshot[
-                                                                'postid'];
-                                                        Mytext['profile'] =
-                                                            documentSnapshot[
-                                                                'profile'];
-                                                        Mytext['time'] =
-                                                            timeago.format(
-                                                                documentSnapshot[
-                                                                        'timeStamp']
-                                                                    .toDate(),
-                                                                locale:
-                                                                    'en_short');
-                                                        Mytext['uid'] =
-                                                            documentSnapshot[
-                                                                'uid'];
-                                                        Mytext['timeStamp'] =
-                                                            documentSnapshot[
-                                                                'timeStamp'];
-
                                                         return Center(
                                                           child: Padding(
                                                             padding:
@@ -799,7 +773,7 @@ class _MyCommentState extends State<Comment> {
                                                                         green,
                                                                     backgroundImage:
                                                                         NetworkImage(
-                                                                      Mytext['profile']
+                                                                      documentSnapshot['profile']
                                                                           .toString(),
                                                                     ),
                                                                     radius: 20,
@@ -810,7 +784,7 @@ class _MyCommentState extends State<Comment> {
                                                                       _showModalBottomSheet(
                                                                           context,
                                                                           postidD,
-                                                                          Mytext),
+                                                                          documentSnapshot),
                                                                   child: Card(
                                                                     clipBehavior:
                                                                         Clip.hardEdge,
@@ -848,7 +822,7 @@ class _MyCommentState extends State<Comment> {
                                                                             children: [
                                                                               SizedBox(
                                                                                 width: 180,
-                                                                                child: Text(Mytext['Displayname'],
+                                                                                child: Text(documentSnapshot['Displayname'],
                                                                                     style: const TextStyle(
                                                                                       fontSize: 16,
                                                                                       fontFamily: 'MyCustomFont',
@@ -858,7 +832,7 @@ class _MyCommentState extends State<Comment> {
                                                                               ),
                                                                               Padding(
                                                                                 padding: const EdgeInsets.only(left: 1),
-                                                                                child: Text(Mytext['time'].toString(),
+                                                                                child: Text(documentSnapshot['time'].toString(),
                                                                                     style: const TextStyle(
                                                                                       fontSize: 12,
                                                                                       fontFamily: 'MyCustomFont',
@@ -874,7 +848,7 @@ class _MyCommentState extends State<Comment> {
                                                                                 Padding(
                                                                               padding: const EdgeInsets.all(8.0),
                                                                               child: Text(
-                                                                                Mytext['comment'],
+                                                                                documentSnapshot['comment'],
                                                                                 style: const TextStyle(
                                                                                   fontSize: 16,
                                                                                   fontFamily: 'MyCustomFont',
@@ -1084,7 +1058,6 @@ class _MyCommentState extends State<Comment> {
                         builder: (BuildContext context) {
                           return EditAct(
                             postid: postData['postid'],
-                          
                           );
                         },
                       ),
@@ -1125,9 +1098,7 @@ class _MyCommentState extends State<Comment> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(
-                                              index: 0,
-                                            ),
+                                            builder: (context) => MyHomePage(index: 0,),
                                           ),
                                         );
                                       });
@@ -1173,7 +1144,7 @@ class _MyCommentState extends State<Comment> {
     );
   }
 
-  void _showModalBottomSheet(BuildContext context, postidD, Map mytext) {
+  void _showModalBottomSheet(BuildContext context, postidD, mytext) {
     _commentController.text = mytext['comment'].toString();
     String Comment = '';
 
