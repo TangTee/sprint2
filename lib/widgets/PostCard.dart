@@ -127,44 +127,46 @@ class _PostCardState extends State<CardWidget> {
                                 fontWeight: FontWeight.bold,
                               )),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 3),
-                          child: IconButton(
-                            icon: widget.snap['likes'].contains(
-                                    FirebaseAuth.instance.currentUser!.uid)
-                                ? const Icon(
-                                    Icons.favorite,
-                                    color: redColor,
-                                    size: 30,
-                                  )
-                                : const Icon(
-                                    Icons.favorite_border,
-                                    size: 30,
-                                  ),
-                            onPressed: () => likePost(
-                              widget.snap['postid'].toString(),
-                              FirebaseAuth.instance.currentUser!.uid,
-                              widget.snap['likes'],
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 0),
-                          child: SizedBox(
+                        if (widget.snap['open'] == true)
+                          Padding(
+                            padding: const EdgeInsets.only(right: 3),
                             child: IconButton(
-                              icon: const Icon(
-                                Icons.more_horiz,
-                                color: unselected,
-                                size: 30,
+                              icon: widget.snap['likes'].contains(
+                                      FirebaseAuth.instance.currentUser!.uid)
+                                  ? const Icon(
+                                      Icons.favorite,
+                                      color: redColor,
+                                      size: 30,
+                                    )
+                                  : const Icon(
+                                      Icons.favorite_border,
+                                      size: 30,
+                                    ),
+                              onPressed: () => likePost(
+                                widget.snap['postid'].toString(),
+                                FirebaseAuth.instance.currentUser!.uid,
+                                widget.snap['likes'],
                               ),
-                              onPressed: (() {
-                                //add action
-                                _showModalBottomSheet(
-                                    context, currentUser['uid']);
-                              }),
                             ),
                           ),
-                        ),
+                        if (widget.snap['open'] == true)
+                          Padding(
+                            padding: const EdgeInsets.only(left: 0),
+                            child: SizedBox(
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.more_horiz,
+                                  color: unselected,
+                                  size: 30,
+                                ),
+                                onPressed: (() {
+                                  //add action
+                                  _showModalBottomSheet(
+                                      context, currentUser['uid']);
+                                }),
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                     Text.rich(
@@ -417,9 +419,7 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(
-                                              index: 0,
-                                            ),
+                                            builder: (context) => MyHomePage(),
                                           ),
                                         );
                                       });
@@ -464,9 +464,7 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(
-                                              index: 0,
-                                            ),
+                                            builder: (context) => MyHomePage(),
                                           ),
                                         );
                                       });
