@@ -454,6 +454,7 @@ class _LoadTagState extends State<LoadTag> {
                                     "recentMessageSender": "",
                                     "recentMessageTime": "",
                                     "recentMessageUID": "",
+                                    "unread": [],
                                   }).whenComplete(() {
                                     var uid =
                                         FirebaseAuth.instance.currentUser?.uid;
@@ -463,7 +464,11 @@ class _LoadTagState extends State<LoadTag> {
                                       //   'member': FieldValue.arrayUnion([uid]),
                                     });
 
-                                    nextScreenReplaceOut(context, const MyHomePage(index: 0,));
+                                    nextScreenReplaceOut(
+                                        context,
+                                        const MyHomePage(
+                                          index: 0,
+                                        ));
                                   });
                                 });
                               }
