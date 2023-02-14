@@ -28,6 +28,7 @@ class PostCard extends StatelessWidget {
             .collection('post')
             .where('likes',
                 arrayContains: FirebaseAuth.instance.currentUser!.uid)
+            .where('open', isEqualTo: true)
             .orderBy('timeStamp', descending: true)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
