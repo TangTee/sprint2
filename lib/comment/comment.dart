@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:tangteevs/activity/Activity.dart';
 import 'package:tangteevs/feed/EditAct.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
@@ -31,6 +32,8 @@ class _MyCommentState extends State<Comment> {
   var commentData = {};
   var currentUser = {};
   var joinData = {};
+  var history = [];
+  var isJoin;
   var joinLen = 0;
   var waitingLen = 0;
   bool isLoading = false;
@@ -86,6 +89,14 @@ class _MyCommentState extends State<Comment> {
 
       waitingLen = postSnap.data()!['waiting'].length;
       joinLen = joinSnap.data()!['member'].length - 1;
+      history = postSnap.data()!['history'];
+      isJoin = history.every((history) {
+        if (history != FirebaseAuth.instance.currentUser!.uid) {
+          return true;
+        } else {
+          return false;
+        }
+      });
       postData = postSnap.data()!;
       userData = userSnap.data()!;
       currentUser = currentSnap.data()!;
@@ -140,16 +151,17 @@ class _MyCommentState extends State<Comment> {
                   elevation: 1,
                   centerTitle: false,
                   actions: [
-                    IconButton(
-                      icon: const Icon(
-                        Icons.more_horiz,
-                        color: unselected,
-                        size: 30,
+                    if (widget.postid['open'] == true)
+                      IconButton(
+                        icon: const Icon(
+                          Icons.more_horiz,
+                          color: unselected,
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          _showModalBottomSheet1(context, currentUser['uid']);
+                        },
                       ),
-                      onPressed: () {
-                        _showModalBottomSheet1(context, currentUser['uid']);
-                      },
-                    ),
                   ],
                 ),
                 body: SafeArea(
@@ -207,34 +219,38 @@ class _MyCommentState extends State<Comment> {
                                                             FontWeight.bold,
                                                       )),
                                                 ),
-                                                Container(
-                                                  child: IconButton(
-                                                    icon: documentSnapshot[
-                                                                'likes']
-                                                            .contains(
-                                                                FirebaseAuth
-                                                                    .instance
-                                                                    .currentUser!
-                                                                    .uid)
-                                                        ? const Icon(
-                                                            Icons.favorite,
-                                                            color: redColor,
-                                                            size: 30,
-                                                          )
-                                                        : const Icon(
-                                                            Icons
-                                                                .favorite_border,
-                                                            size: 30,
-                                                          ),
-                                                    onPressed: () => likePost(
-                                                      documentSnapshot['postid']
-                                                          .toString(),
-                                                      FirebaseAuth.instance
-                                                          .currentUser!.uid,
-                                                      documentSnapshot['likes'],
+                                                if (widget.postid['open'] ==
+                                                    true)
+                                                  Container(
+                                                    child: IconButton(
+                                                      icon: documentSnapshot[
+                                                                  'likes']
+                                                              .contains(
+                                                                  FirebaseAuth
+                                                                      .instance
+                                                                      .currentUser!
+                                                                      .uid)
+                                                          ? const Icon(
+                                                              Icons.favorite,
+                                                              color: redColor,
+                                                              size: 30,
+                                                            )
+                                                          : const Icon(
+                                                              Icons
+                                                                  .favorite_border,
+                                                              size: 30,
+                                                            ),
+                                                      onPressed: () => likePost(
+                                                        documentSnapshot[
+                                                                'postid']
+                                                            .toString(),
+                                                        FirebaseAuth.instance
+                                                            .currentUser!.uid,
+                                                        documentSnapshot[
+                                                            'likes'],
+                                                      ),
                                                     ),
-                                                  ),
-                                                )
+                                                  )
                                               ],
                                             ),
                                           ),
@@ -510,11 +526,14 @@ class _MyCommentState extends State<Comment> {
                                                               ),
                                                             ),
                                                             if (FirebaseAuth
-                                                                    .instance
-                                                                    .currentUser!
-                                                                    .uid ==
+                                                                        .instance
+                                                                        .currentUser!
+                                                                        .uid ==
+                                                                    documentSnapshot[
+                                                                        'uid'] &&
                                                                 documentSnapshot[
-                                                                    'uid'])
+                                                                        'open'] ==
+                                                                    true)
                                                               Container(
                                                                 width: MediaQuery.of(
                                                                             context)
@@ -624,10 +643,10 @@ class _MyCommentState extends State<Comment> {
                                                                       MainAxisAlignment
                                                                           .end,
                                                                   children: [
-                                                                    if (documentSnapshot['open'] ==
-                                                                            true &&
-                                                                        int.parse(documentSnapshot['peopleLimit']) !=
-                                                                            joinLen)
+                                                                    if (int.parse(documentSnapshot['peopleLimit']) !=
+                                                                            joinLen &&
+                                                                        isJoin ==
+                                                                            true)
                                                                       ElevatedButton(
                                                                         style: documentSnapshot['waiting'].contains(FirebaseAuth.instance.currentUser!.uid)
                                                                             ? ElevatedButton.styleFrom(
@@ -666,9 +685,10 @@ class _MyCommentState extends State<Comment> {
                                                                             FirebaseAuth.instance.currentUser!.uid,
                                                                             documentSnapshot['waiting']),
                                                                       ),
-                                                                    if (int.parse(
-                                                                            documentSnapshot['peopleLimit']) ==
-                                                                        joinLen)
+                                                                    if (int.parse(documentSnapshot['peopleLimit']) ==
+                                                                            joinLen &&
+                                                                        isJoin ==
+                                                                            true)
                                                                       ElevatedButton(
                                                                         onPressed:
                                                                             (() =>
@@ -686,6 +706,38 @@ class _MyCommentState extends State<Comment> {
                                                                         child:
                                                                             const Text(
                                                                           'Full',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            fontFamily:
+                                                                                'MyCustomFont',
+                                                                            color:
+                                                                                white,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    if (isJoin ==
+                                                                        false)
+                                                                      ElevatedButton(
+                                                                        onPressed:
+                                                                            (() =>
+                                                                                null),
+                                                                        style: ElevatedButton
+                                                                            .styleFrom(
+                                                                          backgroundColor:
+                                                                              unselected,
+                                                                          shape:
+                                                                              RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(10.0),
+                                                                          ),
+                                                                        ),
+                                                                        child:
+                                                                            const Text(
+                                                                          'Joined',
                                                                           style:
                                                                               TextStyle(
                                                                             fontSize:
@@ -773,7 +825,8 @@ class _MyCommentState extends State<Comment> {
                                                                         green,
                                                                     backgroundImage:
                                                                         NetworkImage(
-                                                                      documentSnapshot['profile']
+                                                                      documentSnapshot[
+                                                                              'profile']
                                                                           .toString(),
                                                                     ),
                                                                     radius: 20,
@@ -1098,7 +1151,9 @@ class _MyCommentState extends State<Comment> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(index: 0,),
+                                            builder: (context) => MyHomePage(
+                                              index: 0,
+                                            ),
                                           ),
                                         );
                                       });
