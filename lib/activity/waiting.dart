@@ -6,8 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../widgets/PostCard.dart';
 
-Future<String> requestToLoin(
-    String postId, String uid, List waiting) async {
+Future<String> requestToLoin(String postId, String uid, List waiting) async {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
   try {
@@ -53,6 +52,7 @@ class WaitingCard extends StatelessWidget {
             .collection('post')
             .where('waiting',
                 arrayContains: FirebaseAuth.instance.currentUser!.uid)
+            .where('open', isEqualTo: true)
             .orderBy('timeStamp', descending: true)
             .snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
