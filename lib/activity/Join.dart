@@ -83,7 +83,7 @@ class JoinPageState extends State<JoinPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios,
               color: mobileSearchColor, size: 30),
-          onPressed: () => {Navigator.of(context).pop()},
+          onPressed: () => {Navigator.of(context).pop(true)},
         ),
         toolbarHeight: MediaQuery.of(context).size.height * 0.13,
         centerTitle: true,
