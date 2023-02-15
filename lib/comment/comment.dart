@@ -592,7 +592,13 @@ class _MyCommentState extends State<Comment> {
                                                                                 false, // OPTIONAL VALUE. True by default.
                                                                             pageTransitionAnimation:
                                                                                 PageTransitionAnimation.cupertino,
-                                                                          );
+                                                                          ).whenComplete(
+                                                                              () {
+                                                                            setState(() {
+                                                                              isLoading == true;
+                                                                            });
+                                                                            getData();
+                                                                          });
                                                                         },
                                                                         style: ElevatedButton
                                                                             .styleFrom(
@@ -806,6 +812,12 @@ class _MyCommentState extends State<Comment> {
                                                         var postidD =
                                                             postData['postid'];
 
+                                                        var time = timeago.format(
+                                                            documentSnapshot[
+                                                                    'timeStamp']
+                                                                .toDate(),
+                                                            locale: 'en_short');
+
                                                         return Center(
                                                           child: Padding(
                                                             padding:
@@ -885,7 +897,7 @@ class _MyCommentState extends State<Comment> {
                                                                               ),
                                                                               Padding(
                                                                                 padding: const EdgeInsets.only(left: 1),
-                                                                                child: Text(documentSnapshot['time'].toString(),
+                                                                                child: Text(time,
                                                                                     style: const TextStyle(
                                                                                       fontSize: 12,
                                                                                       fontFamily: 'MyCustomFont',
@@ -1089,6 +1101,11 @@ class _MyCommentState extends State<Comment> {
     showModalBottomSheet(
       useRootNavigator: true,
       context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
       builder: (BuildContext context) {
         return Container(
           child: Column(
@@ -1206,6 +1223,11 @@ class _MyCommentState extends State<Comment> {
     showModalBottomSheet(
       useRootNavigator: true,
       context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
       builder: (BuildContext context) {
         return Container(
           child: Column(
