@@ -12,6 +12,11 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    )),
     builder: (BuildContext context) {
       return SingleChildScrollView(
         child: Container(
@@ -243,6 +248,11 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    )),
     builder: (BuildContext context) {
       return SingleChildScrollView(
         child: Container(
