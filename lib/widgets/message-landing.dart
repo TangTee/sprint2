@@ -89,28 +89,6 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                             ),
                                           ),
                                         ),
-
-                                        // if (widget.isUnread ?? true)
-                                        // SizedBox(
-                                        //   child: Container(
-                                        //     child: Text(
-                                        //       '',
-                                        //       textAlign: TextAlign.center,
-                                        //     ),
-                                        //     width: MediaQuery.of(context)
-                                        //             .size
-                                        //             .width *
-                                        //         0.06,
-                                        //     height: MediaQuery.of(context)
-                                        //             .size
-                                        //             .height *
-                                        //         0.025,
-                                        //     decoration: const BoxDecoration(
-                                        //       color: purple,
-                                        //       shape: BoxShape.circle,
-                                        //     ),
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
