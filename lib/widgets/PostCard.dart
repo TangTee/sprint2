@@ -334,12 +334,19 @@ class _PostCardState extends State<CardWidget> {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  Navigator.of(context).push(
+                                  Navigator.of(context)
+                                      .push(
                                     MaterialPageRoute(
                                       builder: (context) =>
                                           Comment(postid: widget.snap),
                                     ),
-                                  );
+                                  )
+                                      .whenComplete(() {
+                                    setState(() {
+                                      isLoading == true;
+                                    });
+                                    getData();
+                                  });
                                 },
                                 child: const Text(
                                   'See More >>',
@@ -370,6 +377,11 @@ class _PostCardState extends State<CardWidget> {
     showModalBottomSheet(
       useRootNavigator: true,
       context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
       builder: (BuildContext context) {
         return Container(
           child: Column(
