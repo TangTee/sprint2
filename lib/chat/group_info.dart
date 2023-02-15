@@ -258,6 +258,11 @@ void _showModalBottomSheetE(
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    )),
     builder: (BuildContext context) {
       return Container(
         child: Column(
@@ -307,6 +312,11 @@ void _showModalBottomSheetP(
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    )),
     builder: (BuildContext context) {
       return Container(
         child: Column(
