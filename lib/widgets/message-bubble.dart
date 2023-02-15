@@ -1,6 +1,14 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+
+import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/utils/color.dart';
 
 import '../Profile/Profile.dart';
@@ -15,15 +23,15 @@ class MessageBubble extends StatefulWidget {
   final String time;
   final bool sentByMe;
 
-  const MessageBubble(
-      {Key? key,
-      required this.message,
-      required this.image,
-      required this.sender,
-      required this.time,
-      required this.sentByMe,
-      required this.profile})
-      : super(key: key);
+  const MessageBubble({
+    Key? key,
+    required this.message,
+    required this.image,
+    required this.sender,
+    required this.time,
+    required this.sentByMe,
+    required this.profile,
+  }) : super(key: key);
 
   @override
   State<MessageBubble> createState() => _MessageBubbleState();
@@ -88,7 +96,10 @@ class _MessageBubbleState extends State<MessageBubble> {
       alignment: widget.sentByMe ? Alignment.topRight : Alignment.topLeft,
       child: Container(
         padding: widget.image == true
-            ? EdgeInsets.all(0)
+            ? EdgeInsets.only(
+                left: widget.sentByMe ? 80 : 0,
+                right: widget.sentByMe ? 0 : 80,
+              )
             : EdgeInsets.only(
                 top: 2,
                 bottom: 7,
@@ -160,7 +171,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                         padding: EdgeInsets.all(0),
                         child: Container(
                           height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.width * 0.65,
+                          width: MediaQuery.of(context).size.width,
                           decoration: BoxDecoration(
                             borderRadius: widget.sentByMe
                                 ? const BorderRadius.only(
@@ -232,6 +243,11 @@ class _MessageBubbleState extends State<MessageBubble> {
     showModalBottomSheet(
       useRootNavigator: true,
       context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
       builder: (BuildContext context) {
         return Container(
           child: Column(
@@ -240,13 +256,21 @@ class _MessageBubbleState extends State<MessageBubble> {
               widget.image == false
                   ? ListTile(
                       contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                      //ignore: unnecessary_new
                       title: const Center(
-                          child: Text(
-                        'Copy Text',
-                        style:
-                            TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
-                      )),
-                      onTap: () {
+                        child: Text(
+                          'Copy Text',
+                          style: TextStyle(
+                              fontFamily: 'MyCustomFont', fontSize: 20),
+                        ),
+                      ),
+
+                      onTap: () async {
+                        Clipboard.setData(
+                          new ClipboardData(
+                            text: widget.message,
+                          ),
+                        );
                         Navigator.pop(context);
                       },
                     )
@@ -258,8 +282,22 @@ class _MessageBubbleState extends State<MessageBubble> {
                         style:
                             TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                       )),
-                      onTap: () {
-                        Navigator.pop(context);
+                      onTap: () async {
+                        String url = widget.message;
+
+                        final tempDir = await getTemporaryDirectory();
+                        final path = '${tempDir.path}/TungTee.jpg';
+                        try {
+                          await Dio().download(url, path);
+                          await GallerySaver.saveImage(path,
+                                  albumName: 'TungTee')
+                              .then((success) {
+                            //for hiding bottom sheet
+                            Navigator.pop(context);
+                          });
+                        } catch (e) {
+                          log('ErrorWhileSavingImg: $e');
+                        }
                       },
                     ),
               ListTile(
@@ -270,7 +308,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                 )),
                 onTap: () {
-                  Navigator.pop(context);
+                  //return replyToMessage(context);
                 },
               ),
               if (widget.sentByMe == false)
