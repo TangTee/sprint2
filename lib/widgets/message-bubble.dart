@@ -162,9 +162,8 @@ class _MessageBubbleState extends State<MessageBubble> {
               height: MediaQuery.of(context).size.height * 0.005,
             ),
             InkWell(
-              onTap: () {
-                return _showModalBottomSheet(context, userData, groupData);
-              },
+              onLongPress: () =>
+                  _showModalBottomSheet(context, userData, groupData),
               child: Container(
                 child: widget.image == true
                     ? Padding(
