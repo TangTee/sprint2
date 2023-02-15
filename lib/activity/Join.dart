@@ -60,7 +60,7 @@ class JoinPageState extends State<JoinPage> {
       waiting = postSnap.data()?['waiting'];
       waiting.add('Empty');
       waitingLen = postSnap.data()?['waiting'].length;
-      joinLen = joinSnap.data()!['member'].length - 1;
+      joinLen = joinSnap.data()?['member'].length - 1;
       setState(() {});
     } catch (e) {
       showSnackBar(
@@ -188,16 +188,16 @@ class JoinPageState extends State<JoinPage> {
                                                         child: Row(
                                                           children: [
                                                             if (joinLen ==
-                                                                postData[
-                                                                    'peopLelimit'])
+                                                                int.parse(postData[
+                                                                    'peopleLimit']))
                                                               const Icon(
                                                                 Icons.check,
                                                                 color:
                                                                     unselected,
                                                               ),
                                                             if (joinLen !=
-                                                                postData[
-                                                                    'peopLelimit'])
+                                                                int.parse(postData[
+                                                                    'peopleLimit']))
                                                               Expanded(
                                                                 child:
                                                                     IconButton(
