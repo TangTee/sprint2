@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/my_date_util.dart';
 import '../utils/color.dart';
+import '../utils/showSnackbar.dart';
 
 class MessagePreviewWidget extends StatefulWidget {
   const MessagePreviewWidget({
@@ -27,6 +29,45 @@ class MessagePreviewWidget extends StatefulWidget {
 }
 
 class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
+  bool isLoading = false;
+
+  var userData = {};
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      var userSnap =
+          await FirebaseFirestore.instance.collection('users').doc('uid').get();
+
+      userData = userSnap.data()!;
+
+      setState(() {});
+    } catch (e) {
+      showSnackBar(
+        context,
+        e.toString(),
+      );
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -108,17 +149,45 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                                   .size
                                                   .height *
                                               0.05,
-                                          child: Text(
-                                            '' + widget.messageContent,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                              fontFamily: 'MyCustomFont',
-                                              fontSize: 14,
-                                              fontWeight: widget.isunread
-                                                  ? FontWeight.w100
-                                                  : FontWeight.bold,
-                                            ),
-                                          ),
+                                          child: widget.messageContent
+                                                  .startsWith('https://')
+                                              ? Container(
+                                                  child: Text.rich(
+                                                    TextSpan(
+                                                      text: FirebaseAuth
+                                                                  .instance
+                                                                  .currentUser!
+                                                                  .uid ==
+                                                              userData[
+                                                                      'Displayname']
+                                                                  .toString()
+                                                          ? 'me: send a Photo.'
+                                                          : userData['Displayname']
+                                                                  .toString() +
+                                                              ': send a Photo.',
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'MyCustomFont',
+                                                        fontSize: 16,
+                                                        fontWeight: widget
+                                                                .isunread
+                                                            ? FontWeight.w100
+                                                            : FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : Text(
+                                                  '' + widget.messageContent,
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                    fontFamily: 'MyCustomFont',
+                                                    fontSize: 14,
+                                                    fontWeight: widget.isunread
+                                                        ? FontWeight.w100
+                                                        : FontWeight.bold,
+                                                  ),
+                                                ),
                                         ),
                                         SizedBox(
                                           child: Text(
