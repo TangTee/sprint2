@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tangteevs">
 
+    <!-- storage permission-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!-- internet permission-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    
     <queries>
     <!-- If your app checks for google support -->
     <intent>
@@ -15,6 +20,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
+            android:requestLegacyExternalStorage="true"
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
