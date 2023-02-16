@@ -10,7 +10,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/utils/color.dart';
-import 'package:tangteevs/widgets/dialogs/image_dialog.dart';
+import 'package:tangteevs/widgets/image_dialog.dart';
 
 import '../Profile/Profile.dart';
 import '../utils/my_date_util.dart';
