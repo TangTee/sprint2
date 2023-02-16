@@ -10,6 +10,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/utils/color.dart';
+import 'package:tangteevs/widgets/dialogs/image_dialog.dart';
 
 import '../Profile/Profile.dart';
 import '../utils/my_date_util.dart';
@@ -168,24 +169,31 @@ class _MessageBubbleState extends State<MessageBubble> {
                 child: widget.image == true
                     ? Padding(
                         padding: EdgeInsets.all(0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * 0.4,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: widget.sentByMe
-                                ? const BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                    bottomLeft: Radius.circular(20),
-                                  )
-                                : const BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
-                                  ),
-                            image: DecorationImage(
-                              image: NetworkImage(widget.message),
-                              fit: BoxFit.fill,
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (_) =>
+                                    ImageDialog(message: widget.message));
+                          },
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.4,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: widget.sentByMe
+                                  ? const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                    )
+                                  : const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                              image: DecorationImage(
+                                image: NetworkImage(widget.message),
+                              ),
                             ),
                           ),
                         ),
@@ -306,9 +314,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   'Reply',
                   style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                 )),
-                onTap: () {
-                  //return replyToMessage(context);
-                },
+                onTap: () {},
               ),
               if (widget.sentByMe == false)
                 ListTile(
