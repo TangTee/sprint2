@@ -209,6 +209,12 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   chatMessages() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController
+            .jumpTo(_scrollController.position.maxScrollExtent + 200);
+      }
+    });
     return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('groups')
