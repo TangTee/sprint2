@@ -159,11 +159,11 @@ class _ChatHomePageState extends State<ChatHomePage> {
               return Card(
                 child: InkWell(
                   onTap: () {
-                    Unread(
-                      documentSnapshot['groupid'].toString(),
-                      DateTime.now().millisecondsSinceEpoch.toString(),
-                      documentSnapshot['unread'],
-                    );
+                    // Unread(
+                    //   documentSnapshot['groupid'].toString(),
+                    //   DateTime.now().millisecondsSinceEpoch.toString(),
+                    //   documentSnapshot['unread'],
+                    // );
                     PersistentNavBarNavigator.pushNewScreen(
                       context,
                       screen: ChatPage(
