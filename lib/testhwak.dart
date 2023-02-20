@@ -67,56 +67,54 @@ class _testColorState extends State<testColor> {
         body: Container(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.9,
-          child: Wrap(children: <Widget>[
-            Row(
-              children: [
-                ElevatedButton(
-                    onPressed: () async {
-                      await service.showNotification(
-                          id: 0,
-                          title: 'Notification Title',
-                          body: 'Some body');
-                    },
-                    child: Text("Item 1")),
-                ElevatedButton(
+          child: Wrap(
+            spacing: 32,
+            runSpacing: 10,
+            children: [
+              ElevatedButton(
                   onPressed: () async {
-                    await service.showScheduledNotification(
+                    await service.showNotification(
+                        id: 0, title: 'Notification Title', body: 'Some body');
+                  },
+                  child: Text("Item 1")),
+              ElevatedButton(
+                onPressed: () async {
+                  await service.showScheduledNotification(
+                    id: 0,
+                    title: 'Notification Title',
+                    body: 'Some body',
+                    seconds: 10,
+                  );
+                },
+                child: const Text('Show Scheduled Notification'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await service.showNotificationWithPayload(
                       id: 0,
                       title: 'Notification Title',
                       body: 'Some body',
-                      seconds: 4,
-                    );
+                      payload: 'payload navigation');
+                },
+                child: const Text('Show Notification With Payload'),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    AwesomeNotifications().createNotification(
+                        content: NotificationContent(
+                      //with image from URL
+                      id: 12345,
+                      channelKey: 'image',
+                      title: 'Simple Notification with Network Image',
+                      body: 'This simple notification is from Flutter App',
+                      bigPicture:
+                          'https://www.fluttercampus.com/img/logo_small.webp',
+                      notificationLayout: NotificationLayout.BigPicture,
+                    ));
                   },
-                  child: const Text('Show Scheduled Notification'),
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                    await service.showNotificationWithPayload(
-                        id: 0,
-                        title: 'Notification Title',
-                        body: 'Some body',
-                        payload: 'payload navigation');
-                  },
-                  child: const Text('Show Notification With Payload'),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      AwesomeNotifications().createNotification(
-                          content: NotificationContent(
-                        //with asset image
-                        id: 1234,
-                        channelKey: 'image',
-                        title: 'Hello ! How are you?',
-                        body:
-                            'This simple notification is from Flutter App with Asset Image',
-                        bigPicture: 'asset://assets/images/puppy.jpg',
-                        notificationLayout: NotificationLayout.BigPicture,
-                      ));
-                    },
-                    child: const Text("Image"))
-              ],
-            ),
-          ]),
+                  child: const Text("Image")),
+            ],
+          ),
         ));
   }
 }
