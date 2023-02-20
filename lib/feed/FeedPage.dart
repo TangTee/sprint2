@@ -23,6 +23,14 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   @override
+  void initState() {
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DismissKeyboard(
@@ -41,7 +49,15 @@ class _FeedPageState extends State<FeedPage> {
             actions: [
               Builder(
                   builder: (context) => IconButton(
-                      onPressed: () => Scaffold.of(context).openEndDrawer(),
+                      onPressed: () =>  onPressed: () async {
+                        Scaffold.of(context).openEndDrawer();
+                        await service.showScheduledNotification(
+                          id: 0,
+                          title: 'TungTee',
+                          body: 'ระบบยังไม่สมบูรณ์',
+                          seconds: 4,
+                        );
+                      },
                       tooltip: MaterialLocalizations.of(context)
                           .openAppDrawerTooltip,
                       icon: Icon(
@@ -67,6 +83,18 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   final activitySearch = TextEditingController();
+   late final LocalNotificationService service;
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: ((context) => HomeTab())));
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
