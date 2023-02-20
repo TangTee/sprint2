@@ -1,15 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:tangteevs/Landing.dart';
 import 'package:tangteevs/admin/user/data.dart';
 import 'package:tangteevs/admin/user/verify.dart';
 import 'package:tangteevs/testhwak.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import '../../HomePage.dart';
-import '../../Profile/Profile.dart';
-import '../../notification/api/notification_api.dart';
 import '../../notification/screens/second_screen.dart';
 import '../../notification/services/local_notification_service.dart';
 import '../../utils/color.dart';
@@ -156,8 +152,8 @@ class _UserPageState extends State<UserPage> {
                       //     id: 0,
                       //     title: 'Notification Title',
                       //     body: 'Some body');
-                      String? fcmKey = await getFcmToken();
-                      print('FCM Key: $fcmKey');
+                      // String? fcmKey = await getFcmToken();
+                      // print('FCM Key: $fcmKey');
                     },
                     child: Text("Item 1")),
                 ListTile(
