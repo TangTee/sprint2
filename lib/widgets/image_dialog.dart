@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/utils/color.dart';
 
@@ -10,45 +15,83 @@ class ImageDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SizedBox(
-        child: Stack(
-          children: [
-            Positioned(
-              right: 8,
-              top: 6,
-              child: MaterialButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                minWidth: 0,
-                padding: const EdgeInsets.all(0),
+      child: Scaffold(
+        backgroundColor: mobileSearchColor,
+        body: SizedBox(
+          child: Stack(
+            children: [
+              Positioned(
+                left: 8,
+                top: 6,
+                child: MaterialButton(
+                  onPressed: () async {
+                    String url = message;
+
+                    final tempDir = await getTemporaryDirectory();
+                    final path = '${tempDir.path}/TungTee.jpg';
+                    try {
+                      await Dio().download(url, path);
+                      await GallerySaver.saveImage(path, albumName: 'TungTee')
+                          .then((success) {
+                        //for hiding bottom sheet
+                        Navigator.pop(context);
+                      });
+                    } catch (e) {
+                      log('ErrorWhileSavingImg: $e');
+                    }
+                  },
+                  minWidth: 0,
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: green,
+                    ),
+                    child: Icon(
+                      Icons.download,
+                      color: primaryColor,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                right: 8,
+                top: 6,
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  minWidth: 0,
+                  padding: const EdgeInsets.all(0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: redColor,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      color: primaryColor,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.05,
+                left: MediaQuery.of(context).size.width * 0.001,
                 child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: redColor,
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    color: primaryColor,
-                    size: 30,
+                    image: DecorationImage(
+                      image: NetworkImage(message),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.05,
-              left: MediaQuery.of(context).size.width * 0.001,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(message),
-                  ),
-                ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
