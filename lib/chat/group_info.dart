@@ -79,14 +79,7 @@ class _GroupInfoState extends State<GroupInfo> {
             centerTitle: true,
             elevation: 0,
             backgroundColor: lightPurple,
-            title: Text("${widget.groupName}"),
-            // actions: [
-            //   ElevatedButton(
-            //       onPressed: () {
-            //         //
-            //       },
-            //       child: const Text('text'))
-            // ],
+             title: Text(widget.groupName),
           ),
           body: SafeArea(
             child: memberList(),
