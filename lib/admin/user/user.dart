@@ -152,10 +152,12 @@ class _UserPageState extends State<UserPage> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      await service.showNotification(
-                          id: 0,
-                          title: 'Notification Title',
-                          body: 'Some body');
+                      // await service.showNotification(
+                      //     id: 0,
+                      //     title: 'Notification Title',
+                      //     body: 'Some body');
+                      String? fcmKey = await getFcmToken();
+                      print('FCM Key: $fcmKey');
                     },
                     child: Text("Item 1")),
                 ListTile(
