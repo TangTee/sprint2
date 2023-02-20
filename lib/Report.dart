@@ -5,6 +5,8 @@ import '../HomePage.dart';
 import '../utils/color.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 
+import 'chat/chat-page.dart';
+
 void showModalBottomSheetRP(BuildContext context, r_pid) {
   final uid = FirebaseAuth.instance.currentUser!.uid;
   final _report =
@@ -24,7 +26,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: Center(
                   child: Text(
                     'อนาจาร',
@@ -54,7 +56,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'ความรุนแรง',
@@ -87,7 +89,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'การคุกคาม',
@@ -120,7 +122,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'ข้อมูลเท็จ',
@@ -153,7 +155,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'สแปม',
@@ -186,7 +188,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'คำพูดแสดงความเกลีดชัง',
@@ -219,7 +221,7 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                     child: Text(
                   'Cancel',
@@ -260,7 +262,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: Center(
                   child: Text(
                     'อนาจาร',
@@ -286,7 +288,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'ความรุนแรง',
@@ -315,7 +317,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'การคุกคาม',
@@ -344,7 +346,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'ข้อมูลเท็จ',
@@ -373,7 +375,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'สแปม',
@@ -402,7 +404,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                   child: Text(
                     'คำพูดแสดงความเกลีดชัง',
@@ -431,7 +433,217 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                 },
               ),
               ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 8.0),
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
+  final _report = FirebaseFirestore.instance.collection('report').doc();
+
+  showModalBottomSheet(
+    useRootNavigator: true,
+    context: context,
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(20),
+      topRight: Radius.circular(20),
+    )),
+    builder: (BuildContext context) {
+      return SingleChildScrollView(
+        child: Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: Center(
+                  child: Text(
+                    'อนาจาร',
+                    style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                  ),
+                ),
+                onTap: () {
+                  _report.set({
+                    'rid': _report.id,
+                    'uid': userData,
+                    'Displayname': displayname,
+                    'groupid': groupid,
+                    'text': message,
+                    'problem': 'อนาจาร',
+                    'type': 'chat',
+                    //'likes': [],
+                    'timeStamp': DateTime.now(),
+                    'reportBy': FirebaseAuth.instance.currentUser?.uid,
+                  }).whenComplete(() {
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                  child: Text(
+                    'ความรุนแรง',
+                    style: TextStyle(
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  _report.set({
+                    'rid': _report.id,
+                    'uid': userData,
+                    'Displayname': displayname,
+                    'groupid': groupid,
+                    'text': message,
+                    'problem': 'ความรุนแรง',
+                    'type': 'chat',
+                    //'likes': [],
+                    'timeStamp': DateTime.now(),
+                    'reportBy': FirebaseAuth.instance.currentUser?.uid,
+                  }).whenComplete(() {
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                  child: Text(
+                    'การคุกคาม',
+                    style: TextStyle(
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  _report.set({
+                    'rid': _report.id,
+                    'uid': userData,
+                    'Displayname': displayname,
+                    'groupid': groupid,
+                    'text': message,
+                    'problem': 'การคุกคาม',
+                    'type': 'chat',
+                    //'likes': [],
+                    'timeStamp': DateTime.now(),
+                    'reportBy': FirebaseAuth.instance.currentUser?.uid,
+                  }).whenComplete(() {
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                  child: Text(
+                    'ข้อมูลเท็จ',
+                    style: TextStyle(
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  _report.set({
+                    'rid': _report.id,
+                    'uid': userData,
+                    'Displayname': displayname,
+                    'groupid': groupid,
+                    'text': message,
+                    'problem': 'ข้อมูลเท็จ',
+                    'type': 'chat',
+                    //'likes': [],
+                    'timeStamp': DateTime.now(),
+                    'reportBy': FirebaseAuth.instance.currentUser?.uid,
+                  }).whenComplete(() {
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                  child: Text(
+                    'สแปม',
+                    style: TextStyle(
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  _report.set({
+                    'rid': _report.id,
+                    'uid': userData,
+                    'Displayname': displayname,
+                    'groupid': groupid,
+                    'text': message,
+                    'problem': 'สแปม',
+                    'type': 'chat',
+                    //'likes': [],
+                    'timeStamp': DateTime.now(),
+                    'reportBy': FirebaseAuth.instance.currentUser?.uid,
+                  }).whenComplete(() {
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                  child: Text(
+                    'คำพูดแสดงความเกลีดชัง',
+                    style: TextStyle(
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  _report.set({
+                    'rid': _report.id,
+                    'uid': userData,
+                    'Displayname': displayname,
+                    'groupid': groupid,
+                    'text': message,
+                    'problem': 'คำพูดแสดงความเกลีดชัง',
+                    'type': 'chat',
+                    //'likes': [],
+                    'timeStamp': DateTime.now(),
+                    'reportBy': FirebaseAuth.instance.currentUser?.uid,
+                  }).whenComplete(() {
+                    int count = 0;
+                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                  });
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
                 title: const Center(
                     child: Text(
                   'Cancel',
