@@ -13,6 +13,7 @@ import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/widgets/image_dialog.dart';
 
 import '../Profile/Profile.dart';
+import '../Report.dart';
 import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
 
@@ -21,6 +22,7 @@ class MessageBubble extends StatefulWidget {
   final bool image;
   final String sender;
   final String profile;
+  final String groupid;
   final String time;
   final bool sentByMe;
 
@@ -32,6 +34,7 @@ class MessageBubble extends StatefulWidget {
     required this.time,
     required this.sentByMe,
     required this.profile,
+    required this.groupid,
   }) : super(key: key);
 
   @override
@@ -71,6 +74,12 @@ class _MessageBubbleState extends State<MessageBubble> {
           .doc(widget.sender)
           .get();
 
+      var groupSnap = await FirebaseFirestore.instance
+          .collection('group')
+          .doc(widget.groupid)
+          .collection('massage')
+          .get();
+      //groupData = groupSnap.data()!;
       userData = userSnap.data()!;
 
       setState(() {});
@@ -163,8 +172,8 @@ class _MessageBubbleState extends State<MessageBubble> {
               height: MediaQuery.of(context).size.height * 0.005,
             ),
             InkWell(
-              onLongPress: () =>
-                  _showModalBottomSheet(context, userData, groupData),
+              onLongPress: () => _showModalBottomSheet(context, userData['uid'],
+                  widget.message, userData['Displayname'], widget.groupid),
               child: Container(
                 child: widget.image == true
                     ? Padding(
@@ -177,7 +186,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                     ImageDialog(message: widget.message));
                           },
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.4,
+                            height: MediaQuery.of(context).size.height * 0.3,
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               borderRadius: widget.sentByMe
@@ -193,6 +202,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                     ),
                               image: DecorationImage(
                                 image: NetworkImage(widget.message),
+                                fit: BoxFit.fill,
                               ),
                             ),
                           ),
@@ -243,10 +253,8 @@ class _MessageBubbleState extends State<MessageBubble> {
     );
   }
 
-  void _showModalBottomSheet(BuildContext context, userData, groupdata) {
-    final _report = FirebaseFirestore.instance.collection('report').doc();
-    final TextEditingController _ReportController = TextEditingController();
-
+  void _showModalBottomSheet(
+      BuildContext context, userData, message, displayname, groupid) {
     showModalBottomSheet(
       useRootNavigator: true,
       context: context,
@@ -328,7 +336,8 @@ class _MessageBubbleState extends State<MessageBubble> {
                         fontSize: 20),
                   )),
                   onTap: () {
-                    Navigator.pop(context);
+                    showModalBottomSheetRT(
+                        context, userData, message, displayname, groupid);
                   },
                 ),
               ListTile(
