@@ -264,6 +264,7 @@ class _ChatPageState extends State<ChatPage> {
                             message: snapshot.data.docs[index]['message'],
                             sender: snapshot.data.docs[index]['sender'],
                             profile: snapshot.data.docs[index]['profile'],
+                            groupid: widget.groupId,
                             time: snapshot.data.docs[index]['time'].toString(),
                             sentByMe: FirebaseAuth.instance.currentUser!.uid ==
                                 snapshot.data.docs[index]['sender']),
