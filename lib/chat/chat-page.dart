@@ -14,6 +14,10 @@ import '../utils/color.dart';
 import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
 import '../widgets/message-time.dart';
+import '../notification/screens/second_screen.dart';
+import '../notification/services/local_notification_service.dart';
+import '../utils/color.dart';
+import '../utils/showSnackbar.dart';
 
 class ChatPage extends StatefulWidget {
   final String groupId;
@@ -53,7 +57,30 @@ class _ChatPageState extends State<ChatPage> {
 
   void initState() {
     super.initState();
+    service = LocalNotificationService();
+    service.intialize();
+    listenToNotification();
     getData();
+  }
+
+  late final LocalNotificationService service;
+
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: ((context) => GroupInfo(
+                    groupId: widget.groupId,
+                    groupName: widget.groupName,
+                    groupMember: member,
+                  ))));
+    }
   }
 
   getData() async {
