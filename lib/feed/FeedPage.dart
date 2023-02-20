@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tangteevs/notification/notification.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../HomePage.dart';
+import '../notification/services/local_notification_service.dart';
 import '../widgets/PostCard.dart';
 import '../widgets/SearchResult.dart';
 import '../widgets/custom_textfield.dart';
@@ -19,6 +21,18 @@ class _FeedPageState extends State<FeedPage> {
   void setState(VoidCallback fn) {
     if (mounted) {
       super.setState(fn);
+    }
+  }
+
+  late final LocalNotificationService service;
+  void listenToNotification() =>
+      service.onNotificationClick.stream.listen(onNoticationListener);
+  void onNoticationListener(String? payload) {
+    if (payload != null && payload.isNotEmpty) {
+      print('payload $payload');
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: ((context) => HomeTab())));
     }
   }
 
@@ -49,7 +63,7 @@ class _FeedPageState extends State<FeedPage> {
             actions: [
               Builder(
                   builder: (context) => IconButton(
-                      onPressed: () =>  onPressed: () async {
+                      onPressed: () async {
                         Scaffold.of(context).openEndDrawer();
                         await service.showScheduledNotification(
                           id: 0,
@@ -83,7 +97,7 @@ class SearchForm extends StatefulWidget {
 
 class _SearchFormState extends State<SearchForm> {
   final activitySearch = TextEditingController();
-   late final LocalNotificationService service;
+  late final LocalNotificationService service;
   void listenToNotification() =>
       service.onNotificationClick.stream.listen(onNoticationListener);
   void onNoticationListener(String? payload) {
@@ -94,7 +108,6 @@ class _SearchFormState extends State<SearchForm> {
           context, MaterialPageRoute(builder: ((context) => HomeTab())));
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
