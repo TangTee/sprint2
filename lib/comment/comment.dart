@@ -368,76 +368,73 @@ class _MyCommentState extends State<Comment> {
                                                                   .height *
                                                               0.01,
                                                         ),
-                                                        Text.rich(TextSpan(
-                                                            children: <
-                                                                InlineSpan>[
-                                                              const TextSpan(
-                                                                text: '',
-                                                              ),
-                                                              const WidgetSpan(
-                                                                child: Icon(
-                                                                  Icons
-                                                                      .maps_home_work,
-                                                                ),
-                                                              ),
-                                                              TextSpan(
-                                                                  text: '\t\t' +
-                                                                      documentSnapshot[
-                                                                          'place'],
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontFamily:
-                                                                        'MyCustomFont',
-                                                                    color:
-                                                                        unselected,
-                                                                  )),
-                                                            ])),
-                                                        SizedBox(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.01,
-                                                        ),
-                                                        Container(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.05,
-                                                          child: Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.place,
-                                                              ),
-                                                              TextButton(
-                                                                onPressed: () {
-                                                                  Uri uri = Uri.parse(
-                                                                      documentSnapshot[
-                                                                          'location']);
-                                                                  _launchUrl(
-                                                                      uri);
-                                                                },
-                                                                child: Text(
-                                                                  'Location',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        14,
-                                                                    color:
-                                                                        purple,
+                                                        Row(
+                                                          children: [
+                                                            Text.rich(TextSpan(
+                                                                children: <
+                                                                    InlineSpan>[
+                                                                  const TextSpan(
+                                                                    text: '',
                                                                   ),
+                                                                  const WidgetSpan(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .maps_home_work,
+                                                                    ),
+                                                                  ),
+                                                                  TextSpan(
+                                                                      text: '\t\t' +
+                                                                          documentSnapshot[
+                                                                              'place'] +
+                                                                          ' /',
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontFamily:
+                                                                            'MyCustomFont',
+                                                                        color:
+                                                                            unselected,
+                                                                        fontSize:
+                                                                            14,
+                                                                      )),
+                                                                ])),
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .only(
+                                                                      top: 8.0),
+                                                              child: Container(
+                                                                height: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .height *
+                                                                    0.05,
+                                                                child: Row(
+                                                                  children: [
+                                                                    TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        Uri uri =
+                                                                            Uri.parse(documentSnapshot['location']);
+                                                                        _launchUrl(
+                                                                            uri);
+                                                                      },
+                                                                      child:
+                                                                          Text(
+                                                                        'Location',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              14,
+                                                                          color:
+                                                                              purple,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
                                                                 ),
                                                               ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .height *
-                                                              0.01,
+                                                            ),
+                                                          ],
                                                         ),
                                                         SizedBox(
                                                             width: MediaQuery.of(
@@ -445,18 +442,18 @@ class _MyCommentState extends State<Comment> {
                                                                     .size
                                                                     .width *
                                                                 0.7,
-                                                            child: Text(
-                                                                '\nDetail\n\t\t\t\t\t' +
-                                                                    documentSnapshot[
-                                                                            'detail']
-                                                                        .toString(),
-                                                                style: const TextStyle(
+                                                            child: const Text(
+                                                                'Detail',
+                                                                style: TextStyle(
                                                                     fontSize:
                                                                         16,
                                                                     fontFamily:
                                                                         'MyCustomFont',
                                                                     color:
-                                                                        unselected))),
+                                                                        mobileSearchColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800))),
                                                         SizedBox(
                                                           height: MediaQuery.of(
                                                                       context)
@@ -547,34 +544,23 @@ class _MyCommentState extends State<Comment> {
                                                                   children: [
                                                                     if (waitingLen ==
                                                                         0)
-                                                                      ElevatedButton(
+                                                                      OutlinedButton(
                                                                         onPressed:
-                                                                            (() =>
-                                                                                null),
-                                                                        style: ElevatedButton
+                                                                            null,
+                                                                        style: OutlinedButton
                                                                             .styleFrom(
-                                                                          backgroundColor:
-                                                                              unselected,
                                                                           shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10.0),
-                                                                          ),
+                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                          side: BorderSide(
+                                                                              color: disable,
+                                                                              width: 1.5),
                                                                         ),
                                                                         child:
                                                                             const Text(
                                                                           '0 Request',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontFamily:
-                                                                                'MyCustomFont',
-                                                                            color:
-                                                                                white,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
+                                                                          style: const TextStyle(
+                                                                              color: disable,
+                                                                              fontSize: 16),
                                                                         ),
                                                                       ),
                                                                     if (waitingLen !=
@@ -695,66 +681,44 @@ class _MyCommentState extends State<Comment> {
                                                                             joinLen &&
                                                                         isJoin ==
                                                                             true)
-                                                                      ElevatedButton(
+                                                                      OutlinedButton(
                                                                         onPressed:
-                                                                            (() =>
-                                                                                null),
-                                                                        style: ElevatedButton
+                                                                            null,
+                                                                        style: OutlinedButton
                                                                             .styleFrom(
-                                                                          backgroundColor:
-                                                                              unselected,
                                                                           shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10.0),
-                                                                          ),
+                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                          side: BorderSide(
+                                                                              color: disable,
+                                                                              width: 1.5),
                                                                         ),
                                                                         child:
-                                                                            const Text(
+                                                                            Text(
                                                                           'Full',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontFamily:
-                                                                                'MyCustomFont',
-                                                                            color:
-                                                                                white,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
+                                                                          style: const TextStyle(
+                                                                              color: disable,
+                                                                              fontSize: 14),
                                                                         ),
                                                                       ),
                                                                     if (isJoin ==
                                                                         false)
-                                                                      ElevatedButton(
+                                                                      OutlinedButton(
                                                                         onPressed:
-                                                                            (() =>
-                                                                                null),
-                                                                        style: ElevatedButton
+                                                                            null,
+                                                                        style: OutlinedButton
                                                                             .styleFrom(
-                                                                          backgroundColor:
-                                                                              unselected,
                                                                           shape:
-                                                                              RoundedRectangleBorder(
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(10.0),
-                                                                          ),
+                                                                              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                                                          side: const BorderSide(
+                                                                              color: disable,
+                                                                              width: 1.5),
                                                                         ),
                                                                         child:
                                                                             const Text(
                                                                           'Joined',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            fontSize:
-                                                                                16,
-                                                                            fontFamily:
-                                                                                'MyCustomFont',
-                                                                            color:
-                                                                                white,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                          ),
+                                                                          style: TextStyle(
+                                                                              color: disable,
+                                                                              fontSize: 14),
                                                                         ),
                                                                       ),
                                                                   ],
