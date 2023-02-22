@@ -46,6 +46,7 @@ dependencies:
   hexcolor: ^3.0.1
   flutter_colorpicker: ^1.0.3
   age_calculator: ^1.0.0
+  swipe_to: ^1.0.2
   awesome_notifications: ^0.6.19
   flutter_local_notifications: ^9.6.0
   timezone: ^0.8.0
