@@ -164,7 +164,9 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: Alignment.bottomCenter,
                   width: MediaQuery.of(context).size.width,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.09,
+                    height: replyMessage != ''
+                        ? MediaQuery.of(context).size.height * 0.12
+                        : MediaQuery.of(context).size.height * 0.07,
                     color: white,
                     child: Form(
                       child: Column(
@@ -276,7 +278,7 @@ class _ChatPageState extends State<ChatPage> {
                     return Column(
                       children: [
                         SwipeTo(
-                          onLeftSwipe: () {
+                          onRightSwipe: () {
                             setState(() {
                               imageChecker = snapshot.data.docs[index]['image'];
                               replyMessage =
@@ -389,8 +391,9 @@ class _ChatPageState extends State<ChatPage> {
                     Icons.camera,
                     color: lightPurple,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     takePhoto(ImageSource.camera);
+                    Navigator.pop(context);
                   },
                   label: Text(
                     'Camera',
@@ -409,8 +412,9 @@ class _ChatPageState extends State<ChatPage> {
                     Icons.image,
                     color: lightPurple,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     takePhoto(ImageSource.gallery);
+                    Navigator.pop(context);
                   },
                   label: Text(
                     'Gallery',
@@ -485,7 +489,6 @@ class _ChatPageState extends State<ChatPage> {
             ),
           if (imageChecker == false)
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.2),
               ),
@@ -493,15 +496,21 @@ class _ChatPageState extends State<ChatPage> {
                 children: [
                   Row(
                     children: [
-                      Text('reply to: $replyMessage'),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 270.0),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                          'reply to: $replyMessage',
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.2,
                         child: IconButton(
                           onPressed: cancelReply,
                           icon: const Icon(Icons.close),
                           iconSize: 16,
                         ),
-                      )
+                      ),
                     ],
                   )
                 ],
