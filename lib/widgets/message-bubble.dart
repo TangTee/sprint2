@@ -182,7 +182,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                 children: [
                   if (widget.reply != '' && widget.replyImage == true)
                     Padding(
-                      padding: EdgeInsets.all(0),
+                      padding: const EdgeInsets.all(0),
                       child: Container(
                         height: MediaQuery.of(context).size.height * 0.3,
                         width: MediaQuery.of(context).size.width,
@@ -205,33 +205,46 @@ class _MessageBubbleState extends State<MessageBubble> {
                         ),
                       ),
                     ),
+                  if (widget.reply != '' && widget.replyImage == true)
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.005,
+                    ),
                   if (widget.reply != '' && widget.replyImage == false)
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: widget.sentByMe
-                            ? const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20),
-                              )
-                            : const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20),
-                              ),
-                        color: disable,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          widget.reply,
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: mobileSearchColor,
+                    Padding(
+                      padding: widget.sentByMe
+                          ? const EdgeInsets.only(left: 250)
+                          : const EdgeInsets.only(right: 230),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: widget.sentByMe
+                              ? const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20),
+                                )
+                              : const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                          color: Colors.grey.withOpacity(0.2),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            widget.reply,
+                            textAlign: TextAlign.start,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: mobileSearchColor,
+                            ),
                           ),
                         ),
                       ),
+                    ),
+                  if (widget.reply != '' && widget.replyImage == false)
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.005,
                     ),
                   Container(
                     child: widget.image == true
@@ -268,33 +281,66 @@ class _MessageBubbleState extends State<MessageBubble> {
                               ),
                             ),
                           )
-                        : Container(
-                            decoration: BoxDecoration(
-                              borderRadius: widget.sentByMe
-                                  ? const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      bottomLeft: Radius.circular(20),
-                                    )
-                                  : const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
+                        : widget.reply != ''
+                            ? Padding(
+                                padding: widget.sentByMe
+                                    ? const EdgeInsets.only(left: 240)
+                                    : const EdgeInsets.only(right: 230),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: widget.sentByMe
+                                        ? const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20),
+                                          )
+                                        : const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                          ),
+                                    color: widget.sentByMe ? orange : disable,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(
+                                      widget.message,
+                                      textAlign: TextAlign.start,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: mobileSearchColor,
+                                      ),
                                     ),
-                              color: widget.sentByMe ? orange : disable,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Text(
-                                widget.message,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: mobileSearchColor,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: widget.sentByMe
+                                      ? const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                        )
+                                      : const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        ),
+                                  color: widget.sentByMe ? orange : disable,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    widget.message,
+                                    textAlign: TextAlign.start,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: mobileSearchColor,
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
                   ),
                 ],
               ),
