@@ -23,6 +23,8 @@ class MessageBubble extends StatefulWidget {
   final String sender;
   final String profile;
   final String groupid;
+  final String reply;
+  final bool replyImage;
   final String time;
   final bool sentByMe;
 
@@ -35,6 +37,8 @@ class MessageBubble extends StatefulWidget {
     required this.sentByMe,
     required this.profile,
     required this.groupid,
+    required this.reply,
+    required this.replyImage,
   }) : super(key: key);
 
   @override
@@ -174,41 +178,14 @@ class _MessageBubbleState extends State<MessageBubble> {
             InkWell(
               onLongPress: () => _showModalBottomSheet(context, userData['uid'],
                   widget.message, userData['Displayname'], widget.groupid),
-              child: Container(
-                child: widget.image == true
-                    ? Padding(
-                        padding: EdgeInsets.all(0),
-                        child: InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (_) =>
-                                    ImageDialog(message: widget.message));
-                          },
-                          child: Container(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: widget.sentByMe
-                                  ? const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      bottomLeft: Radius.circular(20),
-                                    )
-                                  : const BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      topRight: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
-                                    ),
-                              image: DecorationImage(
-                                image: NetworkImage(widget.message),
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
+              child: Column(
+                children: [
+                  if (widget.reply != '' && widget.replyImage == true)
+                    Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Container(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius: widget.sentByMe
                               ? const BorderRadius.only(
@@ -221,20 +198,105 @@ class _MessageBubbleState extends State<MessageBubble> {
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20),
                                 ),
-                          color: widget.sentByMe ? orange : disable,
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text(
-                            widget.message,
-                            textAlign: TextAlign.start,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: mobileSearchColor,
-                            ),
+                          image: DecorationImage(
+                            image: NetworkImage(widget.reply),
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
+                    ),
+                  if (widget.reply != '' && widget.replyImage == false)
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: widget.sentByMe
+                            ? const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                              )
+                            : const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                        color: disable,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          widget.reply,
+                          textAlign: TextAlign.start,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: mobileSearchColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  Container(
+                    child: widget.image == true
+                        ? Padding(
+                            padding: EdgeInsets.all(0),
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (_) =>
+                                        ImageDialog(message: widget.message));
+                              },
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                  borderRadius: widget.sentByMe
+                                      ? const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                        )
+                                      : const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(widget.message),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: widget.sentByMe
+                                  ? const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                    )
+                                  : const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                              color: widget.sentByMe ? orange : disable,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Text(
+                                widget.message,
+                                textAlign: TextAlign.start,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: mobileSearchColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+                ],
               ),
             ),
             Container(
