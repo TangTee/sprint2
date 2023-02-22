@@ -5,11 +5,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tangteevs/chat/group_info.dart';
+import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/widgets/message-bubble.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:swipe_to/swipe_to.dart';
 import '../utils/color.dart';
 import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
@@ -23,12 +25,12 @@ class ChatPage extends StatefulWidget {
   final String groupId;
   final String groupName;
   final String userName;
-  const ChatPage(
-      {Key? key,
-      required this.groupId,
-      required this.groupName,
-      required this.userName})
-      : super(key: key);
+  const ChatPage({
+    Key? key,
+    required this.groupId,
+    required this.groupName,
+    required this.userName,
+  }) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -43,10 +45,14 @@ class _ChatPageState extends State<ChatPage> {
   bool isLoading = false;
   bool text = false;
   bool image = true;
+  bool replyImage = false;
   var groupData = {};
   var member = [];
-  ScrollController _scrollController = ScrollController();
   var userData = {};
+  String replyMessage = '';
+  bool imageChecker = false;
+  final focusNode = FocusNode();
+  ScrollController _scrollController = ScrollController();
   File? media;
   @override
   void setState(VoidCallback fn) {
@@ -158,72 +164,82 @@ class _ChatPageState extends State<ChatPage> {
                   alignment: Alignment.bottomCenter,
                   width: MediaQuery.of(context).size.width,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.075,
+                    height: MediaQuery.of(context).size.height * 0.09,
                     color: white,
                     child: Form(
-                      child: Row(children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.01,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: ((builder) => bottomSheet()),
-                            );
-                          },
-                          child: const Icon(
-                            Icons.attach_file_outlined,
-                            color: purple,
-                            size: 30,
-                          ),
-                        ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.78,
-                          child: TextFormField(
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            minLines: 1,
-                            controller: messageController,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15, horizontal: 10),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15)),
-                                borderSide:
-                                    BorderSide(width: 2, color: unselected),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(70)),
-                                borderSide:
-                                    BorderSide(width: 2, color: unselected),
-                              ),
-                              hintText: 'Send a message...',
-                              hintStyle: TextStyle(
-                                color: unselected,
-                                fontFamily: 'MyCustomFont',
+                      child: Column(
+                        children: [
+                          if (replyMessage != '') buildReply(),
+                          Row(children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.01,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: ((builder) => bottomSheet()),
+                                );
+                              },
+                              child: const Icon(
+                                Icons.attach_file_outlined,
+                                color: purple,
+                                size: 30,
                               ),
                             ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            sendMessage();
-                          },
-                          child: Container(
-                            height: 50,
-                            width: 50,
-                            child: const Center(
-                                child: Icon(
-                              Icons.send_outlined,
-                              size: 30,
-                              color: purple,
-                            )),
-                          ),
-                        )
-                      ]),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.78,
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    focusNode: focusNode,
+                                    keyboardType: TextInputType.multiline,
+                                    maxLines: 5,
+                                    minLines: 1,
+                                    controller: messageController,
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15, horizontal: 10),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                        borderSide: BorderSide(
+                                            width: 2, color: unselected),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(70)),
+                                        borderSide: BorderSide(
+                                            width: 2, color: unselected),
+                                      ),
+                                      hintText: 'Send a message...',
+                                      hintStyle: TextStyle(
+                                        color: unselected,
+                                        fontFamily: 'MyCustomFont',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                sendMessage();
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                child: const Center(
+                                    child: Icon(
+                                  Icons.send_outlined,
+                                  size: 30,
+                                  color: purple,
+                                )),
+                              ),
+                            )
+                          ]),
+                        ],
+                      ),
                     ),
                   ),
                 )
@@ -259,15 +275,33 @@ class _ChatPageState extends State<ChatPage> {
                   itemBuilder: (context, index) {
                     return Column(
                       children: [
-                        MessageBubble(
-                            image: snapshot.data.docs[index]['image'],
-                            message: snapshot.data.docs[index]['message'],
-                            sender: snapshot.data.docs[index]['sender'],
-                            profile: snapshot.data.docs[index]['profile'],
-                            groupid: widget.groupId,
-                            time: snapshot.data.docs[index]['time'].toString(),
-                            sentByMe: FirebaseAuth.instance.currentUser!.uid ==
-                                snapshot.data.docs[index]['sender']),
+                        SwipeTo(
+                          onLeftSwipe: () {
+                            setState(() {
+                              imageChecker = snapshot.data.docs[index]['image'];
+                              replyMessage =
+                                  snapshot.data.docs[index]['message'];
+                              if (snapshot.data.docs[index]['image'] == true) {
+                                replyImage = true;
+                              }
+                            });
+                            focusNode.requestFocus();
+                          },
+                          child: MessageBubble(
+                              image: snapshot.data.docs[index]['image'],
+                              message: snapshot.data.docs[index]['message'],
+                              sender: snapshot.data.docs[index]['sender'],
+                              profile: snapshot.data.docs[index]['profile'],
+                              reply: snapshot.data.docs[index]['reply'],
+                              replyImage: snapshot.data.docs[index]
+                                  ['replyImage'],
+                              groupid: widget.groupId,
+                              time:
+                                  snapshot.data.docs[index]['time'].toString(),
+                              sentByMe:
+                                  FirebaseAuth.instance.currentUser!.uid ==
+                                      snapshot.data.docs[index]['sender']),
+                        ),
                         // MessageTime(
                         //   image: snapshot.data.docs[index]['image'],
                         //   time: snapshot.data.docs[index]['time'].toString(),
@@ -294,11 +328,15 @@ class _ChatPageState extends State<ChatPage> {
         "time": DateTime.now().millisecondsSinceEpoch,
         "profile": userData['profile'].toString(),
         "image": text,
+        "reply": replyMessage.toString(),
+        "replyImage": replyImage,
       };
 
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
       setState(() {
         messageController.clear();
+        replyMessage = '';
+        replyImage = false;
       });
     }
   }
@@ -313,6 +351,8 @@ class _ChatPageState extends State<ChatPage> {
         "time": DateTime.now().millisecondsSinceEpoch,
         "profile": userData['profile'].toString(),
         "image": image,
+        "reply": replyMessage.toString(),
+        "replyImage": replyImage,
       };
 
       DatabaseService().sendMessage(widget.groupId, chatMessageMap);
@@ -420,6 +460,59 @@ class _ChatPageState extends State<ChatPage> {
     }
     setState(() {
       media = File(file.path);
+    });
+  }
+
+  Widget buildReply() => Column(
+        children: [
+          if (imageChecker == true)
+            ListTileTheme(
+              tileColor: Colors.grey.withOpacity(0.2),
+              dense: true,
+              child: ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    replyMessage.toString(),
+                  ),
+                  radius: 15,
+                ),
+                trailing: IconButton(
+                  onPressed: cancelReply,
+                  icon: const Icon(Icons.close),
+                  iconSize: 16,
+                ),
+              ),
+            ),
+          if (imageChecker == false)
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text('reply to: $replyMessage'),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 270.0),
+                        child: IconButton(
+                          onPressed: cancelReply,
+                          icon: const Icon(Icons.close),
+                          iconSize: 16,
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+        ],
+      );
+
+  void cancelReply() {
+    setState(() {
+      replyMessage = '';
     });
   }
 }
