@@ -49,7 +49,6 @@ class _LoadTagState extends State<LoadTag> {
   final dateController = TextEditingController();
   final _time = TextEditingController();
   final _detail = TextEditingController();
-  // late var _tag = TextEditingController();
   var getDate;
   var IntGetdate;
   var thisDate;
@@ -64,6 +63,8 @@ class _LoadTagState extends State<LoadTag> {
   Color TextP = mobileSearchColor;
   String _enteredTextD = '';
   Color TextD = mobileSearchColor;
+  String _enteredTextL = '';
+  Color TextL = mobileSearchColor;
   @override
   Widget build(BuildContext context) {
     return DismissKeyboard(
@@ -277,50 +278,52 @@ class _LoadTagState extends State<LoadTag> {
                                     width: MediaQuery.of(context).size.width *
                                         0.43,
                                     child: TextField(
-                                      controller: _time,
-                                      decoration: textInputDecoration.copyWith(
-                                          labelStyle: const TextStyle(
-                                            color: mobileSearchColor,
-                                            fontFamily: "MyCustomFont",
-                                          ),
-                                          prefixIcon: const Icon(
-                                            Icons.query_builder,
-                                          ),
-                                          hintText: "_ _ : _ _ "),
-                                      readOnly: true,
-                                      onTap: () async {
-                                        TimeOfDay? pickedTime =
-                                            await showTimePicker(
-                                          context: context,
-                                          initialTime: TimeOfDay.now(),
-                                        );
-                                        TimeOfDay now = TimeOfDay.now();
-                                        int nowInMinutes =
-                                            now.hour * 60 + now.minute + 60;
-                                        int pickedInMinutes =
-                                            pickedTime!.hour * 60 +
-                                                pickedTime.minute;
-                                         
-                                        final today = DateFormat('d')
-                                            .format(DateTime.now());
-                                        var IntToday = int.parse(today);
+                                        controller: _time,
+                                        decoration:
+                                            textInputDecoration.copyWith(
+                                                labelStyle: const TextStyle(
+                                                  color: mobileSearchColor,
+                                                  fontFamily: "MyCustomFont",
+                                                ),
+                                                prefixIcon: const Icon(
+                                                  Icons.query_builder,
+                                                ),
+                                                hintText: "_ _ : _ _ "),
+                                        readOnly: true,
+                                        onTap: () async {
+                                          TimeOfDay? pickedTime =
+                                              await showTimePicker(
+                                            context: context,
+                                            initialTime: TimeOfDay.now(),
+                                          );
+                                          TimeOfDay now = TimeOfDay.now();
+                                          int nowInMinutes =
+                                              now.hour * 60 + now.minute + 60;
+                                          int pickedInMinutes =
+                                              pickedTime!.hour * 60 +
+                                                  pickedTime.minute;
 
-                                        if (IntGetdate > IntToday) {
-                                          setState(() {
-                                            _time.text =
-                                                pickedTime.format(context);
-                                          });
-                                        } else if (getDate == today) {
-                                          if (pickedInMinutes > nowInMinutes) {
+                                          final today = DateFormat('d')
+                                              .format(DateTime.now());
+                                          var IntToday = int.parse(today);
+
+                                          if (IntGetdate > IntToday) {
                                             setState(() {
                                               _time.text =
                                                   pickedTime.format(context);
                                             });
-                                          } else {
-                                            print("Try again");
+                                          } else if (getDate == today) {
+                                            if (pickedInMinutes >
+                                                nowInMinutes) {
+                                              setState(() {
+                                                _time.text =
+                                                    pickedTime.format(context);
+                                              });
+                                            } else {
+                                              print("Try again");
+                                            }
                                           }
-                                      }
-                                    ),
+                                        }),
                                   ),
                                 ],
                               )
@@ -379,8 +382,21 @@ class _LoadTagState extends State<LoadTag> {
                                 fontFamily: "MyCustomFont",
                               ),
                               hintText: 'People Limit',
+                              counterText:
+                                  '${_enteredTextL.length.toString()} /99',
+                              counterStyle: TextStyle(color: TextL),
                             ),
                             keyboardType: TextInputType.number,
+                            onChanged: (val) {
+                              setState(() {
+                                _enteredTextL = val;
+                                if (val.length > 12) {
+                                  TextL = redColor;
+                                } else {
+                                  TextL = mobileSearchColor;
+                                }
+                              });
+                            },
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter a valid people limit';
@@ -392,7 +408,7 @@ class _LoadTagState extends State<LoadTag> {
                             }),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10),
+                        padding: const EdgeInsets.only(top: 5),
                         child: Row(
                           children: [
                             TextButton(
