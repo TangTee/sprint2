@@ -181,7 +181,7 @@ class _ChatPageState extends State<ChatPage> {
                   width: MediaQuery.of(context).size.width,
                   child: Container(
                     height: replyMessage != ''
-                        ? MediaQuery.of(context).size.height * 0.12
+                        ? MediaQuery.of(context).size.height * 0.13
                         : MediaQuery.of(context).size.height * 0.07,
                     color: white,
                     child: Form(
@@ -486,9 +486,11 @@ class _ChatPageState extends State<ChatPage> {
   Widget buildReply() => Column(
         children: [
           if (imageChecker == true)
-            ListTileTheme(
-              tileColor: Colors.grey.withOpacity(0.2),
-              dense: true,
+            Container(
+              height: MediaQuery.of(context).size.height * 0.06,
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+              ),
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(
@@ -505,6 +507,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           if (imageChecker == false)
             Container(
+              height: MediaQuery.of(context).size.height * 0.06,
               decoration: BoxDecoration(
                 color: Colors.grey.withOpacity(0.2),
               ),
