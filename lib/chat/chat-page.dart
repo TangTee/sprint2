@@ -153,7 +153,23 @@ class _ChatPageState extends State<ChatPage> {
                           groupMember: member,
                         ));
                   },
-                  icon: const Icon(Icons.people))
+                  icon: const Icon(Icons.people)),
+              if (FirebaseAuth.instance.currentUser!.uid == groupData['owner'])
+                IconButton(
+                    onPressed: () async {
+                      FirebaseFirestore.instance
+                          .collection('post')
+                          .doc(groupData['groupid'])
+                          .update({
+                        'open': false,
+                      });
+                      await service.showNotificationWithPayload(
+                          id: 0,
+                          title: widget.groupName,
+                          body: 'กิจกรรมจบแล้วอย่าลืมไปรีวิวเพื่อนๆนะ',
+                          payload: 'payload navigation');
+                    },
+                    icon: const Icon(Icons.bookmark_remove_outlined))
             ],
           ),
           body: SafeArea(
