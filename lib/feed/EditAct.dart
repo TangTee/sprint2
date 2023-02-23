@@ -51,7 +51,14 @@ class _EditActState extends State<EditAct> {
   var test;
   var postData = {};
   bool isLoading = false;
-
+  var countActivity;
+  var countPlace;
+  var countDetail;
+  var countPeople;
+  Color TextA = mobileSearchColor;
+  Color TextP = mobileSearchColor;
+  Color TextD = mobileSearchColor;
+  Color TextL = mobileSearchColor;
   @override
   void initState() {
     super.initState();
@@ -78,6 +85,10 @@ class _EditActState extends State<EditAct> {
       _timeController.text = postData['time'].toString();
       _tagController.text = postData['tag'].toString();
       _tagColorController.text = postData['tagColor'].toString();
+      countActivity = _activityNameController.text;
+      countPlace = _placeController.text;
+      countDetail = _detailController.text;
+      countPeople = _peopleLimitController.text;
 
       setState(() {});
     } catch (e) {
@@ -172,29 +183,38 @@ class _EditActState extends State<EditAct> {
                                       controller: _activityNameController,
                                       decoration: textInputDecorationp.copyWith(
                                           hintText: 'Activity Name',
+                                          counterText:
+                                              '${countActivity.length.toString()} /25',
+                                          counterStyle: TextStyle(color: TextA),
                                           prefixIcon: Icon(
                                             Icons.title,
                                             color: lightPurple,
-                                            //color: Theme.of(context).primaryColor,
                                           )),
                                       validator: (val) {
                                         if (val!.isNotEmpty) {
                                           return null;
-                                        } else {
-                                          return "plase Enter Activity Name";
+                                        }
+                                        if (val.length > 25) {
+                                          return 'Limit at 25 characters ';
                                         }
                                       },
                                       onChanged: (val) {
                                         setState(() {
                                           activityName = val;
+                                          countActivity = val;
+                                          if (val.length > 12) {
+                                            TextA = redColor;
+                                          } else {
+                                            TextA = mobileSearchColor;
+                                          }
                                         });
                                       },
                                     ),
                                   ),
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.02,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.005,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
@@ -204,6 +224,9 @@ class _EditActState extends State<EditAct> {
                                     controller: _placeController,
                                     decoration: textInputDecorationp.copyWith(
                                         hintText: 'place',
+                                        counterText:
+                                            '${countPlace.length.toString()} /25',
+                                        counterStyle: TextStyle(color: TextP),
                                         prefixIcon: Icon(
                                           Icons.maps_home_work,
                                           color: lightPurple,
@@ -211,20 +234,27 @@ class _EditActState extends State<EditAct> {
                                     validator: (val) {
                                       if (val!.isNotEmpty) {
                                         return null;
-                                      } else {
-                                        return "plase Enter Your Place";
+                                      }
+                                      if (val.length > 25) {
+                                        return 'Limit at 25 characters ';
                                       }
                                     },
                                     onChanged: (val) {
                                       setState(() {
                                         place = val;
+                                        countPlace = val;
+                                        if (val.length > 12) {
+                                          TextP = redColor;
+                                        } else {
+                                          TextP = mobileSearchColor;
+                                        }
                                       });
                                     },
                                   ),
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.02,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.005,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
@@ -342,6 +372,9 @@ class _EditActState extends State<EditAct> {
                                     controller: _detailController,
                                     decoration: textInputDecorationp.copyWith(
                                         hintText: 'Detail',
+                                        counterText:
+                                            '${countDetail.length.toString()} /150',
+                                        counterStyle: TextStyle(color: TextD),
                                         prefixIcon: Icon(
                                           Icons.pending,
                                           color: lightPurple,
@@ -356,13 +389,15 @@ class _EditActState extends State<EditAct> {
                                     onChanged: (val) {
                                       setState(() {
                                         detail = val;
+                                        countDetail = val;
+                                        if (val.length > 12) {
+                                          TextD = redColor;
+                                        } else {
+                                          TextD = mobileSearchColor;
+                                        }
                                       });
                                     },
                                   ),
-                                ),
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.02,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
@@ -375,27 +410,37 @@ class _EditActState extends State<EditAct> {
                                     keyboardType: TextInputType.number,
                                     decoration: textInputDecorationp.copyWith(
                                         hintText: 'People Limit',
+                                        counterText: '${countPeople} /99',
+                                        counterStyle: TextStyle(color: TextL),
                                         prefixIcon: Icon(
                                           Icons.person_outline,
                                           color: lightPurple,
                                         )),
-                                    validator: (val) {
-                                      if (val!.isNotEmpty) {
-                                        return null;
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter a valid people limit';
+                                      } else if (int.parse(value) >= 100) {
+                                        return 'people must less than 100';
                                       } else {
-                                        return "plase Enter Your Place";
+                                        return null;
                                       }
                                     },
                                     onChanged: (val) {
                                       setState(() {
                                         people = val;
+                                        countPeople = val;
+                                        if (val.length > 12) {
+                                          TextL = redColor;
+                                        } else {
+                                          TextL = mobileSearchColor;
+                                        }
                                       });
                                     },
                                   ),
                                 ),
                                 SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.02,
+                                  height: MediaQuery.of(context).size.height *
+                                      0.005,
                                 ),
                                 Container(
                                   alignment: Alignment.center,
@@ -412,7 +457,6 @@ class _EditActState extends State<EditAct> {
                                               padding: EdgeInsets.only(top: 3),
                                               child: SizedBox(
                                                 child: OutlinedButton(
-                                                  // onPressed: () {},
                                                   onPressed: null,
                                                   style:
                                                       OutlinedButton.styleFrom(
@@ -422,7 +466,7 @@ class _EditActState extends State<EditAct> {
                                                                 BorderRadius
                                                                     .circular(
                                                                         30)),
-                                                    side: BorderSide(
+                                                    side: const BorderSide(
                                                         color: disable,
                                                         width: 1.5),
                                                   ),
@@ -441,7 +485,8 @@ class _EditActState extends State<EditAct> {
                                           child: SingleChildScrollView(
                                             scrollDirection: Axis.horizontal,
                                             child: Padding(
-                                              padding: EdgeInsets.only(top: 3),
+                                              padding:
+                                                  const EdgeInsets.only(top: 3),
                                               child: SizedBox(
                                                 child: OutlinedButton(
                                                   onPressed: () {
@@ -459,13 +504,13 @@ class _EditActState extends State<EditAct> {
                                                           BorderRadius.circular(
                                                               30),
                                                     ),
-                                                    side: BorderSide(
+                                                    side: const BorderSide(
                                                         color: green,
                                                         width: 1.5),
                                                   ),
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Edit',
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: white,
                                                         fontSize: 14),
                                                   ),
