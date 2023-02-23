@@ -50,6 +50,9 @@ class _LoadTagState extends State<LoadTag> {
   final _time = TextEditingController();
   final _detail = TextEditingController();
   // late var _tag = TextEditingController();
+  var getDate;
+  var IntGetdate;
+  var thisDate;
   late String _tag = 'Tag';
   final _peopleLimit = TextEditingController();
   var _tag2;
@@ -197,6 +200,9 @@ class _LoadTagState extends State<LoadTag> {
                                       );
 
                                       if (pickedDate != null) {
+                                        getDate =
+                                            DateFormat('d').format(pickedDate);
+                                        IntGetdate = int.parse(getDate);
                                         String formattedDate =
                                             DateFormat('yyyy/MM/dd')
                                                 .format(pickedDate);
@@ -294,18 +300,25 @@ class _LoadTagState extends State<LoadTag> {
                                         int pickedInMinutes =
                                             pickedTime!.hour * 60 +
                                                 pickedTime.minute;
+                                         
+                                        final today = DateFormat('d')
+                                            .format(DateTime.now());
+                                        var IntToday = int.parse(today);
 
-                                        if (pickedInMinutes > nowInMinutes) {
+                                        if (IntGetdate > IntToday) {
                                           setState(() {
                                             _time.text =
                                                 pickedTime.format(context);
                                           });
-                                        } else if (pickedInMinutes <
-                                            nowInMinutes) {
-                                          return print("Please selec time ...");
-                                        } else {
-                                          print("Time is not selected");
-                                        }
+                                        } else if (getDate == today) {
+                                          if (pickedInMinutes > nowInMinutes) {
+                                            setState(() {
+                                              _time.text =
+                                                  pickedTime.format(context);
+                                            });
+                                          } else {
+                                            print("Try again");
+                                          }
                                       },
                                     ),
                                   ),
