@@ -344,7 +344,7 @@ class _LoadTagState extends State<LoadTag> {
                                 ),
                                 hintText: 'Detail',
                                 counterText:
-                                    '${_enteredTextD.length.toString()} /25',
+                                    '${_enteredTextD.length.toString()} /150',
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
