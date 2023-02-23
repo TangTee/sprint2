@@ -79,7 +79,7 @@ class _GroupInfoState extends State<GroupInfo> {
             centerTitle: true,
             elevation: 0,
             backgroundColor: lightPurple,
-             title: Text(widget.groupName),
+            title: Text(widget.groupName),
           ),
           body: SafeArea(
             child: memberList(),
@@ -315,6 +315,21 @@ void _showModalBottomSheetP(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
+            if (groupdata['open'] == false)
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                title: const Center(
+                    child: Text(
+                  'Review',
+                  style: TextStyle(
+                      color: mobileSearchColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
             if (FirebaseAuth.instance.currentUser!.uid != userData['uid'])
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
