@@ -406,8 +406,9 @@ class _EditPageState extends State<EditPage> {
                     Icons.camera,
                     color: lightPurple,
                   ),
-                  onPressed: () {
+                 onPressed: () async {
                     takePhoto(ImageSource.camera);
+                    Navigator.pop(context);
                   },
                   label: Text(
                     'Camera',
@@ -426,8 +427,9 @@ class _EditPageState extends State<EditPage> {
                     Icons.image,
                     color: lightPurple,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     takePhoto(ImageSource.gallery);
+                    Navigator.pop(context);
                   },
                   label: Text(
                     'Gallery',
