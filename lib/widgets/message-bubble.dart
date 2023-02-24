@@ -212,9 +212,10 @@ class _MessageBubbleState extends State<MessageBubble> {
                   if (widget.reply != '' && widget.replyImage == false)
                     Padding(
                       padding: widget.sentByMe
-                          ? const EdgeInsets.only(left: 250)
-                          : const EdgeInsets.only(right: 230),
+                          ? const EdgeInsets.only(left: 120)
+                          : const EdgeInsets.only(right: 120),
                       child: Container(
+                        width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           borderRadius: widget.sentByMe
                               ? const BorderRadius.only(
@@ -284,9 +285,10 @@ class _MessageBubbleState extends State<MessageBubble> {
                         : widget.reply != ''
                             ? Padding(
                                 padding: widget.sentByMe
-                                    ? const EdgeInsets.only(left: 240)
-                                    : const EdgeInsets.only(right: 230),
+                                    ? const EdgeInsets.only(left: 120)
+                                    : const EdgeInsets.only(right: 120),
                                 child: Container(
+                                  width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                     borderRadius: widget.sentByMe
                                         ? const BorderRadius.only(
