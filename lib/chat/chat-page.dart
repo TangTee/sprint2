@@ -181,8 +181,8 @@ class _ChatPageState extends State<ChatPage> {
                   width: MediaQuery.of(context).size.width,
                   child: Container(
                     height: replyMessage != ''
-                        ? MediaQuery.of(context).size.height * 0.13
-                        : MediaQuery.of(context).size.height * 0.07,
+                        ? MediaQuery.of(context).size.height * 0.135
+                        : MediaQuery.of(context).size.height * 0.075,
                     color: white,
                     child: Form(
                       child: Column(
@@ -212,12 +212,12 @@ class _ChatPageState extends State<ChatPage> {
                                   TextFormField(
                                     focusNode: focusNode,
                                     keyboardType: TextInputType.multiline,
-                                    maxLines: 5,
+                                    maxLines: 3,
                                     minLines: 1,
                                     controller: messageController,
                                     decoration: const InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(
-                                          vertical: 15, horizontal: 10),
+                                          vertical: 2, horizontal: 10),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
@@ -226,7 +226,7 @@ class _ChatPageState extends State<ChatPage> {
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(70)),
+                                            Radius.circular(20)),
                                         borderSide: BorderSide(
                                             width: 2, color: unselected),
                                       ),
@@ -516,14 +516,17 @@ class _ChatPageState extends State<ChatPage> {
                   Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        padding: const EdgeInsets.only(left: 10.0),
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        padding: const EdgeInsets.only(left: 10.0, right: 0),
                         child: Text(
                           'reply to: $replyMessage',
+                          maxLines: 3,
+                          style: const TextStyle(fontSize: 14, height: 1),
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.1,
+                        padding: const EdgeInsets.only(right: 10.0, left: 0),
                         child: IconButton(
                           onPressed: cancelReply,
                           icon: const Icon(Icons.close),
