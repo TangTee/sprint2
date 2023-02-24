@@ -15,6 +15,7 @@ class MessagePreviewWidget extends StatefulWidget {
     required this.isunread,
     required this.messageTime,
     required this.messageImage,
+    required this.uid,
   }) : super(key: key);
 
   final String messageTitle;
@@ -23,6 +24,7 @@ class MessagePreviewWidget extends StatefulWidget {
   final bool timer;
   final bool isunread;
   final String messageTime;
+  final String uid;
 
   @override
   _MessagePreviewWidgetState createState() => _MessagePreviewWidgetState();
@@ -51,8 +53,10 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
       isLoading = true;
     });
     try {
-      var userSnap =
-          await FirebaseFirestore.instance.collection('users').doc('uid').get();
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
 
       userData = userSnap.data()!;
 
@@ -155,8 +159,10 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                                   child: Text.rich(
                                                     TextSpan(
                                                       text: widget.isunread
-                                                          ? 'me: send a Photo.'
-                                                          : 'Anorther: send a Photo.',
+                                                          ? 'me : send a Photo.'
+                                                          : userData['Displayname']
+                                                                  .toString() +
+                                                              ' : send a Photo.',
                                                       style: TextStyle(
                                                         fontFamily:
                                                             'MyCustomFont',

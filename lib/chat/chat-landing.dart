@@ -177,6 +177,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
                     );
                   },
                   child: MessagePreviewWidget(
+                    uid: documentSnapshot['recentMessageUID'],
                     messageTitle: documentSnapshot['groupName'],
                     messageContent: documentSnapshot['recentMessage'],
                     messageTime: documentSnapshot['recentMessageTime'],
