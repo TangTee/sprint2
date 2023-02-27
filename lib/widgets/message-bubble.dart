@@ -425,15 +425,15 @@ class _MessageBubbleState extends State<MessageBubble> {
                         }
                       },
                     ),
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-                title: const Center(
-                    child: Text(
-                  'Reply',
-                  style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
-                )),
-                onTap: () {},
-              ),
+              // ListTile(
+              //   contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              //   title: const Center(
+              //       child: Text(
+              //     'Reply',
+              //     style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+              //   )),
+              //   onTap: () {},
+              // ),
               if (widget.sentByMe == false)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
