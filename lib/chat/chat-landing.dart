@@ -76,15 +76,16 @@ class _ChatHomePageState extends State<ChatHomePage> {
       child: Scaffold(
         backgroundColor: mobileBackgroundColor,
         appBar: AppBar(
-          toolbarHeight: 50,
           backgroundColor: mobileBackgroundColor,
           elevation: 1,
           leadingWidth: 130,
-          centerTitle: true,
+          centerTitle: false,
           leading: Container(
-            padding: const EdgeInsets.all(0),
-            child: Image.asset('assets/images/logo with name.png',
-                fit: BoxFit.scaleDown),
+            padding: const EdgeInsets.only(left: 13),
+            child: Image.asset(
+              'assets/images/logo with name.png',
+              width: MediaQuery.of(context).size.width * 0.31,
+            ),
           ),
           actions: [
             IconButton(
@@ -101,7 +102,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
         ),
         drawer: Drawer(
             child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 50),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           children: <Widget>[
             Icon(
               Icons.account_circle,
@@ -156,35 +157,38 @@ class _ChatHomePageState extends State<ChatHomePage> {
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot =
                   snapshot.data!.docs[index];
-              return Card(
-                child: InkWell(
-                  onTap: () {
-                    // Unread(
-                    //   documentSnapshot['groupid'].toString(),
-                    //   DateTime.now().millisecondsSinceEpoch.toString(),
-                    //   documentSnapshot['unread'],
-                    // );
-                    PersistentNavBarNavigator.pushNewScreen(
-                      context,
-                      screen: ChatPage(
-                        groupId: documentSnapshot['groupid'],
-                        userName: FirebaseAuth.instance.currentUser!.uid,
-                        groupName: documentSnapshot['groupName'],
-                      ),
-                      withNavBar: false,
-                      pageTransitionAnimation: PageTransitionAnimation
-                          .cupertino, // OPTIONAL VALUE. True by default.
-                    );
-                  },
-                  child: MessagePreviewWidget(
-                    uid: documentSnapshot['recentMessageUID'],
-                    messageTitle: documentSnapshot['groupName'],
-                    messageContent: documentSnapshot['recentMessage'],
-                    messageTime: documentSnapshot['recentMessageTime'],
-                    timer: documentSnapshot['recentMessageTime'] == '',
-                    messageImage: documentSnapshot['owner'],
-                    isunread: documentSnapshot['recentMessageUID'] ==
-                        FirebaseAuth.instance.currentUser!.uid,
+              return Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Card(
+                  child: InkWell(
+                    onTap: () {
+                      // Unread(
+                      //   documentSnapshot['groupid'].toString(),
+                      //   DateTime.now().millisecondsSinceEpoch.toString(),
+                      //   documentSnapshot['unread'],
+                      // );
+                      PersistentNavBarNavigator.pushNewScreen(
+                        context,
+                        screen: ChatPage(
+                          groupId: documentSnapshot['groupid'],
+                          userName: FirebaseAuth.instance.currentUser!.uid,
+                          groupName: documentSnapshot['groupName'],
+                        ),
+                        withNavBar: false,
+                        pageTransitionAnimation: PageTransitionAnimation
+                            .cupertino, // OPTIONAL VALUE. True by default.
+                      );
+                    },
+                    child: MessagePreviewWidget(
+                      uid: documentSnapshot['recentMessageUID'],
+                      messageTitle: documentSnapshot['groupName'],
+                      messageContent: documentSnapshot['recentMessage'],
+                      messageTime: documentSnapshot['recentMessageTime'],
+                      timer: documentSnapshot['recentMessageTime'] == '',
+                      messageImage: documentSnapshot['owner'],
+                      isunread: documentSnapshot['recentMessageUID'] ==
+                          FirebaseAuth.instance.currentUser!.uid,
+                    ),
                   ),
                 ),
               ); // GroupTile(
