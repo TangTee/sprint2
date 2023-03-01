@@ -55,7 +55,7 @@ class _LoadTagState extends State<LoadTag> {
   late String _tag = 'Tag';
   final _peopleLimit = TextEditingController();
   var _tag2;
-  var value;
+  var valuee;
   var _tag2Color;
   String _enteredTextA = '';
   Color TextA = mobileSearchColor;
@@ -382,7 +382,7 @@ class _LoadTagState extends State<LoadTag> {
                                 fontFamily: "MyCustomFont",
                               ),
                               hintText: 'People Limit',
-                             counterText: _enteredTextL == null
+                              counterText: _enteredTextL == null
                                   ? '0 /99'
                                   : '${_enteredTextL} /99',
                               counterStyle: TextStyle(color: TextL),
@@ -414,7 +414,7 @@ class _LoadTagState extends State<LoadTag> {
                           children: [
                             TextButton(
                               onPressed: () {
-                                value = showModalBottomSheetC(context);
+                                valuee = showModalBottomSheetC(context);
                                 setState(() {});
                               },
                               style: OutlinedButton.styleFrom(
@@ -452,55 +452,109 @@ class _LoadTagState extends State<LoadTag> {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                await _post.set({
-                                  'postid': _post.id,
-                                  'activityName': _activityName.text,
-                                  'place': _place.text,
-                                  'location': _location.text,
-                                  'date': dateController.text,
-                                  'time': _time.text,
-                                  'detail': _detail.text,
-                                  'peopleLimit': _peopleLimit.text,
-                                  'likes': [],
-                                  'waiting': [],
-                                  'history': [
-                                    FirebaseAuth.instance.currentUser?.uid
-                                  ],
-                                  'tag': value['_tag2'],
-                                  'tagColor': value['_tag2Color'],
-                                  'open': true,
-                                  'timeStamp': FieldValue.serverTimestamp(),
-                                  'uid': FirebaseAuth.instance.currentUser?.uid,
-                                }).whenComplete(() {
-                                  _join.doc(_post.id).set({
-                                    'owner':
-                                        FirebaseAuth.instance.currentUser?.uid,
-                                    'member': [
+                                if (valuee == null) {
+                                  await _post.set({
+                                    'postid': _post.id,
+                                    'activityName': _activityName.text,
+                                    'place': _place.text,
+                                    'location': _location.text,
+                                    'date': dateController.text,
+                                    'time': _time.text,
+                                    'detail': _detail.text,
+                                    'peopleLimit': _peopleLimit.text,
+                                    'likes': [],
+                                    'waiting': [],
+                                    'history': [
                                       FirebaseAuth.instance.currentUser?.uid
                                     ],
-                                    'groupid': _post.id,
-                                    'groupName': _activityName.text,
-                                    "recentMessage": "",
-                                    "recentMessageSender": "",
-                                    "recentMessageTime": "",
-                                    "recentMessageUID": "",
-                                    "unread": [],
+                                    'tag': "other".toString(),
+                                    'tagColor': "#000000".toString(),
+                                    'open': true,
+                                    'timeStamp': FieldValue.serverTimestamp(),
+                                    'uid':
+                                        FirebaseAuth.instance.currentUser?.uid,
                                   }).whenComplete(() {
-                                    var uid =
-                                        FirebaseAuth.instance.currentUser?.uid;
-                                    _join.doc(_post.id).update({
-                                      'member': FieldValue.arrayUnion([uid]),
-                                      // FirebaseAuth.instance.c//.doc(_post.id).update({
-                                      //   'member': FieldValue.arrayUnion([uid]),
-                                    });
+                                    _join.doc(_post.id).set({
+                                      'owner': FirebaseAuth
+                                          .instance.currentUser?.uid,
+                                      'member': [
+                                        FirebaseAuth.instance.currentUser?.uid
+                                      ],
+                                      'groupid': _post.id,
+                                      'groupName': _activityName.text,
+                                      "recentMessage": "",
+                                      "recentMessageSender": "",
+                                      "recentMessageTime": "",
+                                      "recentMessageUID": "",
+                                      "unread": [],
+                                    }).whenComplete(() {
+                                      var uid = FirebaseAuth
+                                          .instance.currentUser?.uid;
+                                      _join.doc(_post.id).update({
+                                        'member': FieldValue.arrayUnion([uid]),
+                                        // FirebaseAuth.instance.c//.doc(_post.id).update({
+                                        //   'member': FieldValue.arrayUnion([uid]),
+                                      });
 
-                                    nextScreenReplaceOut(
-                                        context,
-                                        const MyHomePage(
-                                          index: 0,
-                                        ));
+                                      nextScreenReplaceOut(
+                                          context,
+                                          const MyHomePage(
+                                            index: 0,
+                                          ));
+                                    });
                                   });
-                                });
+                                } else {
+                                  await _post.set({
+                                    'postid': _post.id,
+                                    'activityName': _activityName.text,
+                                    'place': _place.text,
+                                    'location': _location.text,
+                                    'date': dateController.text,
+                                    'time': _time.text,
+                                    'detail': _detail.text,
+                                    'peopleLimit': _peopleLimit.text,
+                                    'likes': [],
+                                    'waiting': [],
+                                    'history': [
+                                      FirebaseAuth.instance.currentUser?.uid
+                                    ],
+                                    'tag': valuee['_tag2'],
+                                    'tagColor': valuee['_tag2Color'],
+                                    'open': true,
+                                    'timeStamp': FieldValue.serverTimestamp(),
+                                    'uid':
+                                        FirebaseAuth.instance.currentUser?.uid,
+                                  }).whenComplete(() {
+                                    _join.doc(_post.id).set({
+                                      'owner': FirebaseAuth
+                                          .instance.currentUser?.uid,
+                                      'member': [
+                                        FirebaseAuth.instance.currentUser?.uid
+                                      ],
+                                      'groupid': _post.id,
+                                      'groupName': _activityName.text,
+                                      "recentMessage": "",
+                                      "recentMessageSender": "",
+                                      "recentMessageTime": "",
+                                      "recentMessageUID": "",
+                                      "unread": [],
+                                    }).whenComplete(() {
+                                      var uid = FirebaseAuth
+                                          .instance.currentUser?.uid;
+                                      _join.doc(_post.id).update({
+                                        'member': FieldValue.arrayUnion([uid]),
+                                        // FirebaseAuth.instance.c//.doc(_post.id).update({
+                                        //   'member': FieldValue.arrayUnion([uid]),
+                                      });
+
+                                      nextScreenReplaceOut(
+                                          context,
+                                          const MyHomePage(
+                                            index: 0,
+                                          ));
+                                    });
+                                  });
+                                }
                               }
                             },
                           ),
