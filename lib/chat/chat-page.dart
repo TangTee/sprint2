@@ -143,6 +143,45 @@ class _ChatPageState extends State<ChatPage> {
             title: Text(widget.groupName),
             backgroundColor: lightPurple,
             actions: [
+              if (FirebaseAuth.instance.currentUser!.uid ==
+                      groupData['owner'] &&
+                  groupData['open'] == true)
+                IconButton(
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                              title: Text('Close Activity'),
+                              content: Text(
+                                  'Are you sure you want to permanently\nclose this Activity ?'),
+                              actions: [
+                                TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text('Cancle')),
+                                TextButton(
+                                  onPressed: (() async {
+                                    FirebaseFirestore.instance
+                                        .collection('post')
+                                        .doc(widget.groupId)
+                                        .update({
+                                      'open': ['false']
+                                    }).whenComplete(() {
+                                      Navigator.pop(context);
+                                    });
+                                    await service.showNotificationWithPayload(
+                                        id: 0,
+                                        title: widget.groupName,
+                                        body:
+                                            'กิจกรรมจบแล้วอย่าลืมไปรีวิวเพื่อนๆนะ',
+                                        payload: 'payload navigation');
+                                  }),
+                                  child: Text('Close'),
+                                )
+                              ],
+                            ));
+                  },
+                  icon: const Icon(Icons.bookmark_remove_outlined),
+                ),
               IconButton(
                   onPressed: () {
                     nextScreen(
@@ -154,22 +193,6 @@ class _ChatPageState extends State<ChatPage> {
                         ));
                   },
                   icon: const Icon(Icons.people)),
-              if (FirebaseAuth.instance.currentUser!.uid == groupData['owner'])
-                IconButton(
-                    onPressed: () async {
-                      FirebaseFirestore.instance
-                          .collection('post')
-                          .doc(groupData['groupid'])
-                          .update({
-                        'open': false,
-                      });
-                      await service.showNotificationWithPayload(
-                          id: 0,
-                          title: widget.groupName,
-                          body: 'กิจกรรมจบแล้วอย่าลืมไปรีวิวเพื่อนๆนะ',
-                          payload: 'payload navigation');
-                    },
-                    icon: const Icon(Icons.bookmark_remove_outlined))
             ],
           ),
           body: SafeArea(
