@@ -64,403 +64,407 @@ class _IdcardPageState extends State<IdcardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DismissKeyboard(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: transparent,
-            iconTheme: const IconThemeData(color: mobileSearchColor),
-            toolbarHeight: 120,
-            centerTitle: true,
-            elevation: 0,
-            title: const Text(
-              "VERIFICATION",
-              style: TextStyle(
-                fontSize: 46,
-                fontWeight: FontWeight.bold,
-                color: purple,
+    return SafeArea(
+      child: MaterialApp(
+        home: DismissKeyboard(
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: transparent,
+              iconTheme: const IconThemeData(color: mobileSearchColor),
+              toolbarHeight: 100,
+              centerTitle: true,
+              elevation: 0,
+              title: const Text(
+                "VERIFICATION",
+                style: TextStyle(
+                  fontSize: 46,
+                  fontWeight: FontWeight.bold,
+                  color: purple,
+                ),
+              ),
+              // ignore: prefer_const_constructors
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(-20),
+                child: const Text("Confirm your identity",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: unselected)),
               ),
             ),
-            // ignore: prefer_const_constructors
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(-20),
-              child: const Text("Confirm your identity",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: unselected)),
-            ),
-          ),
-          body: _isLoading
-              ? Center(
-                  child: CircularProgressIndicator(
-                      color: Theme.of(context).primaryColor))
-              : SingleChildScrollView(
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text("Enter your date of birth.",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'MyCustomFont',
-                                color: unselected)),
-                        const SizedBox(height: 16),
-                        Container(
-                          alignment: Alignment.center,
-                          width: 360,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  controller: _dayController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: textInputDecorationp.copyWith(
-                                      hintText: "Day",
-                                      prefixIcon: Icon(
-                                        Icons.view_day,
-                                        color: Theme.of(context).primaryColor,
-                                      )),
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return "plase Enter Your Day";
-                                    } else if (int.parse(val) >= 31) {
-                                      return 'Day must less than 31';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+            body: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor))
+                : SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text("Enter your date of birth.",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'MyCustomFont',
+                                  color: unselected)),
+                          const SizedBox(height: 16),
+                          Container(
+                            alignment: Alignment.center,
+                            width: 360,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _dayController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: textInputDecorationp.copyWith(
+                                        hintText: "Day",
+                                        prefixIcon: Icon(
+                                          Icons.view_day,
+                                          color: Theme.of(context).primaryColor,
+                                        )),
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        return "plase Enter Your Day";
+                                      } else if (int.parse(val) >= 31) {
+                                        return 'Day must less than 31';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: TextField(
-                                  controller: _monthController,
-                                  readOnly: true,
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return SimpleDialog(
-                                          children: <Widget>[
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '1';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('1'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '2';
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: TextField(
+                                    controller: _monthController,
+                                    readOnly: true,
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return SimpleDialog(
+                                            children: <Widget>[
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '1';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('1'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '2';
 
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('2'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '3';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('3'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '4';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('4'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '5';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('2'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '3';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('3'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '4';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('4'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '5';
 
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('5'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '6';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('6'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '7';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('7'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '8';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('5'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '6';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('6'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '7';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('7'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '8';
 
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('8'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '9';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('9'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '10';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('10'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '11';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('8'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '9';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('9'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '10';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('10'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '11';
 
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('11'),
-                                            ),
-                                            SimpleDialogOption(
-                                              onPressed: () {
-                                                _monthController.text = '12';
-                                                // Close the dialog
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text('12'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  enableInteractiveSelection: false,
-                                  decoration: textInputDecorationp.copyWith(
-                                    hintText: 'month',
-                                    prefixIcon: Icon(
-                                      Icons.calendar_month,
-                                      color: Theme.of(context).primaryColor,
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('11'),
+                                              ),
+                                              SimpleDialogOption(
+                                                onPressed: () {
+                                                  _monthController.text = '12';
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('12'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    enableInteractiveSelection: false,
+                                    decoration: textInputDecorationp.copyWith(
+                                      hintText: 'month',
+                                      prefixIcon: Icon(
+                                        Icons.calendar_month,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: TextFormField(
-                                  controller: _yearController,
-                                  keyboardType: TextInputType.number,
-                                  decoration: textInputDecorationp.copyWith(
-                                      hintText: "year",
-                                      prefixIcon: Icon(
-                                        Icons.view_day,
-                                        color: Theme.of(context).primaryColor,
-                                      )),
-                                  validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return "plase Enter year";
-                                    } else if (int.parse(val) >= 2008) {
-                                      return 'your age must be more than 15';
-                                    } else {
-                                      return null;
-                                    }
-                                  },
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _yearController,
+                                    keyboardType: TextInputType.number,
+                                    decoration: textInputDecorationp.copyWith(
+                                        hintText: "year",
+                                        prefixIcon: Icon(
+                                          Icons.view_day,
+                                          color: Theme.of(context).primaryColor,
+                                        )),
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        return "plase Enter year";
+                                      } else if (int.parse(val) >= 2008) {
+                                        return 'your age must be more than 15';
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        const Text("Please shoot in the frame for clarity\n",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontFamily: 'MyCustomFont',
-                                color: unselected)),
-                        SizedBox(
-                            height: 120,
-                            child: media != null
-                                ? Image.file(media!)
-                                : Image.asset('assets/images/id-card.png')),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: purple,
-                              minimumSize: const Size(268, 36),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30))),
-                          onPressed: () async {
-                            ImagePicker imagePicker = ImagePicker();
-                            XFile? file = await imagePicker.pickImage(
-                                source: ImageSource.gallery);
-                            print('${file?.path}');
-
-                            if (file == null) return;
-                            String uniqueFileName = DateTime.now()
-                                .millisecondsSinceEpoch
-                                .toString();
-                            Reference referenceRoot =
-                                FirebaseStorage.instance.ref();
-                            Reference referenceDirImages =
-                                referenceRoot.child('idcard');
-                            Reference referenceImageToUpload =
-                                referenceDirImages.child("${user?.uid}");
-                            try {
-                              //Store the file
-                              await referenceImageToUpload
-                                  .putFile(File(file.path));
-                              //Success: get the download URL
-                              _ImageidcardController =
-                                  await referenceImageToUpload.getDownloadURL();
-                            } catch (error) {
-                              //Some error occurred
-                            }
-                            setState(() {
-                              media = File(file.path);
-                            });
-                            print(_ImageidcardController);
-                          },
-                          child: const Text("Take a photo of idcard"),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        // ElevatedButton(
-                        //     onPressed: () {
-                        //       print(widget.password);
-                        //     },
-                        //     child: Text('test')),
-                        const Text(
-                            "Warning: avoid reflected light and too dark \nThe picture is not blurry, the letters are clearly visible. ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                fontFamily: 'MyCustomFont',
-                                color: unselected)),
-                        const SizedBox(
-                          height: 120,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Checkbox(
-                              value: isChecked,
-                              onChanged: (value) {
-                                setState(() {
-                                  isChecked = value!;
-
-                                  isadmin = false;
-                                });
-                              },
-                            ),
-                            Text.rich(TextSpan(
-                              style: const TextStyle(
-                                  color: mobileSearchColor,
-                                  fontSize: 12,
-                                  fontFamily: 'MyCustomFont'),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text:
-                                        "I hereby certify that I am over 15 years old and accept",
-                                    style: const TextStyle(
-                                      color: mobileSearchColor,
-                                      decoration: TextDecoration.none,
-                                    ),
-                                    recognizer: TapGestureRecognizer()),
-                                TextSpan(
-                                    text: "\nconditions of use",
-                                    style: const TextStyle(
-                                        color: mobileSearchColor,
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.bold),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        nextScreen(context, TermsPage());
-                                      }),
-                                TextSpan(
-                                    text: " and ",
-                                    style: const TextStyle(
-                                      color: mobileSearchColor,
-                                      decoration: TextDecoration.none,
-                                    ),
-                                    recognizer: TapGestureRecognizer()),
-                                TextSpan(
-                                    text: "Privacy Policy",
-                                    style: const TextStyle(
-                                        color: mobileSearchColor,
-                                        decoration: TextDecoration.underline,
-                                        fontWeight: FontWeight.bold),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                        nextScreen(context, PrivacyPage());
-                                      }),
                               ],
-                            )),
-                          ],
-                        ),
-                        SizedBox(
-                          width: 307,
-                          height: 49,
-                          child: ElevatedButton(
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text("Please shoot in the frame for clarity\n",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontFamily: 'MyCustomFont',
+                                  color: unselected)),
+                          SizedBox(
+                              height: 120,
+                              child: media != null
+                                  ? Image.file(media!)
+                                  : Image.asset('assets/images/id-card.png')),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    isChecked ? purple : unselected,
-                                minimumSize: const Size(268, 49),
+                                backgroundColor: purple,
+                                minimumSize: const Size(268, 36),
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30))),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              // ignore: prefer_const_literals_to_create_immutables
-                              children: [
-                                const Text(
-                                  'Next',
-                                  style: TextStyle(
-                                      fontSize: 22, fontFamily: 'MyCustomFont'),
-                                ), // <-- Text
-                                const SizedBox(
-                                  width: 3,
-                                ),
-                                const Icon(
-                                  // <-- Icon
-                                  Icons.navigate_next_sharp,
-                                  size: 26.0,
-                                ),
-                              ],
-                            ),
-                            onPressed: () {
-                              if (isChecked == true) {
-                                register();
-                              } else {
-                                return null;
+                            onPressed: () async {
+                              ImagePicker imagePicker = ImagePicker();
+                              XFile? file = await imagePicker.pickImage(
+                                  source: ImageSource.gallery);
+                              print('${file?.path}');
+
+                              if (file == null) return;
+                              String uniqueFileName = DateTime.now()
+                                  .millisecondsSinceEpoch
+                                  .toString();
+                              Reference referenceRoot =
+                                  FirebaseStorage.instance.ref();
+                              Reference referenceDirImages =
+                                  referenceRoot.child('idcard');
+                              Reference referenceImageToUpload =
+                                  referenceDirImages.child("${user?.uid}");
+                              try {
+                                //Store the file
+                                await referenceImageToUpload
+                                    .putFile(File(file.path));
+                                //Success: get the download URL
+                                _ImageidcardController =
+                                    await referenceImageToUpload
+                                        .getDownloadURL();
+                              } catch (error) {
+                                //Some error occurred
                               }
+                              setState(() {
+                                media = File(file.path);
+                              });
+                              print(_ImageidcardController);
                             },
+                            child: const Text("Take a photo of idcard"),
                           ),
-                        ),
-                      ],
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          // ElevatedButton(
+                          //     onPressed: () {
+                          //       print(widget.password);
+                          //     },
+                          //     child: Text('test')),
+                          const Text(
+                              "Warning: avoid reflected light and too dark \nThe picture is not blurry, the letters are clearly visible. ",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontFamily: 'MyCustomFont',
+                                  color: unselected)),
+                          const SizedBox(
+                            height: 120,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Checkbox(
+                                value: isChecked,
+                                onChanged: (value) {
+                                  setState(() {
+                                    isChecked = value!;
+
+                                    isadmin = false;
+                                  });
+                                },
+                              ),
+                              Text.rich(TextSpan(
+                                style: const TextStyle(
+                                    color: mobileSearchColor,
+                                    fontSize: 12,
+                                    fontFamily: 'MyCustomFont'),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                      text:
+                                          "I hereby certify that I am over 15 years old and accept",
+                                      style: const TextStyle(
+                                        color: mobileSearchColor,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                      recognizer: TapGestureRecognizer()),
+                                  TextSpan(
+                                      text: "\nconditions of use",
+                                      style: const TextStyle(
+                                          color: mobileSearchColor,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          nextScreen(context, TermsPage());
+                                        }),
+                                  TextSpan(
+                                      text: " and ",
+                                      style: const TextStyle(
+                                        color: mobileSearchColor,
+                                        decoration: TextDecoration.none,
+                                      ),
+                                      recognizer: TapGestureRecognizer()),
+                                  TextSpan(
+                                      text: "Privacy Policy",
+                                      style: const TextStyle(
+                                          color: mobileSearchColor,
+                                          decoration: TextDecoration.underline,
+                                          fontWeight: FontWeight.bold),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          nextScreen(context, PrivacyPage());
+                                        }),
+                                ],
+                              )),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 307,
+                            height: 49,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      isChecked ? purple : unselected,
+                                  minimumSize: const Size(268, 49),
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30))),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                // ignore: prefer_const_literals_to_create_immutables
+                                children: [
+                                  const Text(
+                                    'Next',
+                                    style: TextStyle(
+                                        fontSize: 22,
+                                        fontFamily: 'MyCustomFont'),
+                                  ), // <-- Text
+                                  const SizedBox(
+                                    width: 3,
+                                  ),
+                                  const Icon(
+                                    // <-- Icon
+                                    Icons.navigate_next_sharp,
+                                    size: 26.0,
+                                  ),
+                                ],
+                              ),
+                              onPressed: () {
+                                if (isChecked == true) {
+                                  register();
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+          ),
         ),
       ),
     );
