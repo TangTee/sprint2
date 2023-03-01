@@ -85,7 +85,7 @@ class _LoginState extends State<Login> {
                       height: 05,
                     ),
                     const Text(
-                      "เข้าสู่ระบบด้วยบัญชีของคุณเลย",
+                      "Login with TungTee account",
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -165,7 +165,7 @@ class _LoginState extends State<Login> {
                             onPressed: () {
                               nextScreen(context, ResetPasswordPage());
                             },
-                            child: const Text("ลืมรหัสผ่าน?"))
+                            child: const Text("Forget Password?"))
                       ],
                     ),
                     const SizedBox(
@@ -213,13 +213,13 @@ class _LoginState extends State<Login> {
                           fontFamily: 'MyCustomFont'),
                       children: <TextSpan>[
                         TextSpan(
-                            text: "ยังไม่มีบัญชีหรอ?",
+                            text: "No account with TungTee? ",
                             style: const TextStyle(
                                 color: primaryColor,
                                 decoration: TextDecoration.none),
                             recognizer: TapGestureRecognizer()),
                         TextSpan(
-                            text: "สมัครใช้งาน",
+                            text: "Register",
                             style: const TextStyle(
                                 color: lightGreen,
                                 decoration: TextDecoration.underline,
@@ -273,7 +273,11 @@ class _LoginState extends State<Login> {
           if (a == true) {
             nextScreenReplace(context, AdminHomePage());
           } else {
-            nextScreenReplace(context, MyHomePage(index: 0,));
+            nextScreenReplace(
+                context,
+                MyHomePage(
+                  index: 0,
+                ));
           }
           //nextScreenReplace(context, MyHomePage());
         } else {
