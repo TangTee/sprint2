@@ -28,6 +28,7 @@ class GroupInfo extends StatefulWidget {
 class _GroupInfoState extends State<GroupInfo> {
   Stream? members;
   var groupData = {};
+  var postData = {};
   var member = [];
   bool isLoading = false;
   @override
@@ -46,6 +47,12 @@ class _GroupInfoState extends State<GroupInfo> {
           .doc(widget.groupId)
           .get();
 
+      var postSnap = await FirebaseFirestore.instance
+          .collection('post')
+          .doc(widget.groupId)
+          .get();
+
+      postData = postSnap.data()!;
       groupData = groupSnap.data()!;
       member = groupSnap.data()?['member'];
       setState(() {});
@@ -107,7 +114,7 @@ class _GroupInfoState extends State<GroupInfo> {
                 child: Container(
                   color: mobileBackgroundColor,
                   height: MediaQuery.of(context).size.height * 0.08,
-                  margin: EdgeInsets.symmetric(
+                  margin: const EdgeInsets.symmetric(
                     vertical: 3,
                     horizontal: 20,
                   ),
@@ -147,7 +154,7 @@ class _GroupInfoState extends State<GroupInfo> {
                                     ),
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width *
-                                          0.58,
+                                          0.56,
                                       child: Row(
                                         children: [
                                           Text(
@@ -175,14 +182,20 @@ class _GroupInfoState extends State<GroupInfo> {
                                         ],
                                       ),
                                     ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.02,
-                                    ),
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.02,
-                                    ),
+                                    if (postData['open'] == false &&
+                                        documentSnapshot['uid'] !=
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid)
+                                      SizedBox(
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.rate_review,
+                                            color: unselected,
+                                            size: 30,
+                                          ),
+                                          onPressed: (() {}),
+                                        ),
+                                      ),
                                     if (documentSnapshot['uid'] !=
                                         FirebaseAuth.instance.currentUser!.uid)
                                       SizedBox(
@@ -195,24 +208,6 @@ class _GroupInfoState extends State<GroupInfo> {
                                           onPressed: (() {
                                             //add action
                                             return _showModalBottomSheetP(
-                                                context,
-                                                documentSnapshot,
-                                                groupData);
-                                          }),
-                                        ),
-                                      ),
-                                    if (groupData['owner'] ==
-                                        FirebaseAuth.instance.currentUser!.uid)
-                                      SizedBox(
-                                        child: IconButton(
-                                          icon: const Icon(
-                                            Icons.more_horiz,
-                                            color: unselected,
-                                            size: 30,
-                                          ),
-                                          onPressed: (() {
-                                            //add action
-                                            return _showModalBottomSheetE(
                                                 context,
                                                 documentSnapshot,
                                                 groupData);
@@ -243,60 +238,6 @@ class _GroupInfoState extends State<GroupInfo> {
   }
 }
 
-void _showModalBottomSheetE(
-    BuildContext context, DocumentSnapshot<Object?> userData, groupdata) {
-  final _report = FirebaseFirestore.instance.collection('report').doc();
-  final TextEditingController _ReportController = TextEditingController();
-
-  showModalBottomSheet(
-    useRootNavigator: true,
-    context: context,
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(20),
-      topRight: Radius.circular(20),
-    )),
-    builder: (BuildContext context) {
-      return Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-              title: const Center(
-                  child: Text(
-                'End Activity',
-                style: TextStyle(
-                    color: redColor, fontFamily: 'MyCustomFont', fontSize: 20),
-              )),
-              onTap: () {
-                FirebaseFirestore.instance
-                    .collection('post')
-                    .doc(groupdata['groupid'])
-                    .update({
-                  'open': false,
-                }).whenComplete(() => Navigator.of(context).pop());
-              },
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-              title: const Center(
-                  child: Text(
-                'Cancel',
-                style: TextStyle(
-                    color: redColor, fontFamily: 'MyCustomFont', fontSize: 20),
-              )),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
 void _showModalBottomSheetP(
     BuildContext context, DocumentSnapshot<Object?> userData, groupdata) {
   final _report = FirebaseFirestore.instance.collection('report').doc();
@@ -315,21 +256,6 @@ void _showModalBottomSheetP(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            if (groupdata['open'] == false)
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: const Center(
-                    child: Text(
-                  'Review',
-                  style: TextStyle(
-                      color: mobileSearchColor,
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20),
-                )),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
             if (FirebaseAuth.instance.currentUser!.uid != userData['uid'])
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
