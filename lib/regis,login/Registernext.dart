@@ -100,231 +100,243 @@ class _RegisnextPageState extends State<RegisnextPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 120,
-        centerTitle: true,
-        elevation: 0,
-        title: const Text(
-          "PROFILE",
-          style: TextStyle(
-            fontSize: 46,
-            fontWeight: FontWeight.bold,
-            color: purple,
-          ),
-        ),
-        // ignore: prefer_const_constructors
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(-20),
-          child: const Text("แก้ไขข้อมูลส่วนตัวของคุณ",
-              style: TextStyle(
-                  fontSize: 14,
+    return SafeArea(
+      child: MaterialApp(
+        home: DismissKeyboard(
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              toolbarHeight: 120,
+              centerTitle: true,
+              elevation: 0,
+              title: const Text(
+                "PROFILE",
+                style: TextStyle(
+                  fontSize: 46,
                   fontWeight: FontWeight.bold,
-                  color: unselected)),
-        ),
-      ),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                  color: Theme.of(context).primaryColor))
-          : SingleChildScrollView(
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    Container(
-                      child: InkWell(
-                        onTap: () async {
-                          ImagePicker imagePicker = ImagePicker();
-                          XFile? file = await imagePicker.pickImage(
-                              source: ImageSource.gallery);
-                          print('${file?.path}');
-
-                          if (file == null) return;
-                          String uniqueFileName =
-                              DateTime.now().millisecondsSinceEpoch.toString();
-                          Reference referenceRoot =
-                              FirebaseStorage.instance.ref();
-                          Reference referenceDirImages =
-                              referenceRoot.child('Profile');
-                          Reference referenceImageToUpload =
-                              referenceDirImages.child("${user?.uid}");
-                          try {
-                            //Store the file
-                            await referenceImageToUpload
-                                .putFile(File(file.path));
-                            //  Success: get the download URL
-                            _ImageProfileController =
-                                await referenceImageToUpload.getDownloadURL();
-                          } catch (error) {
-                            //Some error occurred
-                          }
-                          setState(() {
-                            media1 = File(file.path);
-                          });
-                        },
-                        child: CircleAvatar(
-                          radius: 100,
-                          backgroundColor: Colors.transparent,
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(500),
-                              child: media1 != null
-                                  ? Image.file(media1!)
-                                  : Image.network(
-                                      'https://cdn-icons-png.flaticon.com/512/149/149071.png')),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 360,
-                        child: TextFormField(
-                          controller: _DisplaynameController,
-                          decoration: textInputDecorationp.copyWith(
-                              counterText:
-                                  '${_enteredTextU.length.toString()} /12',
-                              counterStyle: TextStyle(color: TextU),
-                              hintText: "Display Name",
-                              prefixIcon: Icon(
-                                Icons.person_pin_circle_sharp,
-                                color: Theme.of(context).primaryColor,
-                              )),
-                          validator: (val) {
-                            if (val!.isNotEmpty) {
-                              return null;
-                            }
-                            if (val.length > 12) {
-                              return 'Limit at 12 characters ';
-                            }
-                          },
-                          onChanged: (val) {
-                            setState(() {
-                              Displayname = val;
-                              _enteredTextU = val;
-                              if (val.length > 12) {
-                                TextU = redColor;
-                              } else {
-                                TextU = mobileSearchColor;
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: 360,
-                      child: TextFormField(
-                        controller: _bioController,
-                        maxLines: 5,
-                        decoration: textInputDecorationp.copyWith(
-                            counterText:
-                                '${_enteredTextB.length.toString()} /160',
-                            counterStyle: TextStyle(color: TextB),
-                            hintText: 'bio',
-                            prefixIcon: Icon(
-                              Icons.pending,
-                              color: Theme.of(context).primaryColor,
-                            )),
-                        validator: (val) {
-                          if (val!.isNotEmpty) {
-                            return null;
-                          }
-                          if (val.length > 160) {
-                            return 'Limit at 160 characters ';
-                          }
-                        },
-                        onChanged: (val) {
-                          setState(() {
-                            bio = val;
-                            _enteredTextB = val;
-                            if (val.length > 160) {
-                              TextB = redColor;
-                            } else {
-                              TextB = mobileSearchColor;
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Gender: '),
-                        Radio(
-                          value: 'Male',
-                          groupValue: gender,
-                          onChanged: (value) {
-                            setState(() {
-                              gender = value!;
-                            });
-                          },
-                        ),
-                        Text('Male'),
-                        Radio(
-                          value: 'Female',
-                          groupValue: gender,
-                          onChanged: (value) {
-                            setState(() {
-                              gender = value!;
-                            });
-                          },
-                        ),
-                        Text('Female'),
-                        Radio(
-                          value: 'Other',
-                          groupValue: gender,
-                          onChanged: (value) {
-                            setState(() {
-                              gender = value!;
-                            });
-                          },
-                        ),
-                        Text('other'),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 360,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: purple,
-                              minimumSize: const Size(307, 49),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30))),
-                          child: const Text(
-                            "Register",
-                            style: TextStyle(color: white, fontSize: 16),
-                          ),
-                          onPressed: () {
-                            register();
-                            // print(widget.fullName);
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+                  color: purple,
                 ),
               ),
+              // ignore: prefer_const_constructors
+              bottom: PreferredSize(
+                preferredSize: const Size.fromHeight(-20),
+                child: const Text("Add your personal information\n",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: unselected)),
+              ),
             ),
+            body: _isLoading
+                ? Center(
+                    child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor))
+                : SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        // ignore: prefer_const_literals_to_create_immutables
+                        children: [
+                          Container(
+                            child: InkWell(
+                              onTap: () async {
+                                ImagePicker imagePicker = ImagePicker();
+                                XFile? file = await imagePicker.pickImage(
+                                    source: ImageSource.gallery);
+                                print('${file?.path}');
+
+                                if (file == null) return;
+                                String uniqueFileName = DateTime.now()
+                                    .millisecondsSinceEpoch
+                                    .toString();
+                                Reference referenceRoot =
+                                    FirebaseStorage.instance.ref();
+                                Reference referenceDirImages =
+                                    referenceRoot.child('Profile');
+                                Reference referenceImageToUpload =
+                                    referenceDirImages.child("${user?.uid}");
+                                try {
+                                  //Store the file
+                                  await referenceImageToUpload
+                                      .putFile(File(file.path));
+                                  //  Success: get the download URL
+                                  _ImageProfileController =
+                                      await referenceImageToUpload
+                                          .getDownloadURL();
+                                } catch (error) {
+                                  //Some error occurred
+                                }
+                                setState(() {
+                                  media1 = File(file.path);
+                                });
+                              },
+                              child: CircleAvatar(
+                                radius: 100,
+                                backgroundColor: Colors.transparent,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(500),
+                                    child: media1 != null
+                                        ? Image.file(media1!)
+                                        : Image.network(
+                                            'https://cdn-icons-png.flaticon.com/512/149/149071.png')),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 360,
+                              child: TextFormField(
+                                controller: _DisplaynameController,
+                                decoration: textInputDecorationp.copyWith(
+                                    counterText:
+                                        '${_enteredTextU.length.toString()} /12',
+                                    counterStyle: TextStyle(color: TextU),
+                                    hintText: "Display Name",
+                                    prefixIcon: Icon(
+                                      Icons.person_pin_circle_sharp,
+                                      color: Theme.of(context).primaryColor,
+                                    )),
+                                validator: (val) {
+                                  if (val!.isNotEmpty) {
+                                    return null;
+                                  }
+                                  if (val.length > 12) {
+                                    return 'Limit at 12 characters ';
+                                  }
+                                },
+                                onChanged: (val) {
+                                  setState(() {
+                                    Displayname = val;
+                                    _enteredTextU = val;
+                                    if (val.length > 12) {
+                                      TextU = redColor;
+                                    } else {
+                                      TextU = mobileSearchColor;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            width: 360,
+                            child: TextFormField(
+                              controller: _bioController,
+                              maxLines: 5,
+                              decoration: textInputDecorationp.copyWith(
+                                  counterText:
+                                      '${_enteredTextB.length.toString()} /160',
+                                  counterStyle: TextStyle(color: TextB),
+                                  hintText: 'bio',
+                                  prefixIcon: Icon(
+                                    Icons.pending,
+                                    color: Theme.of(context).primaryColor,
+                                  )),
+                              validator: (val) {
+                                if (val!.isNotEmpty) {
+                                  return null;
+                                }
+                                if (val.length > 160) {
+                                  return 'Limit at 160 characters ';
+                                }
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  bio = val;
+                                  _enteredTextB = val;
+                                  if (val.length > 160) {
+                                    TextB = redColor;
+                                  } else {
+                                    TextB = mobileSearchColor;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text('Gender: '),
+                              Radio(
+                                value: 'Male',
+                                groupValue: gender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gender = value!;
+                                  });
+                                },
+                              ),
+                              Text('Male'),
+                              Radio(
+                                value: 'Female',
+                                groupValue: gender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gender = value!;
+                                  });
+                                },
+                              ),
+                              Text('Female'),
+                              Radio(
+                                value: 'Other',
+                                groupValue: gender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gender = value!;
+                                  });
+                                },
+                              ),
+                              Text('other'),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 360,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: purple,
+                                    minimumSize: const Size(307, 49),
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30))),
+                                child: const Text(
+                                  "Register",
+                                  style: TextStyle(color: white, fontSize: 16),
+                                ),
+                                onPressed: () {
+                                  register();
+                                  // print(widget.fullName);
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+      ),
     );
   }
 
