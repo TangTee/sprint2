@@ -41,38 +41,38 @@ class _RegistrationScreen extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: MaterialApp(
-        home: DismissKeyboard(
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: transparent,
-              toolbarHeight: 100,
-              centerTitle: true,
-              elevation: 0,
-              title: const Text(
-                "REGISTER",
-                style: TextStyle(
-                  fontSize: 46,
-                  fontWeight: FontWeight.bold,
-                  color: purple,
-                ),
-              ),
-              // ignore: prefer_const_constructors
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(-20),
-                child: const Text("CERATE YOUR ACCOUNT",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: unselected)),
+    return MaterialApp(
+      home: DismissKeyboard(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: transparent,
+            toolbarHeight: 120,
+            centerTitle: true,
+            elevation: 0,
+            title: const Text(
+              "REGISTER",
+              style: TextStyle(
+                fontSize: 46,
+                fontWeight: FontWeight.bold,
+                color: purple,
               ),
             ),
-            body: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor))
-                : SingleChildScrollView(
+            // ignore: prefer_const_constructors
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(-20),
+              child: const Text("CERATE YOUR ACCOUNT",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: unselected)),
+            ),
+          ),
+          body: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor))
+              : SingleChildScrollView(
+                  child: SafeArea(
                     child: Form(
                         key: _formKey,
                         child: Container(
@@ -261,7 +261,7 @@ class _RegistrationScreen extends State<RegisterPage> {
                           ),
                         )),
                   ),
-          ),
+                ),
         ),
       ),
     );
