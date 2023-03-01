@@ -63,7 +63,7 @@ class _LoadTagState extends State<LoadTag> {
   Color TextP = mobileSearchColor;
   String _enteredTextD = '';
   Color TextD = mobileSearchColor;
-  String _enteredTextL = '';
+  var _enteredTextL;
   Color TextL = mobileSearchColor;
   @override
   Widget build(BuildContext context) {
@@ -382,15 +382,16 @@ class _LoadTagState extends State<LoadTag> {
                                 fontFamily: "MyCustomFont",
                               ),
                               hintText: 'People Limit',
-                              counterText:
-                                  '${_enteredTextL.length.toString()} /99',
+                             counterText: _enteredTextL == null
+                                  ? '0 /99'
+                                  : '${_enteredTextL} /99',
                               counterStyle: TextStyle(color: TextL),
                             ),
                             keyboardType: TextInputType.number,
                             onChanged: (val) {
                               setState(() {
                                 _enteredTextL = val;
-                                if (val.length > 12) {
+                                if (val.length > 2) {
                                   TextL = redColor;
                                 } else {
                                   TextL = mobileSearchColor;
