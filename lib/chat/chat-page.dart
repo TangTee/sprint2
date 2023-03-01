@@ -46,6 +46,7 @@ class _ChatPageState extends State<ChatPage> {
   bool text = false;
   bool image = true;
   bool replyImage = false;
+  var postData = {};
   var groupData = {};
   var member = [];
   var userData = {};
@@ -106,6 +107,13 @@ class _ChatPageState extends State<ChatPage> {
           .doc(widget.groupId)
           .get();
 
+      var postSnap = await FirebaseFirestore.instance
+          .collection('post')
+          .doc(widget.groupId)
+          .get();
+
+      postData = postSnap.data()!;
+
       groupData = groupSnap.data()!;
       member = groupSnap.data()?['member'];
 
@@ -145,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
             actions: [
               if (FirebaseAuth.instance.currentUser!.uid ==
                       groupData['owner'] &&
-                  groupData['open'] == true)
+                  postData['open'] == true)
                 IconButton(
                   onPressed: () async {
                     showDialog(
