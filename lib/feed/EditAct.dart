@@ -568,19 +568,35 @@ class _EditActState extends State<EditAct> {
     final String tag = _tagController.text;
     final String peopleLimit = _peopleLimitController.text;
     var timeStamp = postData['timeStamp'];
+
     if (_formKey.currentState!.validate()) {
-      await _post.doc(widget.postid).update({
-        'activityName': activityName,
-        'place': place,
-        'location': location,
-        'date': date,
-        'time': time,
-        'detail': detail,
-        'peopleLimit': peopleLimit,
-        'timeStamp': timeStamp,
-        'tag': value['_tag2'],
-        'tagColor': value['_tag2Color'],
-      });
+      if (value == null) {
+        await _post.doc(widget.postid).update({
+          'activityName': activityName,
+          'place': place,
+          'location': location,
+          'date': date,
+          'time': time,
+          'detail': detail,
+          'peopleLimit': peopleLimit,
+          'timeStamp': timeStamp,
+          'tag': _tagController.text,
+          'tagColor': _tagColorController.text,
+        });
+      } else {
+        await _post.doc(widget.postid).update({
+          'activityName': activityName,
+          'place': place,
+          'location': location,
+          'date': date,
+          'time': time,
+          'detail': detail,
+          'peopleLimit': peopleLimit,
+          'timeStamp': timeStamp,
+          'tag': value['_tag2'],
+          'tagColor': value['_tag2Color'],
+        });
+      }
 
       _activityNameController.text = '';
       _placeController.text = '';
