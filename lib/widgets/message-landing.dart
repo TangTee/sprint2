@@ -90,7 +90,7 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
               return Padding(
                 padding: const EdgeInsets.all(10),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.10,
+                  height: MediaQuery.of(context).size.height * 0.085,
                   child: Padding(
                     padding: const EdgeInsets.all(2),
                     child: Column(
@@ -119,7 +119,7 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.04,
+                                              0.035,
                                           width: MediaQuery.of(context)
                                                   .size
                                                   .width *
@@ -149,10 +149,6 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                                   .size
                                                   .width *
                                               0.55,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.05,
                                           child: widget.messageContent
                                                   .startsWith('https://')
                                               ? Container(
@@ -167,10 +163,8 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                                         fontFamily:
                                                             'MyCustomFont',
                                                         fontSize: 16,
-                                                        fontWeight: widget
-                                                                .isunread
-                                                            ? FontWeight.w100
-                                                            : FontWeight.bold,
+                                                        fontWeight:
+                                                            FontWeight.w100,
                                                       ),
                                                     ),
                                                   ),
@@ -179,12 +173,11 @@ class _MessagePreviewWidgetState extends State<MessagePreviewWidget> {
                                                   '' + widget.messageContent,
                                                   maxLines: 2,
                                                   style: TextStyle(
-                                                    fontFamily: 'MyCustomFont',
-                                                    fontSize: 14,
-                                                    fontWeight: widget.isunread
-                                                        ? FontWeight.w100
-                                                        : FontWeight.bold,
-                                                  ),
+                                                      fontFamily:
+                                                          'MyCustomFont',
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w100),
                                                 ),
                                         ),
                                         SizedBox(
