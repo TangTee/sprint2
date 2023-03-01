@@ -49,7 +49,7 @@ class _LandingPageState extends State<LandingPage> {
         children: [
           Image.asset("assets/images/logo with name.png"),
           const Text.rich(TextSpan(
-            text: "ไม่มีเพื่อนไปทำกิจกรรมอย่างงั้นหรอ?",
+            text: "Don't have friends to do activities together?",
             style: const TextStyle(
                 color: mobileSearchColor,
                 fontSize: 12,
@@ -57,7 +57,8 @@ class _LandingPageState extends State<LandingPage> {
                 fontWeight: FontWeight.bold),
           )),
           const Text.rich(TextSpan(
-            text: "มาสิ เดี๋ยวพวกเราช่วยหาเพื่อนที่ชอบทำกิจกรรมเดียวกันให้",
+            text:
+                "Come on, let's find a new friend who enjoys the same activities.",
             style: const TextStyle(
                 color: mobileSearchColor,
                 fontSize: 12,
@@ -111,7 +112,7 @@ class _LandingPageState extends State<LandingPage> {
             height: 10,
           ),
           const Text.rich(TextSpan(
-            text: "การลงชื่อเข้าใช้แสดงว่าคุณยอมรับ",
+            text: "By signing in you agree to",
             style: const TextStyle(
               color: mobileSearchColor,
               fontSize: 12,
@@ -125,7 +126,7 @@ class _LandingPageState extends State<LandingPage> {
                 fontFamily: 'MyCustomFont'),
             children: <TextSpan>[
               TextSpan(
-                  text: " เงื่อนไขการใช้งาน",
+                  text: "conditions of use",
                   style: const TextStyle(
                       color: mobileSearchColor,
                       decoration: TextDecoration.underline,
@@ -135,13 +136,13 @@ class _LandingPageState extends State<LandingPage> {
                       nextScreen(context, TermsPage());
                     }),
               TextSpan(
-                  text: " และ ",
+                  text: " and ",
                   style: const TextStyle(
                       color: mobileSearchColor,
                       decoration: TextDecoration.none),
                   recognizer: TapGestureRecognizer()),
               TextSpan(
-                  text: "นโยบายความเป็นส่วนตัวของเรา",
+                  text: "our privacy policy",
                   style: const TextStyle(
                       color: mobileSearchColor,
                       decoration: TextDecoration.underline,
