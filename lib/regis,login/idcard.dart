@@ -64,39 +64,39 @@ class _IdcardPageState extends State<IdcardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: MaterialApp(
-        home: DismissKeyboard(
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: transparent,
-              iconTheme: const IconThemeData(color: mobileSearchColor),
-              toolbarHeight: 100,
-              centerTitle: true,
-              elevation: 0,
-              title: const Text(
-                "VERIFICATION",
-                style: TextStyle(
-                  fontSize: 46,
-                  fontWeight: FontWeight.bold,
-                  color: purple,
-                ),
-              ),
-              // ignore: prefer_const_constructors
-              bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(-20),
-                child: const Text("Confirm your identity",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: unselected)),
+    return MaterialApp(
+      home: DismissKeyboard(
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: transparent,
+            iconTheme: const IconThemeData(color: mobileSearchColor),
+            toolbarHeight: 120,
+            centerTitle: true,
+            elevation: 0,
+            title: const Text(
+              "VERIFICATION",
+              style: TextStyle(
+                fontSize: 46,
+                fontWeight: FontWeight.bold,
+                color: purple,
               ),
             ),
-            body: _isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor))
-                : SingleChildScrollView(
+            // ignore: prefer_const_constructors
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(-20),
+              child: const Text("Confirm your identity",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: unselected)),
+            ),
+          ),
+          body: _isLoading
+              ? Center(
+                  child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor))
+              : SingleChildScrollView(
+                  child: SafeArea(
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -464,7 +464,7 @@ class _IdcardPageState extends State<IdcardPage> {
                       ),
                     ),
                   ),
-          ),
+                ),
         ),
       ),
     );
