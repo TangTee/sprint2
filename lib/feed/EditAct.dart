@@ -429,7 +429,7 @@ class _EditActState extends State<EditAct> {
                                       setState(() {
                                         people = val;
                                         countPeople = val;
-                                        if (val.length > 12) {
+                                        if (val.length > 2) {
                                           TextL = redColor;
                                         } else {
                                           TextL = mobileSearchColor;
