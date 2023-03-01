@@ -182,21 +182,21 @@ class _MessageBubbleState extends State<MessageBubble> {
                 children: [
                   if (widget.reply != '' && widget.replyImage == true)
                     Padding(
-                      padding: const EdgeInsets.all(0),
+                      padding: widget.sentByMe
+                          ? const EdgeInsets.only(left: 120)
+                          : const EdgeInsets.only(right: 120),
                       child: Container(
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        width: MediaQuery.of(context).size.width * 0.5,
                         decoration: BoxDecoration(
                           borderRadius: widget.sentByMe
                               ? const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
                                 )
                               : const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
                                 ),
                           image: DecorationImage(
                             image: NetworkImage(widget.reply),
@@ -204,10 +204,6 @@ class _MessageBubbleState extends State<MessageBubble> {
                           ),
                         ),
                       ),
-                    ),
-                  if (widget.reply != '' && widget.replyImage == true)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.005,
                     ),
                   if (widget.reply != '' && widget.replyImage == false)
                     Padding(
@@ -221,12 +217,10 @@ class _MessageBubbleState extends State<MessageBubble> {
                               ? const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20),
                                 )
                               : const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
                                 ),
                           color: Colors.grey.withOpacity(0.2),
                         ),
@@ -242,10 +236,6 @@ class _MessageBubbleState extends State<MessageBubble> {
                           ),
                         ),
                       ),
-                    ),
-                  if (widget.reply != '' && widget.replyImage == false)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.005,
                     ),
                   Container(
                     child: widget.image == true
@@ -292,13 +282,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                                   decoration: BoxDecoration(
                                     borderRadius: widget.sentByMe
                                         ? const BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
                                             bottomLeft: Radius.circular(20),
                                           )
                                         : const BorderRadius.only(
-                                            topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20),
                                             bottomRight: Radius.circular(20),
                                           ),
                                     color: widget.sentByMe ? orange : disable,
