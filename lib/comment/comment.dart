@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/feed/EditAct.dart';
@@ -810,7 +811,13 @@ class _MyCommentState extends State<Comment> {
                                                                 ),
                                                                 GestureDetector(
                                                                   onLongPress:
-                                                                      () {},
+                                                                      () async {
+                                                                    _showModalBottomSheetcopy(
+                                                                      context,
+                                                                      documentSnapshot[
+                                                                          'comment'],
+                                                                    );
+                                                                  },
                                                                   child: Card(
                                                                     clipBehavior:
                                                                         Clip.hardEdge,
@@ -949,7 +956,7 @@ class _MyCommentState extends State<Comment> {
                             children: [
                               Container(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.075,
+                                    MediaQuery.of(context).size.height * 0.09,
                                 color: white,
                                 child: Form(
                                   key: _formKey,
@@ -1064,6 +1071,60 @@ class _MyCommentState extends State<Comment> {
               ),
             ),
           );
+  }
+
+  void _showModalBottomSheetcopy(BuildContext context, comment) {
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      )),
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                //ignore: unnecessary_new
+                title: const Center(
+                  child: Text(
+                    'Copy Text',
+                    style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                  ),
+                ),
+
+                onTap: () async {
+                  Clipboard.setData(
+                    ClipboardData(
+                      text: comment,
+                    ),
+                  );
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                title: const Center(
+                    child: Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: redColor,
+                      fontFamily: 'MyCustomFont',
+                      fontSize: 20),
+                )),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   void _showModalBottomSheet1(BuildContext context, uid) {
