@@ -26,7 +26,7 @@ class _ReportPageState extends State<ReportPage> {
             children: <Widget>[
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: Center(
+                title: const Center(
                   child: Text(
                     'Go to User page',
                     style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
@@ -36,7 +36,7 @@ class _ReportPageState extends State<ReportPage> {
                   Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return MyHomePage(index: 4,);
+                        return const MyHomePage(index: 4,);
                       },
                     ),
                     (_) => false,
@@ -124,7 +124,7 @@ class _ReportPageState extends State<ReportPage> {
             ],
           ),
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
             Post(),
             Comment(),
@@ -136,6 +136,8 @@ class _ReportPageState extends State<ReportPage> {
 }
 
 class Post extends StatelessWidget {
+  const Post({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -145,6 +147,8 @@ class Post extends StatelessWidget {
 }
 
 class Comment extends StatelessWidget {
+  const Comment({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

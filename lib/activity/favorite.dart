@@ -9,7 +9,7 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: mobileBackgroundColor,
       body: PostCard(),
     );
@@ -18,6 +18,8 @@ class FavoritePage extends StatelessWidget {
 
 class PostCard extends StatelessWidget {
   final _post = FirebaseFirestore.instance.collection('post');
+
+   PostCard({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -6,7 +6,6 @@ import 'package:hexcolor/hexcolor.dart';
 
 import '../../utils/color.dart';
 import '../../widgets/custom_textfield.dart';
-import '../utils/color.dart';
 
 class TagCategory extends StatefulWidget {
   // final String categoryId; ต้องget data
@@ -63,11 +62,9 @@ class _TagCategoryState extends State<TagCategory> {
                       onPressed: () async {
                         final String tag = _tagController.text;
 
-                        if (tag != null) {
-                          await _tags.doc(tagId).update({"tag": tag});
-                          _tagController.text = '';
-                          Navigator.of(context).pop();
-                        }
+                        await _tags.doc(tagId).update({"tag": tag});
+                        _tagController.text = '';
+                        Navigator.of(context).pop();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: lightGreen,
@@ -96,6 +93,7 @@ class _TagCategoryState extends State<TagCategory> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
   }
@@ -107,7 +105,7 @@ class _TagCategoryState extends State<TagCategory> {
   bool submit = false;
   final tagController = TextEditingController();
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _create() async {
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -136,13 +134,13 @@ class _TagCategoryState extends State<TagCategory> {
                   decoration:
                       textInputDecorationp.copyWith(hintText: 'tag'.toString()),
                 ),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton.icon(
-                        icon: Icon(Icons.add),
+                        icon: const Icon(Icons.add),
                         label: const Text(
                           'create',
                           style: TextStyle(
@@ -215,14 +213,14 @@ class _TagCategoryState extends State<TagCategory> {
                                             documentSnapshot =
                                             snapshot.data!.docs[index];
 
-                                        var Mytext = new Map();
+                                        var Mytext = {};
                                         Mytext['tag'] = documentSnapshot['tag'];
                                         Mytext['tagColor'] =
                                             documentSnapshot['tagColor'];
                                         return Card(
                                           elevation: 2,
                                           child: ClipPath(
-                                            child: Container(
+                                            child: SizedBox(
                                               height: 80,
                                               child: Container(
                                                 child: Container(
@@ -245,7 +243,7 @@ class _TagCategoryState extends State<TagCategory> {
                                                                   const EdgeInsets
                                                                           .only(
                                                                       top: 8.0),
-                                                              child: Container(
+                                                              child: SizedBox(
                                                                 height: MediaQuery.of(
                                                                             context)
                                                                         .size
@@ -304,18 +302,18 @@ class _TagCategoryState extends State<TagCategory> {
                                                                             (context) {
                                                                           return AlertDialog(
                                                                             title:
-                                                                                Text('Are you sure?'),
+                                                                                const Text('Are you sure?'),
                                                                             content:
-                                                                                Text('This action cannot be undone.'),
+                                                                                const Text('This action cannot be undone.'),
                                                                             actions: [
                                                                               TextButton(
-                                                                                child: Text('Cancel'),
+                                                                                child: const Text('Cancel'),
                                                                                 onPressed: () {
                                                                                   Navigator.of(context).pop();
                                                                                 },
                                                                               ),
                                                                               TextButton(
-                                                                                child: Text('OK'),
+                                                                                child: const Text('OK'),
                                                                                 onPressed: () {
                                                                                   _delete(documentSnapshot.id);
                                                                                   Navigator.of(context).pop();
@@ -368,7 +366,7 @@ class _TagCategoryState extends State<TagCategory> {
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: () => _create(),
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ),
       ),

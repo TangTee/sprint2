@@ -19,9 +19,7 @@ class AuthService {
               email: email, password: password))
           .user!;
 
-      if (user != null) {
-        return true;
-      }
+      return true;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -63,29 +61,26 @@ class AuthService {
               email: email, password: password))
           .user!;
 
-      if (user != null) {
-        // call our database service to update the user data.
-        await DatabaseService(uid: user.uid).savingUserData(
-            fullName,
-            email,
-            age,
-            Imageidcard,
-            Imageprofile,
-            Displayname,
-            gender,
-            bio,
-            isadmin,
-            verify,
-            facebook,
-            twitter,
-            instagram,
-            day,
-            month,
-            year,
-            points,
-            ban);
-        return true;
-      }
+      await DatabaseService(uid: user.uid).savingUserData(
+          fullName,
+          email,
+          age,
+          Imageidcard,
+          Imageprofile,
+          Displayname,
+          gender,
+          bio,
+          isadmin,
+          verify,
+          facebook,
+          twitter,
+          instagram,
+          day,
+          month,
+          year,
+          points,
+          ban);
+      return true;
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -107,6 +102,6 @@ class AuthService {
     } catch (e) {
       return null;
     }
-    nextScreenReplaceOut(context, LandingPage());
+    nextScreenReplaceOut(context, const LandingPage());
   }
 }

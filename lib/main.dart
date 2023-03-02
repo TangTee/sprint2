@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/Landing.dart';
-import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/regis,login/Login.dart';
 import 'package:tangteevs/regis,login/Register.dart';
 
@@ -12,7 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -66,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           : const LandingPage(),
       routes: {
         '/Landing': (context) => const LandingPage(),
-        '/Login': (context) => Login(),
+        '/Login': (context) => const Login(),
         '/Register': (context) => const RegisterPage(),
         '/HomePage': (context) => const MyHomePage(index: 0),
         '/Activity': (context) => const MyHomePage(index: 1),

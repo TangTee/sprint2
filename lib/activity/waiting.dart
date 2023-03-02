@@ -1,4 +1,3 @@
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,17 +6,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../widgets/PostCard.dart';
 
 Future<String> requestToLoin(String postId, String uid, List waiting) async {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
   try {
     if (waiting.contains(uid)) {
       // if the likes list contains the user uid, we need to remove it
-      _firestore.collection('post').doc(postId).update({
+      firestore.collection('post').doc(postId).update({
         'waiting': FieldValue.arrayRemove([uid])
       });
     } else {
       // else we need to add uid to the likes array
-      _firestore.collection('post').doc(postId).update({
+      firestore.collection('post').doc(postId).update({
         'waiting': FieldValue.arrayUnion([uid])
       });
     }
@@ -33,7 +32,7 @@ class WaitingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: mobileBackgroundColor,
       body: WaitingCard(),
     );
@@ -42,6 +41,8 @@ class WaitingPage extends StatelessWidget {
 
 class WaitingCard extends StatelessWidget {
   final _post = FirebaseFirestore.instance.collection('post');
+
+   WaitingCard({super.key});
 
   @override
   Widget build(BuildContext context) {

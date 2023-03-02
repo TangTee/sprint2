@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'services/local_notification_service.dart';
-import 'screens/second_screen.dart';
 
 class notification extends StatefulWidget {
   const notification({super.key});
@@ -21,15 +20,15 @@ class _notificationState extends State<notification> {
 
   @override
   Widget build(BuildContext context) {
-    return new Drawer(
-      child: new ListView(
+    return Drawer(
+      child: ListView(
         children: <Widget>[
-          new DrawerHeader(child: new Text('Header')),
-          new ListTile(
-            title: new Text("Item 1"),
+          const DrawerHeader(child: Text('Header')),
+          const ListTile(
+            title: Text("Item 1"),
           ),
-          new ListTile(
-            title: new Text("Item 1"),
+          ListTile(
+            title: const Text("Item 1"),
             onTap: () async {
               await service.showNotification(
                   id: 0, title: 'Notification Title', body: 'Some body');

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import '../../widgets/custom_textfield.dart';
@@ -28,7 +27,7 @@ class _MainPageState extends State<MainPage> {
 
   void changeColor(Color color) => setState(() => currentColor = color);
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot, value]) async {
+  Future<void> _create() async {
     Color pickerColor2;
     ValueChanged<Color> onColorChanged = changeColor;
     await showModalBottomSheet(
@@ -64,6 +63,25 @@ class _MainPageState extends State<MainPage> {
                   Align(
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: lightGreen,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      onPressed: () async {
+                        final String Category = _CategoryController.text;
+                        await categorysSet.set({
+                          "Category": Category,
+                          "color": '#${currentColor.toString().substring(
+                                  10, currentColor.toString().length - 1)}',
+                          "categoryId": categorysSet.id
+                        });
+
+                        _CategoryController.text = '';
+                        _colorController.text = '';
+                        Navigator.of(context).pop();
+                      },
                       child: const Text(
                         'Create',
                         style: TextStyle(
@@ -73,28 +91,6 @@ class _MainPageState extends State<MainPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: lightGreen,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                      ),
-                      onPressed: () async {
-                        final String Category = _CategoryController.text;
-                        if (Category != null) {
-                          await categorysSet.set({
-                            "Category": Category,
-                            "color": '#' +
-                                currentColor.toString().substring(
-                                    10, currentColor.toString().length - 1),
-                            "categoryId": categorysSet.id
-                          });
-
-                          _CategoryController.text = '';
-                          _colorController.text = '';
-                          Navigator.of(context).pop();
-                        }
-                      },
                     ),
                   )
                 ],
@@ -138,6 +134,8 @@ class _MainPageState extends State<MainPage> {
 class Category extends StatelessWidget {
   final CollectionReference _categorys =
       FirebaseFirestore.instance.collection('categorys');
+
+   Category({super.key});
 
   @override
   Widget build(BuildContext context) {

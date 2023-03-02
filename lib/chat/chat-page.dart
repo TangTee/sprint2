@@ -1,11 +1,9 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tangteevs/chat/group_info.dart';
-import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/widgets/message-bubble.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
@@ -13,13 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart';
 import '../utils/color.dart';
-import '../utils/my_date_util.dart';
 import '../utils/showSnackbar.dart';
-import '../widgets/message-time.dart';
-import '../notification/screens/second_screen.dart';
 import '../notification/services/local_notification_service.dart';
-import '../utils/color.dart';
-import '../utils/showSnackbar.dart';
 
 class ChatPage extends StatefulWidget {
   final String groupId;
@@ -40,7 +33,7 @@ class _ChatPageState extends State<ChatPage> {
   ImagePicker imagePicker = ImagePicker();
   Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
-  String _ImageUrl = '';
+  final String _ImageUrl = '';
   String admin = "";
   bool isLoading = false;
   bool text = false;
@@ -53,7 +46,7 @@ class _ChatPageState extends State<ChatPage> {
   String replyMessage = '';
   bool imageChecker = false;
   final focusNode = FocusNode();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   File? media;
   @override
   void setState(VoidCallback fn) {
@@ -62,6 +55,7 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     service = LocalNotificationService();
@@ -159,13 +153,13 @@ class _ChatPageState extends State<ChatPage> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              title: Text('Close Activity'),
-                              content: Text(
+                              title: const Text('Close Activity'),
+                              content: const Text(
                                   'Are you sure you want to permanently\nclose this Activity ?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text('Cancle')),
+                                    child: const Text('Cancle')),
                                 TextButton(
                                   onPressed: (() async {
                                     FirebaseFirestore.instance
@@ -183,7 +177,7 @@ class _ChatPageState extends State<ChatPage> {
                                             'กิจกรรมจบแล้วอย่าลืมไปรีวิวเพื่อนๆนะ',
                                         payload: 'payload navigation');
                                   }),
-                                  child: Text('Close'),
+                                  child: const Text('Close'),
                                 )
                               ],
                             ));
@@ -275,10 +269,10 @@ class _ChatPageState extends State<ChatPage> {
                               onTap: () {
                                 sendMessage();
                               },
-                              child: Container(
+                              child: const SizedBox(
                                 height: 50,
                                 width: 50,
-                                child: const Center(
+                                child: Center(
                                     child: Icon(
                                   Icons.send_outlined,
                                   size: 30,
@@ -304,7 +298,7 @@ class _ChatPageState extends State<ChatPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_scrollController.hasClients) {
         _scrollController
-            .jumpTo(_scrollController.position.maxScrollExtent + 200);
+            .jumpTo(_scrollController.position.maxScrollExtent + 550);
       }
     });
     return StreamBuilder(
@@ -369,7 +363,7 @@ class _ChatPageState extends State<ChatPage> {
 
   sendMessage() {
     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-        duration: Duration(microseconds: 300), curve: Curves.easeOut);
+        duration: const Duration(microseconds: 300), curve: Curves.easeOut);
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
@@ -392,7 +386,7 @@ class _ChatPageState extends State<ChatPage> {
 
   sendImage() {
     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-        duration: Duration(microseconds: 300), curve: Curves.easeOut);
+        duration: const Duration(microseconds: 300), curve: Curves.easeOut);
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "message": messageController.text,
@@ -415,12 +409,12 @@ class _ChatPageState extends State<ChatPage> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.20,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 20,
       ),
       child: Column(
         children: <Widget>[
-          Text(
+          const Text(
             'Choose Profile Photo',
             style: TextStyle(
               fontSize: 20,
@@ -434,7 +428,7 @@ class _ChatPageState extends State<ChatPage> {
             children: <Widget>[
               SizedBox(
                 child: TextButton.icon(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.camera,
                     color: lightPurple,
                   ),
@@ -442,7 +436,7 @@ class _ChatPageState extends State<ChatPage> {
                     takePhoto(ImageSource.camera);
                     Navigator.pop(context);
                   },
-                  label: Text(
+                  label: const Text(
                     'Camera',
                     style: TextStyle(
                       fontSize: 20,
@@ -455,7 +449,7 @@ class _ChatPageState extends State<ChatPage> {
               ),
               SizedBox(
                 child: TextButton.icon(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.image,
                     color: lightPurple,
                   ),
@@ -463,7 +457,7 @@ class _ChatPageState extends State<ChatPage> {
                     takePhoto(ImageSource.gallery);
                     Navigator.pop(context);
                   },
-                  label: Text(
+                  label: const Text(
                     'Gallery',
                     style: TextStyle(
                       fontSize: 20,

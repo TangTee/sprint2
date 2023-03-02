@@ -32,7 +32,7 @@ class _FeedPageState extends State<FeedPage> {
       print('payload $payload');
 
       Navigator.push(
-          context, MaterialPageRoute(builder: ((context) => HomeTab())));
+          context, MaterialPageRoute(builder: ((context) => const HomeTab())));
     }
   }
 
@@ -49,7 +49,7 @@ class _FeedPageState extends State<FeedPage> {
     return MaterialApp(
       home: DismissKeyboard(
         child: Scaffold(
-          endDrawer: new notification(),
+          endDrawer: const notification(),
           resizeToAvoidBottomInset: false,
           backgroundColor: mobileBackgroundColor,
           appBar: AppBar(
@@ -74,14 +74,14 @@ class _FeedPageState extends State<FeedPage> {
                       },
                       tooltip: MaterialLocalizations.of(context)
                           .openAppDrawerTooltip,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.notifications_none,
                         color: purple,
                         size: 30,
                       )))
             ],
           ),
-          body: SearchForm(),
+          body: const SearchForm(),
         ),
       ),
     );
@@ -105,7 +105,7 @@ class _SearchFormState extends State<SearchForm> {
       print('payload $payload');
 
       Navigator.push(
-          context, MaterialPageRoute(builder: ((context) => HomeTab())));
+          context, MaterialPageRoute(builder: ((context) => const HomeTab())));
     }
   }
 
@@ -123,7 +123,7 @@ class _SearchFormState extends State<SearchForm> {
             elevation: 0,
             centerTitle: false,
             title: Padding(
-              padding: EdgeInsets.only(top: 10.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: MediaQuery.of(context).size.height * 0.05,
@@ -135,7 +135,7 @@ class _SearchFormState extends State<SearchForm> {
                   },
                   decoration: searchInputDecoration.copyWith(
                     hintText: 'ค้นหากิจกรรมที่คุณสนใจ',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: unselected,
                       fontFamily: 'MyCustomFont',
                     ),
@@ -147,7 +147,7 @@ class _SearchFormState extends State<SearchForm> {
                     suffixIcon: activitySearch.text.isEmpty
                         ? null
                         : IconButton(
-                            icon: Icon(Icons.clear),
+                            icon: const Icon(Icons.clear),
                             color: orange,
                             iconSize: 18,
                             onPressed: (() {
@@ -225,6 +225,8 @@ class _SearchFormState extends State<SearchForm> {
 class PostCard extends StatelessWidget {
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
+
+   PostCard({super.key});
 
   @override
   Widget build(BuildContext context) {

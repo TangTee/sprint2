@@ -11,7 +11,7 @@ import 'Tag.dart';
 
 class CategoryWidget extends StatefulWidget {
   final snap;
-  const CategoryWidget({required this.snap});
+  const CategoryWidget({super.key, required this.snap});
 
   @override
   _CategoryWidgetState createState() => _CategoryWidgetState();
@@ -69,14 +69,12 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                     onPressed: () async {
                       final String Category = _CategoryController.text;
 
-                      if (Category != null) {
-                        await _categorys
-                            .doc(categoryId)
-                            .update({"Category": Category});
-                        _CategoryController.text = '';
+                      await _categorys
+                          .doc(categoryId)
+                          .update({"Category": Category});
+                      _CategoryController.text = '';
 
-                        Navigator.of(context).pop();
-                      }
+                      Navigator.of(context).pop();
                     },
                   ),
                 )
@@ -117,6 +115,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -162,7 +161,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
   final TextEditingController _tagController = TextEditingController();
   final tagSet = FirebaseFirestore.instance.collection('tags');
 
-  bool _isLoading = false;
+  final bool _isLoading = false;
   bool submit = false;
   final tagController = TextEditingController();
   var tagCategoryController = TextEditingController();

@@ -21,7 +21,7 @@ class _VerifyPageState extends State<VerifyPage> {
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _create() async {
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -56,14 +56,12 @@ class _VerifyPageState extends State<VerifyPage> {
                   onPressed: () async {
                     final String Displayname = _DisplaynameController.text;
                     final String email = _emailController.text;
-                    if (email != null) {
-                      await _users
-                          .add({"Displayname": Displayname, "email": email});
+                    await _users
+                        .add({"Displayname": Displayname, "email": email});
 
-                      _DisplaynameController.text = '';
-                      _emailController.text = '';
-                      Navigator.of(context).pop();
-                    }
+                    _DisplaynameController.text = '';
+                    _emailController.text = '';
+                    Navigator.of(context).pop();
                   },
                 )
               ],
@@ -100,7 +98,7 @@ class _VerifyPageState extends State<VerifyPage> {
                     child: SizedBox(
                         height: 30,
                         width: 30,
-                        child: Container(
+                        child: SizedBox(
                             height: 40.0,
                             width: 40.0,
                             child: Image.network(_idcardController.text,
@@ -110,10 +108,10 @@ class _VerifyPageState extends State<VerifyPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text.rich(
+                const Text.rich(
                   TextSpan(
                     text: 'verify this id card',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'MyCustomFont',
                       color: unselected,
                     ),
@@ -130,28 +128,24 @@ class _VerifyPageState extends State<VerifyPage> {
                       child: const Text('Yes'),
                       onPressed: () async {
                         const bool verify = true;
-                        if (verify != null) {
-                          await _users
-                              .doc(documentSnapshot!.id)
-                              .update({"verify": verify});
-                          _DisplaynameController.text = '';
-                          _emailController.text = '';
-                          nextScreen(context, VerifyPage());
-                        }
+                        await _users
+                            .doc(documentSnapshot!.id)
+                            .update({"verify": verify});
+                        _DisplaynameController.text = '';
+                        _emailController.text = '';
+                        nextScreen(context, VerifyPage());
                       },
                     ),
                     ElevatedButton(
                       child: const Text('No'),
                       onPressed: () async {
                         const bool verify = false;
-                        if (verify != null) {
-                          await _users
-                              .doc(documentSnapshot!.id)
-                              .update({"verify": verify});
-                          _DisplaynameController.text = '';
-                          _emailController.text = '';
-                          nextScreen(context, VerifyPage());
-                        }
+                        await _users
+                            .doc(documentSnapshot!.id)
+                            .update({"verify": verify});
+                        _DisplaynameController.text = '';
+                        _emailController.text = '';
+                        nextScreen(context, VerifyPage());
                       },
                     ),
                   ],

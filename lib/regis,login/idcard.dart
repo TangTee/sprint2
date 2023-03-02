@@ -12,7 +12,6 @@ import 'package:tangteevs/services/database_service.dart';
 import '../team/privacy.dart';
 import '../team/team.dart';
 import '../utils/color.dart';
-import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
 
 class IdcardPage extends StatefulWidget {
@@ -33,7 +32,7 @@ class IdcardPage extends StatefulWidget {
 class _IdcardPageState extends State<IdcardPage> {
   DatabaseService databaseService = DatabaseService();
   final user = FirebaseAuth.instance.currentUser;
-  bool _isLoading = false;
+  final bool _isLoading = false;
   bool isChecked = false;
   bool isadmin = false;
   String bio = "";
@@ -58,6 +57,7 @@ class _IdcardPageState extends State<IdcardPage> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
   }
@@ -156,7 +156,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('1'),
+                                                child: const Text('1'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -165,7 +165,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('2'),
+                                                child: const Text('2'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -173,7 +173,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('3'),
+                                                child: const Text('3'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -181,7 +181,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('4'),
+                                                child: const Text('4'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -190,7 +190,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('5'),
+                                                child: const Text('5'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -198,7 +198,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('6'),
+                                                child: const Text('6'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -206,7 +206,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('7'),
+                                                child: const Text('7'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -215,7 +215,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('8'),
+                                                child: const Text('8'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -223,7 +223,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('9'),
+                                                child: const Text('9'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -231,7 +231,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('10'),
+                                                child: const Text('10'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -240,7 +240,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('11'),
+                                                child: const Text('11'),
                                               ),
                                               SimpleDialogOption(
                                                 onPressed: () {
@@ -248,7 +248,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                                   // Close the dialog
                                                   Navigator.pop(context);
                                                 },
-                                                child: Text('12'),
+                                                child: const Text('12'),
                                               ),
                                             ],
                                           );
@@ -397,7 +397,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                           fontWeight: FontWeight.bold),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          nextScreen(context, TermsPage());
+                                          nextScreen(context, const TermsPage());
                                         }),
                                   TextSpan(
                                       text: " and ",
@@ -414,7 +414,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                           fontWeight: FontWeight.bold),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          nextScreen(context, PrivacyPage());
+                                          nextScreen(context, const PrivacyPage());
                                         }),
                                 ],
                               )),
@@ -455,7 +455,7 @@ class _IdcardPageState extends State<IdcardPage> {
                                 if (isChecked == true) {
                                   register();
                                 } else {
-                                  return null;
+                                  return;
                                 }
                               },
                             ),
@@ -473,7 +473,7 @@ class _IdcardPageState extends State<IdcardPage> {
   register() {
     if (_formKey.currentState!.validate() == true) {
       nextScreen(
-          this.context,
+          context,
           RegisnextPage(
             Imageidcard: _ImageidcardController.toString(),
             day: _dayController.text,

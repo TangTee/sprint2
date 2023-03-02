@@ -6,7 +6,7 @@ import '../widgets/custom_textfield.dart';
 
 class TagResult extends StatefulWidget {
   final String Tag;
-  TagResult({Key? key, required this.Tag}) : super(key: key);
+  const TagResult({Key? key, required this.Tag}) : super(key: key);
 
   @override
   _MySearchTagState createState() => _MySearchTagState();

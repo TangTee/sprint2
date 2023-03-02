@@ -1,10 +1,7 @@
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:tangteevs/HomePage.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
@@ -23,7 +20,7 @@ class CreateEventScreen extends StatefulWidget {
 class _CreateEventScreenState extends State<CreateEventScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: LoadTag(),
     );
   }
@@ -52,7 +49,7 @@ class _LoadTagState extends State<LoadTag> {
   var getDate;
   var IntGetdate;
   var thisDate;
-  late String _tag = 'Tag';
+  late final String _tag = 'Tag';
   final _peopleLimit = TextEditingController();
   var _tag2;
   var valuee;
@@ -85,11 +82,11 @@ class _LoadTagState extends State<LoadTag> {
                         controller: _activityName,
                         style: const TextStyle(fontSize: 20),
                         decoration: InputDecoration(
-                            labelStyle: TextStyle(
+                            labelStyle: const TextStyle(
                                 color: mobileSearchColor,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "MyCustomFont"),
-                            suffixIcon: Icon(Icons.edit),
+                            suffixIcon: const Icon(Icons.edit),
                             border: InputBorder.none,
                             hintText: 'Write your activity name',
                             counterText:
@@ -176,13 +173,13 @@ class _LoadTagState extends State<LoadTag> {
                           children: [
                             Column(
                               children: [
-                                Container(
+                                SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.43,
                                   child: TextField(
                                     controller: dateController,
                                     decoration: textInputDecoration.copyWith(
-                                      prefixIcon: Icon(Icons.calendar_month),
+                                      prefixIcon: const Icon(Icons.calendar_month),
                                       labelStyle: const TextStyle(
                                         color: mobileSearchColor,
                                         fontFamily: "MyCustomFont",
@@ -220,7 +217,7 @@ class _LoadTagState extends State<LoadTag> {
                             if (isDateSelect == false)
                               Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: MediaQuery.of(context).size.width *
                                         0.43,
                                     child: TextField(
@@ -231,7 +228,7 @@ class _LoadTagState extends State<LoadTag> {
                                             color: mobileSearchColor,
                                             fontFamily: "MyCustomFont",
                                           ),
-                                          disabledBorder: OutlineInputBorder(
+                                          disabledBorder: const OutlineInputBorder(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(20.0)),
                                             borderSide: BorderSide(
@@ -274,7 +271,7 @@ class _LoadTagState extends State<LoadTag> {
                             else
                               Column(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                     width: MediaQuery.of(context).size.width *
                                         0.43,
                                     child: TextField(
@@ -384,7 +381,7 @@ class _LoadTagState extends State<LoadTag> {
                               hintText: 'People Limit',
                               counterText: _enteredTextL == null
                                   ? '0 /99'
-                                  : '${_enteredTextL} /99',
+                                  : '$_enteredTextL /99',
                               counterStyle: TextStyle(color: TextL),
                             ),
                             keyboardType: TextInputType.number,
@@ -420,7 +417,7 @@ class _LoadTagState extends State<LoadTag> {
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: mobileSearchColor,
                               ),
-                              child: Container(
+                              child: SizedBox(
                                 width: 50,
                                 child: Row(
                                   children: const [
@@ -435,14 +432,10 @@ class _LoadTagState extends State<LoadTag> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 4),
-                        child: Container(
+                        child: SizedBox(
                           width: MediaQuery.of(context).size.width * 90.0,
                           height: 50,
                           child: ElevatedButton(
-                            child: Text(
-                              "Post",
-                              style: TextStyle(fontSize: 20),
-                            ),
                             style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30)),
@@ -557,6 +550,10 @@ class _LoadTagState extends State<LoadTag> {
                                 }
                               }
                             },
+                            child: const Text(
+                              "Post",
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                         ),
                       ),
@@ -571,6 +568,7 @@ class _LoadTagState extends State<LoadTag> {
     );
   }
 
+  @override
   void initState() {
     dateController.text = "";
     _time.text = "";

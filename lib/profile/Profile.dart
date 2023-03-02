@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/Landing.dart';
 import 'package:tangteevs/admin/home.dart';
 import 'package:tangteevs/profile/edit.dart';
@@ -96,8 +95,8 @@ class _ProfilePageState extends State<ProfilePage> {
               if (userData['admin'] == true)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
-                    child: const Text(
+                  title: const Center(
+                    child: Text(
                       'Go to admin page',
                       style:
                           TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
@@ -117,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                title: Center(
+                title: const Center(
                   child: Text(
                     'Edit Profile',
                     style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
@@ -172,7 +171,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final _post = FirebaseFirestore.instance
+    final post = FirebaseFirestore.instance
         .collection('post')
         .orderBy('timeStamp', descending: true);
 
@@ -245,9 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       child: Text.rich(
                                         TextSpan(
-                                          text: 'อายุ ' +
-                                              duration.years.toString() +
-                                              ' ปี',
+                                          text: 'อายุ ${duration.years} ปี',
                                           style: const TextStyle(
                                             fontFamily: 'MyCustomFont',
                                             color: unselected,
@@ -264,8 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       child: Text.rich(
                                         TextSpan(
-                                          text: 'เพศ ' +
-                                              userData['gender'].toString(),
+                                          text: 'เพศ ${userData['gender']}',
                                           style: const TextStyle(
                                             fontFamily: 'MyCustomFont',
                                             color: unselected,
@@ -316,10 +312,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   child: MaterialButton(
                                                     onPressed: () {
                                                       Uri uri = Uri.parse(
-                                                          "https://www.instagram.com/" +
-                                                              userData[
-                                                                      'instagram']
-                                                                  .toString()); //https://www.instagram.com/
+                                                          "https://www.instagram.com/${userData[
+                                                                      'instagram']}"); //https://www.instagram.com/
                                                       _launchUrl(uri);
                                                     },
                                                     padding:
@@ -336,9 +330,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         'assets/images/instagram.png'),
                                                   ),
                                                 ),
-                                                Padding(
+                                                const Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
+                                                      EdgeInsets.only(
                                                     left: 20,
                                                   ),
                                                 ),
@@ -541,6 +535,8 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 class ReviewPage extends StatelessWidget {
+  const ReviewPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

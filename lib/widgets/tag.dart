@@ -1,14 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../utils/color.dart';
 
 showModalBottomSheetC(BuildContext context) {
-  final CollectionReference _categorys =
+  final CollectionReference categorys =
       FirebaseFirestore.instance.collection('categorys');
-  var value = new Map();
+  var value = {};
 
   showModalBottomSheet(
     useRootNavigator: true,
@@ -18,7 +17,7 @@ showModalBottomSheetC(BuildContext context) {
         width: MediaQuery.of(context).size.width * 0.1,
         height: MediaQuery.of(context).size.height * 0.5,
         child: StreamBuilder(
-          stream: _categorys.snapshots(),
+          stream: categorys.snapshots(),
           builder: ((context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasData) {
               return GridView.builder(
@@ -27,13 +26,13 @@ showModalBottomSheetC(BuildContext context) {
                     childAspectRatio: 2 / 2,
                     crossAxisSpacing: 30,
                     mainAxisSpacing: 20),
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 itemCount: (snapshot.data! as dynamic).docs.length,
                 itemBuilder: (context, index) {
                   final DocumentSnapshot documentSnapshot =
                       snapshot.data!.docs[index];
 
-                  var Mytext = new Map();
+                  var Mytext = {};
                   Mytext['Category'] = documentSnapshot['Category'];
                   Mytext['categoryId'] = documentSnapshot['categoryId'];
                   Mytext['color'] = documentSnapshot['color'];
@@ -57,7 +56,7 @@ showModalBottomSheetC(BuildContext context) {
                           title: Center(
                               child: Text(
                             Mytext['Category'],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               fontSize: 20,
                             ),
@@ -381,7 +380,7 @@ showModalBottomSheetC(BuildContext context) {
 // }
 
 showModalBottomSheetT(BuildContext context, categoryId, value) {
-  final CollectionReference _tags =
+  final CollectionReference tags =
       FirebaseFirestore.instance.collection('tags');
 
   showModalBottomSheet(
@@ -389,7 +388,7 @@ showModalBottomSheetT(BuildContext context, categoryId, value) {
     context: context,
     builder: (BuildContext context) {
       return StreamBuilder(
-        stream: _tags.where("categoryId", isEqualTo: categoryId).snapshots(),
+        stream: tags.where("categoryId", isEqualTo: categoryId).snapshots(),
         builder: ((context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             return Padding(
@@ -410,10 +409,10 @@ showModalBottomSheetT(BuildContext context, categoryId, value) {
                         final DocumentSnapshot documentSnapshot =
                             snapshot.data!.docs[index];
 
-                        var Mytext = new Map();
+                        var Mytext = {};
                         Mytext['tag'] = documentSnapshot['tag'];
                         Mytext['tagColor'] = documentSnapshot['tagColor'];
-                        return Container(
+                        return SizedBox(
                             width: MediaQuery.of(context).size.width * 0.3,
                             height: MediaQuery.of(context).size.height * 0.1,
                             child: Column(children: [
@@ -426,11 +425,6 @@ showModalBottomSheetT(BuildContext context, categoryId, value) {
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                   },
-                                  child: Text(
-                                    Mytext['tag'],
-                                    style: const TextStyle(
-                                        color: mobileSearchColor, fontSize: 14),
-                                  ),
                                   style: OutlinedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
@@ -440,6 +434,11 @@ showModalBottomSheetT(BuildContext context, categoryId, value) {
                                             Mytext['tagColor'],
                                           ),
                                           width: 1.5)),
+                                  child: Text(
+                                    Mytext['tag'],
+                                    style: const TextStyle(
+                                        color: mobileSearchColor, fontSize: 14),
+                                  ),
                                 ),
                               ),
                             ]));

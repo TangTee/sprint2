@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:tangteevs/regis,login/idcard.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
-import 'package:tangteevs/helper/helper_function.dart';
 import '../utils/color.dart';
 import 'Login.dart';
 import 'dart:io';
@@ -21,7 +19,7 @@ class _RegistrationScreen extends State<RegisterPage> {
   bool isChecked = false;
   File? media;
   File? media1;
-  bool _isLoading = false;
+  final bool _isLoading = false;
   final user = FirebaseAuth.instance.currentUser;
   final _formKey = GlobalKey<FormState>();
   String email = "";
@@ -253,7 +251,7 @@ class _RegistrationScreen extends State<RegisterPage> {
                                           decoration: TextDecoration.underline),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          nextScreen(context, Login());
+                                          nextScreen(context, const Login());
                                         }),
                                 ],
                               )),
@@ -270,7 +268,7 @@ class _RegistrationScreen extends State<RegisterPage> {
   register() {
     if (_formKey.currentState!.validate() == true) {
       nextScreen(
-          this.context,
+          context,
           IdcardPage(
             email: email,
             fullName: fullName,

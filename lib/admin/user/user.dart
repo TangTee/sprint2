@@ -62,7 +62,7 @@ class _UserPageState extends State<UserPage> {
                 // hwak 1
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
+                  title: const Center(
                     child: Text(
                       'test hwak',
                       style:
@@ -84,7 +84,7 @@ class _UserPageState extends State<UserPage> {
 
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
+                  title: const Center(
                     child: Text(
                       'Go to User page',
                       style:
@@ -96,7 +96,7 @@ class _UserPageState extends State<UserPage> {
                         .pushAndRemoveUntil(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return MyHomePage(
+                          return const MyHomePage(
                             index: 4,
                           );
                         },
@@ -116,7 +116,7 @@ class _UserPageState extends State<UserPage> {
                           : Icons.light_mode_rounded),
                       Text(
                         lightTheme ? 'Dark Mode' : '  Light ',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'MyCustomFont',
                           fontSize: 20,
                         ),
@@ -155,7 +155,7 @@ class _UserPageState extends State<UserPage> {
                       // String? fcmKey = await getFcmToken();
                       // print('FCM Key: $fcmKey');
                     },
-                    child: Text("Item 1")),
+                    child: const Text("Item 1")),
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
                   title: const Center(

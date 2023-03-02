@@ -12,7 +12,7 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   String name = '';
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void initState() {
@@ -28,7 +28,7 @@ class _PostPageState extends State<PostPage> {
   final CollectionReference _report =
       FirebaseFirestore.instance.collection('report');
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _create() async {
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -63,14 +63,12 @@ class _PostPageState extends State<PostPage> {
                   onPressed: () async {
                     final String Displayname = _DisplaynameController.text;
                     final String email = _emailController.text;
-                    if (email != null) {
-                      await _report
-                          .add({"Displayname": Displayname, "email": email});
+                    await _report
+                        .add({"Displayname": Displayname, "email": email});
 
-                      _DisplaynameController.text = '';
-                      _emailController.text = '';
-                      Navigator.of(context).pop();
-                    }
+                    _DisplaynameController.text = '';
+                    _emailController.text = '';
+                    Navigator.of(context).pop();
                   },
                 )
               ],
@@ -107,7 +105,7 @@ class _PostPageState extends State<PostPage> {
                     child: SizedBox(
                         height: 30,
                         width: 30,
-                        child: Container(
+                        child: SizedBox(
                             height: 40.0,
                             width: 40.0,
                             child: Image.network(_idcardController.text,
@@ -117,10 +115,10 @@ class _PostPageState extends State<PostPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text.rich(
+                const Text.rich(
                   TextSpan(
                     text: 'verify this id card',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'MyCustomFont',
                       color: unselected,
                     ),
@@ -137,28 +135,24 @@ class _PostPageState extends State<PostPage> {
                       child: const Text('Yes'),
                       onPressed: () async {
                         const bool verify = true;
-                        if (verify != null) {
-                          await _report
-                              .doc(documentSnapshot!.id)
-                              .update({"verify": verify});
-                          _DisplaynameController.text = '';
-                          _emailController.text = '';
-                          nextScreen(context, PostPage());
-                        }
+                        await _report
+                            .doc(documentSnapshot!.id)
+                            .update({"verify": verify});
+                        _DisplaynameController.text = '';
+                        _emailController.text = '';
+                        nextScreen(context, const PostPage());
                       },
                     ),
                     ElevatedButton(
                       child: const Text('No'),
                       onPressed: () async {
                         const bool verify = false;
-                        if (verify != null) {
-                          await _report
-                              .doc(documentSnapshot!.id)
-                              .update({"verify": verify});
-                          _DisplaynameController.text = '';
-                          _emailController.text = '';
-                          nextScreen(context, PostPage());
-                        }
+                        await _report
+                            .doc(documentSnapshot!.id)
+                            .update({"verify": verify});
+                        _DisplaynameController.text = '';
+                        _emailController.text = '';
+                        nextScreen(context, const PostPage());
                       },
                     ),
                   ],
@@ -193,7 +187,7 @@ class _PostPageState extends State<PostPage> {
                     child: ListTile(
                       title: Text(documentSnapshot['activityName']),
                       subtitle: Text(documentSnapshot['problem']),
-                      trailing: SingleChildScrollView(
+                      trailing: const SingleChildScrollView(
                         child: SizedBox(
                           width: 100,
                         ),

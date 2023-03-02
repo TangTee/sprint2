@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' show CupertinoTextField;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -70,17 +69,17 @@ class _HSVColorPickerState extends State<HSVColorPicker> {
                   },
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: widget.pickerColor,
+                shadowColor: widget.pickerColor.withOpacity(1),
+                elevation: 10,
+              ),
               child: Text(
                 'Color',
                 style: TextStyle(
                     color: useWhiteForeground(widget.pickerColor)
                         ? Colors.white
                         : Colors.black),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: widget.pickerColor,
-                shadowColor: widget.pickerColor.withOpacity(1),
-                elevation: 10,
               ),
             ),
           ),

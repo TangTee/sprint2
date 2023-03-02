@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -103,24 +101,25 @@ class DatabaseService {
     joinCollection.doc(groupId).update({
       "recentMessage": chatMessageData['message'],
       "recentMessageSender": chatMessageData['sender'],
-      "recentMessageTime": chatMessageData['time'].toString(),
+      "recentMessageTime": chatMessageData['time'],
+      
       "recentMessageUID": FirebaseAuth.instance.currentUser!.uid,
     });
   }
 }
 
 Future<String> Unread(String groupid, String time, List unread) async {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
   try {
     if (unread.contains(time)) {
       // if the likes list contains the user uid, we need to remove it
-      _firestore.collection('join').doc(groupid).update({
+      firestore.collection('join').doc(groupid).update({
         'unread': FieldValue.arrayRemove([time])
       });
     } else {
       // else we need to add uid to the likes array
-      _firestore.collection('join').doc(groupid).update({
+      firestore.collection('join').doc(groupid).update({
         'unread': FieldValue.arrayUnion([time])
       });
     }

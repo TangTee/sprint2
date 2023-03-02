@@ -1,18 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:tangteevs/chat/chat-page.dart';
-import 'package:tangteevs/helper/helper_function.dart';
 import 'package:tangteevs/services/auth_service.dart';
-import 'package:tangteevs/services/database_service.dart';
-import 'package:tangteevs/widgets/group_tile.dart';
-import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../profile/edit.dart';
 import '../utils/color.dart';
-import '../utils/my_date_util.dart';
-import '../utils/showSnackbar.dart';
 import '../widgets/message-landing.dart';
 
 class ChatHomePage extends StatefulWidget {
@@ -28,7 +21,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
   String email = "";
   AuthService authService = AuthService();
   Stream? groups;
-  bool _isLoading = false;
+  final bool _isLoading = false;
   final CollectionReference _join =
       FirebaseFirestore.instance.collection('join');
 
@@ -72,75 +65,71 @@ class _ChatHomePageState extends State<ChatHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: mobileBackgroundColor,
+      appBar: AppBar(
         backgroundColor: mobileBackgroundColor,
-        appBar: AppBar(
-          backgroundColor: mobileBackgroundColor,
-          elevation: 1,
-          leadingWidth: 130,
-          centerTitle: false,
-          leading: Container(
-            padding: const EdgeInsets.only(left: 13),
-            child: Image.asset(
-              'assets/images/logo with name.png',
-              width: MediaQuery.of(context).size.width * 0.31,
+        elevation: 1,
+        leadingWidth: 130,
+        centerTitle: false,
+        leading: Container(
+          padding: const EdgeInsets.only(left: 13),
+          child: Image.asset(
+            'assets/images/logo with name.png',
+            width: MediaQuery.of(context).size.width * 0.31,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications_none,
+              color: purple,
+              size: 30,
+            ),
+            onPressed: () {
+              // print((FirebaseAuth.instance.currentUser!.uid));
+            },
+          )
+        ],
+      ),
+      drawer: Drawer(
+          child: ListView(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        children: <Widget>[
+          Icon(
+            Icons.account_circle,
+            size: 150,
+            color: Colors.grey[700],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Text(
+            userName,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          const Divider(
+            height: 2,
+          ),
+          ListTile(
+            onTap: () {},
+            selectedColor: Theme.of(context).primaryColor,
+            selected: true,
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            leading: const Icon(Icons.group),
+            title: const Text(
+              "Groups",
+              style: TextStyle(color: Colors.black),
             ),
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.notifications_none,
-                color: purple,
-                size: 30,
-              ),
-              onPressed: () {
-                print((FirebaseAuth.instance.currentUser!.uid));
-              },
-            )
-          ],
-        ),
-        drawer: Drawer(
-            child: ListView(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          children: <Widget>[
-            Icon(
-              Icons.account_circle,
-              size: 150,
-              color: Colors.grey[700],
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(
-              userName,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            const Divider(
-              height: 2,
-            ),
-            ListTile(
-              onTap: () {},
-              selectedColor: Theme.of(context).primaryColor,
-              selected: true,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              leading: const Icon(Icons.group),
-              title: const Text(
-                "Groups",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ],
-        )),
-        body: SafeArea(
-          child: groupList(),
-        ),
-      ),
+        ],
+      )),
+      body: groupList(),
     );
   }
 
@@ -149,6 +138,7 @@ class _ChatHomePageState extends State<ChatHomePage> {
       stream: _join
           .where('member',
               arrayContains: FirebaseAuth.instance.currentUser!.uid)
+          // .orderBy('recentMessageTime', descending: true)
           .snapshots(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
@@ -183,7 +173,8 @@ class _ChatHomePageState extends State<ChatHomePage> {
                       uid: documentSnapshot['recentMessageUID'],
                       messageTitle: documentSnapshot['groupName'],
                       messageContent: documentSnapshot['recentMessage'],
-                      messageTime: documentSnapshot['recentMessageTime'],
+                      messageTime:
+                          documentSnapshot['recentMessageTime'].toString(),
                       timer: documentSnapshot['recentMessageTime'] == '',
                       messageImage: documentSnapshot['owner'],
                       isunread: documentSnapshot['recentMessageUID'] ==

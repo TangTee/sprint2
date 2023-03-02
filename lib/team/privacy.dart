@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
 
 class PrivacyPage extends StatelessWidget {
+  const PrivacyPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +32,7 @@ class PrivacyPage extends StatelessWidget {
               Container(
                 height: 500,
                 width: 400,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 255, 248, 225),
                 ),
                 child: const Text(

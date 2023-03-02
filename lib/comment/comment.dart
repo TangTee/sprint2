@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:tangteevs/activity/Activity.dart';
 import 'package:tangteevs/feed/EditAct.dart';
 import 'package:tangteevs/utils/showSnackbar.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
@@ -46,6 +45,7 @@ class _MyCommentState extends State<Comment> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -165,7 +165,7 @@ class _MyCommentState extends State<Comment> {
                   ],
                 ),
                 body: SafeArea(
-                  child: Container(
+                  child: SizedBox(
                     height: MediaQuery.of(context).size.height,
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
@@ -312,19 +312,14 @@ class _MyCommentState extends State<Comment> {
                                                                               .bold,
                                                                     )),
                                                               ),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                   child: Icon(Icons
                                                                       .person)),
                                                               Text.rich(TextSpan(
                                                                   children: <
                                                                       InlineSpan>[
                                                                     TextSpan(
-                                                                        text: '\t' +
-                                                                            joinLen
-                                                                                .toString() +
-                                                                            ' / ' +
-                                                                            documentSnapshot['peopleLimit']
-                                                                                .toString(),
+                                                                        text: '\t$joinLen / ${documentSnapshot['peopleLimit']}',
                                                                         style:
                                                                             const TextStyle(
                                                                           fontSize:
@@ -352,7 +347,7 @@ class _MyCommentState extends State<Comment> {
                                                               ),
                                                               TextSpan(
                                                                   text:
-                                                                      '${'\t\t' + documentSnapshot['date'] + '\t\t(' + documentSnapshot['time']})',
+                                                                      '${'${'\t\t' + documentSnapshot['date']}\t\t(' + documentSnapshot['time']})',
                                                                   style:
                                                                       const TextStyle(
                                                                     fontFamily:
@@ -383,10 +378,9 @@ class _MyCommentState extends State<Comment> {
                                                                     ),
                                                                   ),
                                                                   TextSpan(
-                                                                      text: '\t\t' +
+                                                                      text: '${'\t\t' +
                                                                           documentSnapshot[
-                                                                              'place'] +
-                                                                          ' /',
+                                                                              'place']} /',
                                                                       style:
                                                                           const TextStyle(
                                                                         fontFamily:
@@ -402,7 +396,7 @@ class _MyCommentState extends State<Comment> {
                                                                   const EdgeInsets
                                                                           .only(
                                                                       top: 8.0),
-                                                              child: Container(
+                                                              child: SizedBox(
                                                                 height: MediaQuery.of(
                                                                             context)
                                                                         .size
@@ -419,7 +413,7 @@ class _MyCommentState extends State<Comment> {
                                                                             uri);
                                                                       },
                                                                       child:
-                                                                          Text(
+                                                                          const Text(
                                                                         'Location',
                                                                         style:
                                                                             TextStyle(
@@ -468,7 +462,7 @@ class _MyCommentState extends State<Comment> {
                                                                   Axis.horizontal,
                                                               child: Padding(
                                                                 padding:
-                                                                    EdgeInsets
+                                                                    const EdgeInsets
                                                                         .all(1),
                                                                 child: SizedBox(
                                                                   width: MediaQuery.of(
@@ -482,7 +476,7 @@ class _MyCommentState extends State<Comment> {
                                                                           .height *
                                                                       0.04,
                                                                   child:
-                                                                      Container(
+                                                                      SizedBox(
                                                                     width: MediaQuery.of(context)
                                                                             .size
                                                                             .width *
@@ -531,7 +525,7 @@ class _MyCommentState extends State<Comment> {
                                                                 documentSnapshot[
                                                                         'open'] ==
                                                                     true)
-                                                              Container(
+                                                              SizedBox(
                                                                 width: MediaQuery.of(
                                                                             context)
                                                                         .size
@@ -551,14 +545,14 @@ class _MyCommentState extends State<Comment> {
                                                                             .styleFrom(
                                                                           shape:
                                                                               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                          side: BorderSide(
+                                                                          side: const BorderSide(
                                                                               color: disable,
                                                                               width: 1.5),
                                                                         ),
                                                                         child:
                                                                             const Text(
                                                                           '0 Request',
-                                                                          style: const TextStyle(
+                                                                          style: TextStyle(
                                                                               color: disable,
                                                                               fontSize: 16),
                                                                         ),
@@ -624,7 +618,7 @@ class _MyCommentState extends State<Comment> {
                                                                 documentSnapshot[
                                                                         'open'] ==
                                                                     true)
-                                                              Container(
+                                                              SizedBox(
                                                                 width: MediaQuery.of(
                                                                             context)
                                                                         .size
@@ -688,14 +682,14 @@ class _MyCommentState extends State<Comment> {
                                                                             .styleFrom(
                                                                           shape:
                                                                               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                                                          side: BorderSide(
+                                                                          side: const BorderSide(
                                                                               color: disable,
                                                                               width: 1.5),
                                                                         ),
                                                                         child:
-                                                                            Text(
+                                                                            const Text(
                                                                           'Full',
-                                                                          style: const TextStyle(
+                                                                          style: TextStyle(
                                                                               color: disable,
                                                                               fontSize: 14),
                                                                         ),
@@ -758,7 +752,7 @@ class _MyCommentState extends State<Comment> {
                                                 AsyncSnapshot<QuerySnapshot>
                                                     snapshot) {
                                               if (snapshot.hasData) {
-                                                return Container(
+                                                return SizedBox(
                                                   height: MediaQuery.of(context)
                                                           .size
                                                           .height *
@@ -791,7 +785,7 @@ class _MyCommentState extends State<Comment> {
                                                             child: Row(
                                                               children: [
                                                                 Padding(
-                                                                  padding: EdgeInsets
+                                                                  padding: const EdgeInsets
                                                                       .only(
                                                                           bottom:
                                                                               45),
@@ -840,7 +834,7 @@ class _MyCommentState extends State<Comment> {
                                                                     child:
                                                                         Padding(
                                                                       padding:
-                                                                          EdgeInsets.all(
+                                                                          const EdgeInsets.all(
                                                                               15.00),
                                                                       child:
                                                                           Column(
@@ -1078,7 +1072,7 @@ class _MyCommentState extends State<Comment> {
               if (postData['uid'].toString() == uid)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
+                  title: const Center(
                     child: Text(
                       'Edit Activity',
                       style:
@@ -1115,13 +1109,13 @@ class _MyCommentState extends State<Comment> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              title: Text('Delete Activity'),
-                              content: Text(
+                              title: const Text('Delete Activity'),
+                              content: const Text(
                                   'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text('Cancle')),
+                                    child: const Text('Cancle')),
                                 TextButton(
                                     onPressed: (() {
                                       FirebaseFirestore.instance
@@ -1132,14 +1126,14 @@ class _MyCommentState extends State<Comment> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(
+                                            builder: (context) => const MyHomePage(
                                               index: 0,
                                             ),
                                           ),
                                         );
                                       });
                                     }),
-                                    child: Text('Delete'))
+                                    child: const Text('Delete'))
                               ],
                             ));
                   },
@@ -1200,7 +1194,7 @@ class _MyCommentState extends State<Comment> {
               if (FirebaseAuth.instance.currentUser!.uid == mytext['uid'])
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
+                  title: const Center(
                     child: Text(
                       'Edit',
                       style:
@@ -1211,7 +1205,7 @@ class _MyCommentState extends State<Comment> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              title: Text('Edit Comment'),
+                              title: const Text('Edit Comment'),
                               content: Form(
                                 child: TextFormField(
                                   keyboardType: TextInputType.multiline,
@@ -1239,7 +1233,7 @@ class _MyCommentState extends State<Comment> {
                                 TextButton(
                                     onPressed: () => Navigator.of(context)
                                         .popUntil((route) => route.isFirst),
-                                    child: Text('Cancle')),
+                                    child: const Text('Cancle')),
                                 TextButton(
                                     onPressed: (() {
                                       FirebaseFirestore.instance
@@ -1260,7 +1254,7 @@ class _MyCommentState extends State<Comment> {
                                             .popUntil((route) => route.isFirst);
                                       });
                                     }),
-                                    child: Text('Save'))
+                                    child: const Text('Save'))
                               ],
                             ));
                   },
@@ -1280,13 +1274,13 @@ class _MyCommentState extends State<Comment> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              title: Text('Delete Comment'),
-                              content: Text(
+                              title: const Text('Delete Comment'),
+                              content: const Text(
                                   'Are you sure you want to permanently\nremove this comment from Tungtee?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text('Cancle')),
+                                    child: const Text('Cancle')),
                                 TextButton(
                                     onPressed: (() {
                                       FirebaseFirestore.instance
@@ -1300,7 +1294,7 @@ class _MyCommentState extends State<Comment> {
                                             .popUntil((route) => route.isFirst);
                                       });
                                     }),
-                                    child: Text('Delete'))
+                                    child: const Text('Delete'))
                               ],
                             ));
                   },

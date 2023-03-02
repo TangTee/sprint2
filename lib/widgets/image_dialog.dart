@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/utils/color.dart';
 
 class ImageDialog extends StatelessWidget {
@@ -17,7 +16,7 @@ class ImageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(0, 0, 0, 1),
+        backgroundColor: const Color.fromRGBO(0, 0, 0, 1),
         body: SizedBox(
           child: Stack(
             children: [
@@ -44,11 +43,11 @@ class ImageDialog extends StatelessWidget {
                   minWidth: 0,
                   padding: const EdgeInsets.all(0),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: green,
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.download,
                       color: primaryColor,
                       size: 30,
@@ -66,11 +65,11 @@ class ImageDialog extends StatelessWidget {
                   minWidth: 0,
                   padding: const EdgeInsets.all(0),
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: redColor,
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.close,
                       color: primaryColor,
                       size: 30,
@@ -81,7 +80,7 @@ class ImageDialog extends StatelessWidget {
               Positioned(
                 top: MediaQuery.of(context).size.height * 0.07,
                 left: MediaQuery.of(context).size.width * 0.001,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: PhotoView(

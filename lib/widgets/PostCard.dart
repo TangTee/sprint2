@@ -15,7 +15,7 @@ import 'TagResult.dart';
 
 class CardWidget extends StatefulWidget {
   final snap;
-  const CardWidget({required this.snap});
+  const CardWidget({super.key, required this.snap});
 
   @override
   _PostCardState createState() => _PostCardState();
@@ -94,6 +94,7 @@ class _PostCardState extends State<CardWidget> {
         content: Text('You have successfully deleted a post activity')));
   }
 
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
@@ -192,11 +193,9 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                           TextSpan(
-                            text: '\t\t' +
-                                widget.snap['date'] +
-                                '\t(' +
-                                widget.snap['time'] +
-                                ')',
+                            text: '${'${'\t\t' +
+                                widget.snap['date']}\t(' +
+                                widget.snap['time']})',
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,
@@ -223,7 +222,7 @@ class _PostCardState extends State<CardWidget> {
                                 ),
                               ),
                               TextSpan(
-                                text: '\t\t' + widget.snap['place'] + ' /',
+                                text: '${'\t\t' + widget.snap['place']} /',
                                 style: const TextStyle(
                                   fontFamily: 'MyCustomFont',
                                   color: unselected,
@@ -235,7 +234,7 @@ class _PostCardState extends State<CardWidget> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0),
-                          child: Container(
+                          child: SizedBox(
                             height: MediaQuery.of(context).size.height * 0.05,
                             child: Row(
                               children: [
@@ -245,7 +244,7 @@ class _PostCardState extends State<CardWidget> {
                                         Uri.parse(widget.snap['location']);
                                     _launchUrl(uri);
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     'Location',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -271,10 +270,7 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                           TextSpan(
-                            text: '\t\t' +
-                                joinLen.toString() +
-                                ' / ' +
-                                widget.snap['peopleLimit'].toString(),
+                            text: '\t\t$joinLen / ${widget.snap['peopleLimit']}',
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,
@@ -286,7 +282,7 @@ class _PostCardState extends State<CardWidget> {
                     ),
                     Row(
                       children: [
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.40,
                           height: MediaQuery.of(context).size.height * 0.04,
                           child: Row(
@@ -294,7 +290,7 @@ class _PostCardState extends State<CardWidget> {
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Padding(
-                                  padding: EdgeInsets.only(top: 3),
+                                  padding: const EdgeInsets.only(top: 3),
                                   child: SizedBox(
                                     child: OutlinedButton(
                                       onPressed: () {
@@ -306,12 +302,6 @@ class _PostCardState extends State<CardWidget> {
                                           ),
                                         );
                                       },
-                                      child: Text(
-                                        widget.snap['tag'],
-                                        style: const TextStyle(
-                                            color: mobileSearchColor,
-                                            fontSize: 14),
-                                      ),
                                       style: OutlinedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -320,6 +310,12 @@ class _PostCardState extends State<CardWidget> {
                                               color: HexColor(
                                                   widget.snap['tagColor']),
                                               width: 1.5)),
+                                      child: Text(
+                                        widget.snap['tag'],
+                                        style: const TextStyle(
+                                            color: mobileSearchColor,
+                                            fontSize: 14),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -327,7 +323,7 @@ class _PostCardState extends State<CardWidget> {
                             ],
                           ),
                         ),
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width * 0.45,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -390,7 +386,7 @@ class _PostCardState extends State<CardWidget> {
               if (postData['open'] == true && postData['uid'].toString() == uid)
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  title: Center(
+                  title: const Center(
                     child: Text(
                       'Edit Activity',
                       style:
@@ -425,13 +421,13 @@ class _PostCardState extends State<CardWidget> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              title: Text('Delete Activity'),
-                              content: Text(
+                              title: const Text('Delete Activity'),
+                              content: const Text(
                                   'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text('Cancle')),
+                                    child: const Text('Cancle')),
                                 TextButton(
                                     onPressed: (() {
                                       FirebaseFirestore.instance
@@ -442,14 +438,14 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(
+                                            builder: (context) => const MyHomePage(
                                               index: 0,
                                             ),
                                           ),
                                         );
                                       });
                                     }),
-                                    child: Text('Delete'))
+                                    child: const Text('Delete'))
                               ],
                             ));
                   },
@@ -471,13 +467,13 @@ class _PostCardState extends State<CardWidget> {
                     showDialog(
                         context: context,
                         builder: (context) => AlertDialog(
-                              title: Text('Delete Activity'),
-                              content: Text(
+                              title: const Text('Delete Activity'),
+                              content: const Text(
                                   'Are you sure you want to permanently\nremove this Activity from Tungtee?'),
                               actions: [
                                 TextButton(
                                     onPressed: () => Navigator.pop(context),
-                                    child: Text('Cancle')),
+                                    child: const Text('Cancle')),
                                 TextButton(
                                     onPressed: (() {
                                       FirebaseFirestore.instance
@@ -489,14 +485,14 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => MyHomePage(
+                                            builder: (context) => const MyHomePage(
                                               index: 0,
                                             ),
                                           ),
                                         );
                                       });
                                     }),
-                                    child: Text('Delete'))
+                                    child: const Text('Delete'))
                               ],
                             ));
                   },

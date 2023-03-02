@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../HomePage.dart';
 import '../utils/color.dart';
-import 'package:tangteevs/widgets/custom_textfield.dart';
 
-import 'chat/chat-page.dart';
 
-void showModalBottomSheetRP(BuildContext context, r_pid) {
+void showModalBottomSheetRP(BuildContext context, rPid) {
   final uid = FirebaseAuth.instance.currentUser!.uid;
-  final _report =
-      FirebaseFirestore.instance.collection('report').doc(r_pid['rid']);
+  final report =
+      FirebaseFirestore.instance.collection('report').doc(rPid['rid']);
   showModalBottomSheet(
     useRootNavigator: true,
     context: context,
@@ -27,24 +24,24 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
             children: <Widget>[
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-                title: Center(
+                title: const Center(
                   child: Text(
                     'อนาจาร',
                     style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
-                    'postid': r_pid['postid'],
-                    'activityName': r_pid['activityName'],
-                    'place': r_pid['place'],
-                    'location': r_pid['location'],
-                    'date': r_pid['date'],
-                    'time': r_pid['time'],
-                    'detail': r_pid['detail'],
-                    'peopleLimit': r_pid['peopleLimit'],
-                    'uid': r_pid['uid'],
+                  report.set({
+                    'rid': report.id,
+                    'postid': rPid['postid'],
+                    'activityName': rPid['activityName'],
+                    'place': rPid['place'],
+                    'location': rPid['location'],
+                    'date': rPid['date'],
+                    'time': rPid['time'],
+                    'detail': rPid['detail'],
+                    'peopleLimit': rPid['peopleLimit'],
+                    'uid': rPid['uid'],
                     'problem': 'อนาจาร',
                     'type': 'post',
                     //'likes': [],
@@ -67,17 +64,17 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
-                    'postid': r_pid['postid'],
-                    'activityName': r_pid['activityName'],
-                    'place': r_pid['place'],
-                    'location': r_pid['location'],
-                    'date': r_pid['date'],
-                    'time': r_pid['time'],
-                    'detail': r_pid['detail'],
-                    'peopleLimit': r_pid['peopleLimit'],
-                    'uid': r_pid['uid'],
+                  report.set({
+                    'rid': report.id,
+                    'postid': rPid['postid'],
+                    'activityName': rPid['activityName'],
+                    'place': rPid['place'],
+                    'location': rPid['location'],
+                    'date': rPid['date'],
+                    'time': rPid['time'],
+                    'detail': rPid['detail'],
+                    'peopleLimit': rPid['peopleLimit'],
+                    'uid': rPid['uid'],
                     'problem': 'ความรุนแรง',
                     'type': 'post',
                     //'likes': [],
@@ -100,17 +97,17 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
-                    'postid': r_pid['postid'],
-                    'activityName': r_pid['activityName'],
-                    'place': r_pid['place'],
-                    'location': r_pid['location'],
-                    'date': r_pid['date'],
-                    'time': r_pid['time'],
-                    'detail': r_pid['detail'],
-                    'peopleLimit': r_pid['peopleLimit'],
-                    'uid': r_pid['uid'],
+                  report.set({
+                    'rid': report.id,
+                    'postid': rPid['postid'],
+                    'activityName': rPid['activityName'],
+                    'place': rPid['place'],
+                    'location': rPid['location'],
+                    'date': rPid['date'],
+                    'time': rPid['time'],
+                    'detail': rPid['detail'],
+                    'peopleLimit': rPid['peopleLimit'],
+                    'uid': rPid['uid'],
                     'problem': 'การคุกคาม',
                     'type': 'post',
                     //'likes': [],
@@ -133,17 +130,17 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
-                    'postid': r_pid['postid'],
-                    'activityName': r_pid['activityName'],
-                    'place': r_pid['place'],
-                    'location': r_pid['location'],
-                    'date': r_pid['date'],
-                    'time': r_pid['time'],
-                    'detail': r_pid['detail'],
-                    'peopleLimit': r_pid['peopleLimit'],
-                    'uid': r_pid['uid'],
+                  report.set({
+                    'rid': report.id,
+                    'postid': rPid['postid'],
+                    'activityName': rPid['activityName'],
+                    'place': rPid['place'],
+                    'location': rPid['location'],
+                    'date': rPid['date'],
+                    'time': rPid['time'],
+                    'detail': rPid['detail'],
+                    'peopleLimit': rPid['peopleLimit'],
+                    'uid': rPid['uid'],
                     'problem': 'ข้อมูลเท็จ',
                     'type': 'post',
                     //'likes': [],
@@ -166,17 +163,17 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
-                    'postid': r_pid['postid'],
-                    'activityName': r_pid['activityName'],
-                    'place': r_pid['place'],
-                    'location': r_pid['location'],
-                    'date': r_pid['date'],
-                    'time': r_pid['time'],
-                    'detail': r_pid['detail'],
-                    'peopleLimit': r_pid['peopleLimit'],
-                    'uid': r_pid['uid'],
+                  report.set({
+                    'rid': report.id,
+                    'postid': rPid['postid'],
+                    'activityName': rPid['activityName'],
+                    'place': rPid['place'],
+                    'location': rPid['location'],
+                    'date': rPid['date'],
+                    'time': rPid['time'],
+                    'detail': rPid['detail'],
+                    'peopleLimit': rPid['peopleLimit'],
+                    'uid': rPid['uid'],
                     'problem': 'สแปม',
                     'type': 'post',
                     //'likes': [],
@@ -199,17 +196,17 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
-                    'postid': r_pid['postid'],
-                    'activityName': r_pid['activityName'],
-                    'place': r_pid['place'],
-                    'location': r_pid['location'],
-                    'date': r_pid['date'],
-                    'time': r_pid['time'],
-                    'detail': r_pid['detail'],
-                    'peopleLimit': r_pid['peopleLimit'],
-                    'uid': r_pid['uid'],
+                  report.set({
+                    'rid': report.id,
+                    'postid': rPid['postid'],
+                    'activityName': rPid['activityName'],
+                    'place': rPid['place'],
+                    'location': rPid['location'],
+                    'date': rPid['date'],
+                    'time': rPid['time'],
+                    'detail': rPid['detail'],
+                    'peopleLimit': rPid['peopleLimit'],
+                    'uid': rPid['uid'],
                     'problem': 'คำพูดแสดงความเกลีดชัง',
                     'type': 'post',
                     //'likes': [],
@@ -242,9 +239,9 @@ void showModalBottomSheetRP(BuildContext context, r_pid) {
   );
 }
 
-void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
+void showModalBottomSheetRC(BuildContext context, rPid, Map mytext) {
   final uid = FirebaseAuth.instance.currentUser!.uid;
-  final _report =
+  final report =
       FirebaseFirestore.instance.collection('report').doc(mytext['cid']);
 
   showModalBottomSheet(
@@ -263,15 +260,15 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
             children: <Widget>[
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-                title: Center(
+                title: const Center(
                   child: Text(
                     'อนาจาร',
                     style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'postid': mytext['postid'],
                     'Displayname': mytext['Displayname'],
                     'cid': mytext['cid'],
@@ -299,8 +296,8 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'postid': mytext['postid'],
                     'Displayname': mytext['Displayname'],
                     'cid': mytext['cid'],
@@ -328,8 +325,8 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'postid': mytext['postid'],
                     'Displayname': mytext['Displayname'],
                     'cid': mytext['cid'],
@@ -357,8 +354,8 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'postid': mytext['postid'],
                     'Displayname': mytext['Displayname'],
                     'cid': mytext['cid'],
@@ -386,8 +383,8 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'postid': mytext['postid'],
                     'Displayname': mytext['Displayname'],
                     'cid': mytext['cid'],
@@ -415,8 +412,8 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'postid': mytext['postid'],
                     'Displayname': mytext['Displayname'],
                     'cid': mytext['cid'],
@@ -455,7 +452,7 @@ void showModalBottomSheetRC(BuildContext context, r_pid, Map mytext) {
 }
 
 void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
-  final _report = FirebaseFirestore.instance.collection('report').doc();
+  final report = FirebaseFirestore.instance.collection('report').doc();
 
   showModalBottomSheet(
     useRootNavigator: true,
@@ -473,15 +470,15 @@ void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
             children: <Widget>[
               ListTile(
                 contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-                title: Center(
+                title: const Center(
                   child: Text(
                     'อนาจาร',
                     style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'uid': userData,
                     'Displayname': displayname,
                     'groupid': groupid,
@@ -509,8 +506,8 @@ void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'uid': userData,
                     'Displayname': displayname,
                     'groupid': groupid,
@@ -538,8 +535,8 @@ void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'uid': userData,
                     'Displayname': displayname,
                     'groupid': groupid,
@@ -567,8 +564,8 @@ void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'uid': userData,
                     'Displayname': displayname,
                     'groupid': groupid,
@@ -596,8 +593,8 @@ void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'uid': userData,
                     'Displayname': displayname,
                     'groupid': groupid,
@@ -625,8 +622,8 @@ void showModalBottomSheetRT(context, userData, message, displayname, groupid) {
                   ),
                 ),
                 onTap: () {
-                  _report.set({
-                    'rid': _report.id,
+                  report.set({
+                    'rid': report.id,
                     'uid': userData,
                     'Displayname': displayname,
                     'groupid': groupid,

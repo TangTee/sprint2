@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart' show CupertinoTextField;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -68,17 +67,17 @@ class _HSVColorPickerExampleState extends State<HSVColorPickerExample> {
                   },
                 );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: widget.pickerColor,
+                shadowColor: widget.pickerColor.withOpacity(1),
+                elevation: 10,
+              ),
               child: Text(
                 'Hue Ring Picker with Hex Input',
                 style: TextStyle(
                     color: useWhiteForeground(widget.pickerColor)
                         ? Colors.white
                         : Colors.black),
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: widget.pickerColor,
-                shadowColor: widget.pickerColor.withOpacity(1),
-                elevation: 10,
               ),
             ),
             const SizedBox(width: 20),

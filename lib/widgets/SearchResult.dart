@@ -6,7 +6,7 @@ import '../widgets/custom_textfield.dart';
 
 class SearchResult extends StatefulWidget {
   final String activity;
-  SearchResult({Key? key, required this.activity}) : super(key: key);
+  const SearchResult({Key? key, required this.activity}) : super(key: key);
 
   @override
   _MySearchState createState() => _MySearchState();

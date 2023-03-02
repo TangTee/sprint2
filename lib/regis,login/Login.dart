@@ -13,6 +13,8 @@ import '../services/reset_password.dart';
 import '../utils/color.dart';
 
 class Login extends StatefulWidget {
+  const Login({super.key});
+
   String? get uid => FirebaseAuth.instance.currentUser!.uid;
 
   @override
@@ -162,10 +164,10 @@ class _LoginState extends State<Login> {
                           children: [
                             TextButton(
                                 style: TextButton.styleFrom(
-                                  primary: primaryColor,
+                                  foregroundColor: primaryColor,
                                 ),
                                 onPressed: () {
-                                  nextScreen(context, ResetPasswordPage());
+                                  nextScreen(context, const ResetPasswordPage());
                                 },
                                 child: const Text("Forget Password?"))
                           ],
@@ -275,11 +277,11 @@ class _LoginState extends State<Login> {
           userData = snap.data()!;
           var a = userData['admin'];
           if (a == true) {
-            nextScreenReplace(context, AdminHomePage());
+            nextScreenReplace(context, const AdminHomePage());
           } else {
             nextScreenReplace(
                 context,
-                MyHomePage(
+                const MyHomePage(
                   index: 0,
                 ));
           }

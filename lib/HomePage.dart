@@ -124,7 +124,7 @@ class ActivityTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: ActivityPage(),
     );
   }
@@ -148,8 +148,8 @@ class ChatTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: const ChatHomePage(),
+    return const MaterialApp(
+      home: ChatHomePage(),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/admin/report/report.dart';
 import 'package:tangteevs/admin/tag/MainPage.dart';
@@ -6,13 +5,15 @@ import 'package:tangteevs/admin/user/user.dart';
 import 'package:tangteevs/utils/color.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: AdminHomePage(),
     );
   }
@@ -28,9 +29,9 @@ class AdminHomePage extends StatefulWidget {
 class _AdminHomePageState extends State<AdminHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _pages = [
-    UserTab(),
-    ReportTab(),
-    tagTab(),
+    const UserTab(),
+    const ReportTab(),
+    const tagTab(),
   ];
   void _onItemTapped(int index) {
     setState(() {
@@ -88,6 +89,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
 }
 
 class UserTab extends StatelessWidget {
+  const UserTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -97,15 +100,19 @@ class UserTab extends StatelessWidget {
 }
 
 class ReportTab extends StatelessWidget {
+  const ReportTab({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: ReportPage(),
     );
   }
 }
 
 class tagTab extends StatelessWidget {
+  const tagTab({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

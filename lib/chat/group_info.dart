@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import '../utils/color.dart';
 import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
-import '../Report.dart';
 
 class GroupInfo extends StatefulWidget {
   final String groupId;
@@ -172,9 +171,9 @@ class _GroupInfoState extends State<GroupInfo> {
                                           ),
                                           if (documentSnapshot['uid'] ==
                                               groupData['owner'])
-                                            Text(
+                                            const Text(
                                               '[Host]',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: unselected,
                                                 fontSize: 14,
                                               ),
@@ -240,8 +239,8 @@ class _GroupInfoState extends State<GroupInfo> {
 
 void _showModalBottomSheetP(
     BuildContext context, DocumentSnapshot<Object?> userData, groupdata) {
-  final _report = FirebaseFirestore.instance.collection('report').doc();
-  final TextEditingController _ReportController = TextEditingController();
+  final report = FirebaseFirestore.instance.collection('report').doc();
+  final TextEditingController ReportController = TextEditingController();
 
   showModalBottomSheet(
     useRootNavigator: true,
@@ -271,13 +270,13 @@ void _showModalBottomSheetP(
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: Text('Report Information'),
+                            title: const Text('Report Information'),
                             content: Form(
                               child: TextFormField(
                                 keyboardType: TextInputType.multiline,
                                 maxLines: 5,
                                 minLines: 1,
-                                controller: _ReportController,
+                                controller: ReportController,
                                 decoration: textInputDecorationp.copyWith(
                                   hintText: 'Describe Problems',
                                 ),
@@ -294,12 +293,12 @@ void _showModalBottomSheetP(
                               TextButton(
                                   onPressed: () => Navigator.of(context)
                                       .popUntil((route) => route.isFirst),
-                                  child: Text('Cancle')),
+                                  child: const Text('Cancle')),
                               TextButton(
                                 onPressed: (() {
-                                  _report.set({
-                                    'rid': _report.id,
-                                    'detail': _ReportController.text,
+                                  report.set({
+                                    'rid': report.id,
+                                    'detail': ReportController.text,
                                     'uid': userData['uid'],
                                     'profile': userData['profile'],
                                     'Displayname': userData['Displayname'],
@@ -312,9 +311,9 @@ void _showModalBottomSheetP(
                                         .popUntil((route) => route.isFirst);
                                   });
                                 }),
-                                child: Text(
+                                child: const Text(
                                   'Submit',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: redColor,
                                   ),
                                 ),

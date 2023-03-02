@@ -1,4 +1,3 @@
-import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,7 +10,7 @@ class HistoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       backgroundColor: mobileBackgroundColor,
       body: WaitingCard(),
     );
@@ -20,6 +19,8 @@ class HistoryPage extends StatelessWidget {
 
 class WaitingCard extends StatelessWidget {
   final _post = FirebaseFirestore.instance.collection('post');
+
+   WaitingCard({super.key});
 
   @override
   Widget build(BuildContext context) {

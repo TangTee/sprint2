@@ -1,21 +1,12 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/activity/Activity.dart';
-import 'package:tangteevs/profile/Profile.dart';
-import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/color.dart';
 import '../utils/showSnackbar.dart';
-import '../widgets/custom_textfield.dart';
-import 'package:image_picker/image_picker.dart';
 
 class JoinPage extends StatefulWidget {
   final String postid;
-  JoinPage({Key? key, required this.postid}) : super(key: key);
+  const JoinPage({Key? key, required this.postid}) : super(key: key);
 
   @override
   JoinPageState createState() => JoinPageState();
@@ -36,6 +27,7 @@ class JoinPageState extends State<JoinPage> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -104,7 +96,7 @@ class JoinPageState extends State<JoinPage> {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(-20),
+          preferredSize: const Size.fromHeight(-20),
           child: Center(
             child: SizedBox(
               height: 40,
@@ -131,7 +123,7 @@ class JoinPageState extends State<JoinPage> {
               child: CircularProgressIndicator(),
             )
           : SafeArea(
-              child: Container(
+              child: SizedBox(
                 height: MediaQuery.of(context).size.height * 0.85,
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
@@ -162,10 +154,10 @@ class JoinPageState extends State<JoinPage> {
                                                   borderRadius:
                                                       BorderRadius.circular(
                                                           3))),
-                                          child: Container(
+                                          child: SizedBox(
                                             height: 80,
                                             child: Container(
-                                              child: Container(
+                                              child: SizedBox(
                                                 height: 80,
                                                 child: ListTile(
                                                   leading: CircleAvatar(
@@ -296,18 +288,18 @@ class JoinPageState extends State<JoinPage> {
 
 Future<dynamic> joinActivity(String postId, String uid, List waiting,
     int joinLen, int peoplelimit) async {
-  CollectionReference _post = FirebaseFirestore.instance.collection('post');
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  CollectionReference post = FirebaseFirestore.instance.collection('post');
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
 
   try {
-    _firestore.collection('join').doc(postId).update({
+    firestore.collection('join').doc(postId).update({
       'member': FieldValue.arrayUnion([uid])
     });
-    _firestore.collection('post').doc(postId).update({
+    firestore.collection('post').doc(postId).update({
       'waiting': FieldValue.arrayRemove([uid])
     });
-    _firestore.collection('post').doc(postId).update({
+    firestore.collection('post').doc(postId).update({
       'history': FieldValue.arrayUnion([uid])
     });
     res = 'success';
@@ -318,11 +310,11 @@ Future<dynamic> joinActivity(String postId, String uid, List waiting,
 }
 
 Future<dynamic> denyActivity(String postId, String uid, List waiting) async {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   String res = "Some error occurred";
 
   try {
-    _firestore.collection('post').doc(postId).update({
+    firestore.collection('post').doc(postId).update({
       'waiting': FieldValue.arrayRemove([uid])
     });
     res = 'success';

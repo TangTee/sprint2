@@ -9,6 +9,8 @@ import '../widgets/custom_textfield.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key});
+
   @override
   _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
@@ -134,7 +136,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               fontWeight: FontWeight.bold),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              nextScreen(context, Login());
+                              nextScreen(context, const Login());
                             }),
                     ],
                   )),
@@ -152,15 +154,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Reset Email Sent'),
-          content: Text(
+          title: const Text('Reset Email Sent'),
+          content: const Text(
               'Check your email for instructions on how to reset your password.'),
           actions: [
             TextButton(
               onPressed: () {
-                nextScreen(context, Login());
+                nextScreen(context, const Login());
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -173,14 +175,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error Sending Email'),
-          content: Text('No email match. Please try again later.'),
+          title: const Text('Error Sending Email'),
+          content: const Text('No email match. Please try again later.'),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

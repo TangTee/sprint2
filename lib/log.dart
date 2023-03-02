@@ -18,7 +18,7 @@ class _LogState extends State<Log> {
   bool isLogin = false;
 
   var admin = const AdminHomePage();
-  var user = MyHomePage(index: 0);
+  var user = const MyHomePage(index: 0);
 
   checkIfLogin() async {
     auth.authStateChanges().listen((User? user) {

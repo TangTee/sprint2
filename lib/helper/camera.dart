@@ -43,7 +43,7 @@ class Camera {
     final storageRef = FirebaseStorage.instance.ref();
     var filename = '${generateRandomString(7)}.jpg';
     var path =
-        '${FirebaseAuth.instance.currentUser?.uid}/${locatation}/${filename}';
+        '${FirebaseAuth.instance.currentUser?.uid}/$locatation/$filename';
     final imagesRef = storageRef.child(path);
 
     imagesRef.putFile(imagefile).snapshotEvents.listen((event) {

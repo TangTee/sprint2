@@ -7,7 +7,6 @@ import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/widgets/custom_textfield.dart';
 import 'team/team.dart';
 import 'team/privacy.dart';
-import 'utils/color.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -50,7 +49,7 @@ class _LandingPageState extends State<LandingPage> {
           Image.asset("assets/images/logo with name.png"),
           const Text.rich(TextSpan(
             text: "Don't have friends to do activities together?",
-            style: const TextStyle(
+            style: TextStyle(
                 color: mobileSearchColor,
                 fontSize: 12,
                 fontFamily: 'MyCustomFont',
@@ -59,7 +58,7 @@ class _LandingPageState extends State<LandingPage> {
           const Text.rich(TextSpan(
             text:
                 "Come on, let's find a new friend who enjoys the same activities.",
-            style: const TextStyle(
+            style: TextStyle(
                 color: mobileSearchColor,
                 fontSize: 12,
                 fontFamily: 'MyCustomFont',
@@ -84,7 +83,7 @@ class _LandingPageState extends State<LandingPage> {
                 style: TextStyle(color: white, fontSize: 24),
               ),
               onPressed: () {
-                nextScreen(context, Login());
+                nextScreen(context, const Login());
               },
             ),
           ),
@@ -113,7 +112,7 @@ class _LandingPageState extends State<LandingPage> {
           ),
           const Text.rich(TextSpan(
             text: "By signing in you agree to",
-            style: const TextStyle(
+            style: TextStyle(
               color: mobileSearchColor,
               fontSize: 12,
               fontFamily: 'MyCustomFont',
@@ -133,7 +132,7 @@ class _LandingPageState extends State<LandingPage> {
                       fontWeight: FontWeight.bold),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      nextScreen(context, TermsPage());
+                      nextScreen(context, const TermsPage());
                     }),
               TextSpan(
                   text: " and ",
@@ -149,7 +148,7 @@ class _LandingPageState extends State<LandingPage> {
                       fontWeight: FontWeight.bold),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      nextScreen(context, PrivacyPage());
+                      nextScreen(context, const PrivacyPage());
                     }),
             ],
           )),

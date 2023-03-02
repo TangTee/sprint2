@@ -5,6 +5,8 @@ import 'package:tangteevs/activity/waiting.dart';
 import 'package:tangteevs/utils/color.dart';
 
 class ActivityPage extends StatelessWidget {
+  const ActivityPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -47,7 +49,7 @@ class ActivityPage extends StatelessWidget {
               ],
             ),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               Waiting(),
               History(),
@@ -59,27 +61,33 @@ class ActivityPage extends StatelessWidget {
 }
 
 class Favorite extends StatelessWidget {
+  const Favorite({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       body: PostCard(),
     );
   }
 }
 
 class History extends StatelessWidget {
+  const History({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: HistoryPage(),
     );
   }
 }
 
 class Waiting extends StatelessWidget {
+  const Waiting({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: WaitingPage(),
     );
   }

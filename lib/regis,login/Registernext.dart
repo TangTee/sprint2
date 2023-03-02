@@ -10,7 +10,6 @@ import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import 'package:tangteevs/utils/color.dart';
 import '../helper/helper_function.dart';
-import '../utils/showSnackbar.dart';
 import '../widgets/custom_textfield.dart';
 
 class RegisnextPage extends StatefulWidget {
@@ -49,7 +48,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   String _ImageProfileController = '';
-  String _selectedGender = '';
+  final String _selectedGender = '';
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
   File? media1;
@@ -94,6 +93,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
   }
@@ -210,6 +210,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
                                   if (val.length > 12) {
                                     return 'Limit at 12 characters ';
                                   }
+                                  return null;
                                 },
                                 onChanged: (val) {
                                   setState(() {
@@ -250,6 +251,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
                                 if (val.length > 160) {
                                   return 'Limit at 160 characters ';
                                 }
+                                return null;
                               },
                               onChanged: (val) {
                                 setState(() {
@@ -270,7 +272,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text('Gender: '),
+                              const Text('Gender: '),
                               Radio(
                                 value: 'Male',
                                 groupValue: gender,
@@ -280,7 +282,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
                                   });
                                 },
                               ),
-                              Text('Male'),
+                              const Text('Male'),
                               Radio(
                                 value: 'Female',
                                 groupValue: gender,
@@ -290,7 +292,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
                                   });
                                 },
                               ),
-                              Text('Female'),
+                              const Text('Female'),
                               Radio(
                                 value: 'Other',
                                 groupValue: gender,
@@ -300,7 +302,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
                                   });
                                 },
                               ),
-                              Text('other'),
+                              const Text('other'),
                             ],
                           ),
                           const SizedBox(
@@ -380,8 +382,8 @@ class _RegisnextPageState extends State<RegisnextPage> {
           await HelperFunctions.saveUserBioSF(bio);
 
           nextScreen(
-              this.context,
-              MyHomePage(
+              context,
+              const MyHomePage(
                 index: 0,
               ));
         } else {

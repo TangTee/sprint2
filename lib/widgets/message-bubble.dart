@@ -8,7 +8,6 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
-import 'package:tangteevs/model/chat_model.dart';
 import 'package:tangteevs/utils/color.dart';
 import 'package:tangteevs/widgets/image_dialog.dart';
 
@@ -131,7 +130,7 @@ class _MessageBubbleState extends State<MessageBubble> {
               child: Row(
                 children: [
                   widget.sentByMe
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Container(
                           color: mobileBackgroundColor,
                           child: InkWell(
@@ -157,7 +156,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                     width: MediaQuery.of(context).size.width * 0.02,
                   ),
                   widget.sentByMe
-                      ? SizedBox()
+                      ? const SizedBox()
                       : Container(
                           color: mobileBackgroundColor,
                           child: Text(
@@ -240,7 +239,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                   Container(
                     child: widget.image == true
                         ? Padding(
-                            padding: EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
                             child: InkWell(
                               onTap: () {
                                 showDialog(
@@ -318,7 +317,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                                   color: widget.sentByMe ? orange : disable,
                                 ),
                                 child: Padding(
-                                  padding: EdgeInsets.all(10),
+                                  padding: const EdgeInsets.all(10),
                                   child: Text(
                                     widget.message,
                                     textAlign: TextAlign.start,
@@ -378,7 +377,7 @@ class _MessageBubbleState extends State<MessageBubble> {
 
                       onTap: () async {
                         Clipboard.setData(
-                          new ClipboardData(
+                          ClipboardData(
                             text: widget.message,
                           ),
                         );

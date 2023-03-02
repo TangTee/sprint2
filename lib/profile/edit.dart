@@ -3,10 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tangteevs/HomePage.dart';
-import 'package:tangteevs/profile/Profile.dart';
 import 'package:tangteevs/services/auth_service.dart';
 import 'package:tangteevs/services/database_service.dart';
 import '../utils/color.dart';
@@ -31,7 +28,7 @@ class _EditPageState extends State<EditPage> {
   final user = FirebaseAuth.instance.currentUser;
   DatabaseService databaseService = DatabaseService();
   String Displayname = "";
-  bool _isLoading = false;
+  final bool _isLoading = false;
   String bio = "";
   String facebook = "";
   final _formKey = GlobalKey<FormState>();
@@ -45,7 +42,7 @@ class _EditPageState extends State<EditPage> {
       FirebaseFirestore.instance.collection('users');
 
   Color TextU = mobileSearchColor;
-  String _enteredTextB = '';
+  final String _enteredTextB = '';
   Color TextB = mobileSearchColor;
   var userData = {};
   bool isLoading = false;
@@ -59,6 +56,7 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -143,7 +141,7 @@ class _EditPageState extends State<EditPage> {
                   ),
                 ),
                 body: _isLoading
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(
                         backgroundColor: mobileBackgroundColor,
                       ))
@@ -206,7 +204,7 @@ class _EditPageState extends State<EditPage> {
                                               color: lightPurple,
                                             ),
                                             child: Ink(
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.edit,
                                                 color: primaryColor,
                                                 size: 30,
@@ -234,7 +232,7 @@ class _EditPageState extends State<EditPage> {
                                               '${_enteredTextU2.length.toString()} /12',
                                           hintText: 'Display Name',
                                           counterStyle: TextStyle(color: TextU),
-                                          prefixIcon: Icon(
+                                          prefixIcon: const Icon(
                                             Icons.person_pin_circle_sharp,
                                             color: lightPurple,
                                           )),
@@ -245,6 +243,7 @@ class _EditPageState extends State<EditPage> {
                                         if (val.length > 12) {
                                           return 'Limit at 12 characters ';
                                         }
+                                        return null;
                                       },
                                       onChanged: (val) {
                                         setState(() {
@@ -276,7 +275,7 @@ class _EditPageState extends State<EditPage> {
                                             '${_enteredTextB2.length.toString()} /160',
                                         counterStyle: TextStyle(color: TextB),
                                         hintText: 'bio',
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.pending,
                                           color: lightPurple,
                                         )),
@@ -287,6 +286,7 @@ class _EditPageState extends State<EditPage> {
                                       if (val.length > 160) {
                                         return 'Limit at 160 characters ';
                                       }
+                                      return null;
                                     },
                                     onChanged: (val) {
                                       setState(() {
@@ -340,6 +340,7 @@ class _EditPageState extends State<EditPage> {
                                           return 'Please enter facebook link ';
                                         }
                                       }
+                                      return null;
                                     },
                                     onChanged: (val) {
                                       setState(() {
@@ -383,12 +384,12 @@ class _EditPageState extends State<EditPage> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.20,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 20,
       ),
       child: Column(
         children: <Widget>[
-          Text(
+          const Text(
             'Choose Profile Photo',
             style: TextStyle(
               fontSize: 20,
@@ -402,7 +403,7 @@ class _EditPageState extends State<EditPage> {
             children: <Widget>[
               SizedBox(
                 child: TextButton.icon(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.camera,
                     color: lightPurple,
                   ),
@@ -410,7 +411,7 @@ class _EditPageState extends State<EditPage> {
                     takePhoto(ImageSource.camera);
                     Navigator.pop(context);
                   },
-                  label: Text(
+                  label: const Text(
                     'Camera',
                     style: TextStyle(
                       fontSize: 20,
@@ -423,7 +424,7 @@ class _EditPageState extends State<EditPage> {
               ),
               SizedBox(
                 child: TextButton.icon(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.image,
                     color: lightPurple,
                   ),
@@ -431,7 +432,7 @@ class _EditPageState extends State<EditPage> {
                     takePhoto(ImageSource.gallery);
                     Navigator.pop(context);
                   },
-                  label: Text(
+                  label: const Text(
                     'Gallery',
                     style: TextStyle(
                       fontSize: 20,

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:tangteevs/widgets/tag.dart';
 
@@ -29,7 +28,7 @@ class _EditActState extends State<EditAct> {
   String tag = '';
   String tagColor = '';
   DatabaseService databaseService = DatabaseService();
-  bool _isLoading = false;
+  final bool _isLoading = false;
   final _formKey = GlobalKey<FormState>();
   AuthService authService = AuthService();
   final CollectionReference _post =
@@ -42,8 +41,8 @@ class _EditActState extends State<EditAct> {
   final TextEditingController _peopleLimitController = TextEditingController();
   final TextEditingController _placeController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-  var _tagController = TextEditingController();
-  var _tagColorController = TextEditingController();
+  final _tagController = TextEditingController();
+  final _tagColorController = TextEditingController();
   var _tag;
   var _tag2;
   var _tag2Color;
@@ -109,6 +108,7 @@ class _EditActState extends State<EditAct> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     return isLoading
         ? const Center()
@@ -157,7 +157,7 @@ class _EditActState extends State<EditAct> {
                   ),
                 ),
                 body: _isLoading
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(
                         color: mobileBackgroundColor,
                       ))
@@ -186,7 +186,7 @@ class _EditActState extends State<EditAct> {
                                           counterText:
                                               '${countActivity.length.toString()} /25',
                                           counterStyle: TextStyle(color: TextA),
-                                          prefixIcon: Icon(
+                                          prefixIcon: const Icon(
                                             Icons.title,
                                             color: lightPurple,
                                           )),
@@ -197,6 +197,7 @@ class _EditActState extends State<EditAct> {
                                         if (val.length > 25) {
                                           return 'Limit at 25 characters ';
                                         }
+                                        return null;
                                       },
                                       onChanged: (val) {
                                         setState(() {
@@ -227,7 +228,7 @@ class _EditActState extends State<EditAct> {
                                         counterText:
                                             '${countPlace.length.toString()} /25',
                                         counterStyle: TextStyle(color: TextP),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.maps_home_work,
                                           color: lightPurple,
                                         )),
@@ -238,6 +239,7 @@ class _EditActState extends State<EditAct> {
                                       if (val.length > 25) {
                                         return 'Limit at 25 characters ';
                                       }
+                                      return null;
                                     },
                                     onChanged: (val) {
                                       setState(() {
@@ -264,7 +266,7 @@ class _EditActState extends State<EditAct> {
                                     controller: _locationController,
                                     decoration: textInputDecorationp.copyWith(
                                       hintText: 'location',
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.place,
                                         color: lightPurple,
                                       ),
@@ -274,6 +276,7 @@ class _EditActState extends State<EditAct> {
                                           .hasAbsolutePath) {
                                         return 'Please enter location link https:';
                                       }
+                                      return null;
                                     },
                                     onChanged: (val) {
                                       setState(() {
@@ -294,7 +297,7 @@ class _EditActState extends State<EditAct> {
                                     controller: _dateController,
                                     decoration: textInputDecorationp.copyWith(
                                       hintText: 'Date',
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.calendar_today,
                                         color: lightPurple,
                                       ),
@@ -336,7 +339,7 @@ class _EditActState extends State<EditAct> {
                                     controller: _timeController,
                                     decoration: textInputDecorationp.copyWith(
                                       hintText: "Time",
-                                      prefixIcon: Icon(
+                                      prefixIcon: const Icon(
                                         Icons.query_builder,
                                         color: lightPurple,
                                       ),
@@ -375,7 +378,7 @@ class _EditActState extends State<EditAct> {
                                         counterText:
                                             '${countDetail.length.toString()} /150',
                                         counterStyle: TextStyle(color: TextD),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.pending,
                                           color: lightPurple,
                                         )),
@@ -410,9 +413,9 @@ class _EditActState extends State<EditAct> {
                                     keyboardType: TextInputType.number,
                                     decoration: textInputDecorationp.copyWith(
                                         hintText: 'People Limit',
-                                        counterText: '${countPeople} /99',
+                                        counterText: '$countPeople /99',
                                         counterStyle: TextStyle(color: TextL),
-                                        prefixIcon: Icon(
+                                        prefixIcon: const Icon(
                                           Icons.person_outline,
                                           color: lightPurple,
                                         )),
@@ -446,7 +449,7 @@ class _EditActState extends State<EditAct> {
                                   alignment: Alignment.center,
                                   width:
                                       MediaQuery.of(context).size.width * 0.85,
-                                  child: Container(
+                                  child: SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.04,
                                     child: Row(
@@ -454,7 +457,7 @@ class _EditActState extends State<EditAct> {
                                         SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Padding(
-                                              padding: EdgeInsets.only(top: 3),
+                                              padding: const EdgeInsets.only(top: 3),
                                               child: SizedBox(
                                                 child: OutlinedButton(
                                                   onPressed: null,

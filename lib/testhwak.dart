@@ -1,12 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:tangteevs/admin/user/user.dart';
-import 'package:tangteevs/pickers/block_picker.dart';
-import 'package:tangteevs/pickers/hsv_picker.dart';
-import 'package:tangteevs/pickers/material_picker.dart';
 import 'package:tangteevs/utils/color.dart';
 
 import 'notification/screens/second_screen.dart';
@@ -57,14 +51,14 @@ class _testColorState extends State<testColor> {
             onPressed: () => {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => UserPage(),
+                  builder: (context) => const UserPage(),
                 ),
               )
             },
           ),
           title: const Text('Flutter Color Picker Example'),
         ),
-        body: Container(
+        body: SizedBox(
           width: MediaQuery.of(context).size.width * 0.9,
           height: MediaQuery.of(context).size.height * 0.9,
           child: Wrap(
@@ -76,7 +70,7 @@ class _testColorState extends State<testColor> {
                     await service.showNotification(
                         id: 0, title: 'Notification Title', body: 'Some body');
                   },
-                  child: Text("Item 1")),
+                  child: const Text("Item 1")),
               ElevatedButton(
                 onPressed: () async {
                   await service.showScheduledNotification(
