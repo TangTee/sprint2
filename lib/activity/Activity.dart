@@ -34,7 +34,7 @@ class ActivityPage extends StatelessWidget {
             bottom: const TabBar(
               indicatorColor: green,
               labelColor: green,
-              labelPadding: EdgeInsets.symmetric(horizontal: 30),
+              labelPadding: EdgeInsets.symmetric(horizontal: 25),
               unselectedLabelColor: unselected,
               labelStyle: TextStyle(
                   fontSize: 20.0,
@@ -65,7 +65,7 @@ class Favorite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       body: PostCard(),
     );
   }
