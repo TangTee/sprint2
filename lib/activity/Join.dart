@@ -86,28 +86,21 @@ class JoinPageState extends State<JoinPage> {
             fontSize: 46,
             fontWeight: FontWeight.bold,
             color: purple,
-            shadows: [
-              Shadow(
-                blurRadius: 5,
-                color: unselected,
-                offset: Offset(3, 3),
-              ),
-            ],
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(-20),
+          preferredSize: const Size.fromHeight(0),
           child: Center(
             child: SizedBox(
               height: 40,
               child: Column(
                 children: const [
-                  Text("กดเครื่องหมายถูกเพื่อยอมรับคำขอเข้าร่วม",
+                  Text("Press the check mark to accept the request to join",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           color: unselected)),
-                  Text("หรือกดเครื่องหมายกากบาทเพื่อปฏิเสธ",
+                  Text("or press the cross mark to decline",
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -155,8 +148,10 @@ class JoinPageState extends State<JoinPage> {
                                                       BorderRadius.circular(
                                                           3))),
                                           child: SizedBox(
-                                            height: 80,
+                                            height: 70,
                                             child: Container(
+                                              padding:
+                                                  const EdgeInsets.only(top: 5),
                                               child: SizedBox(
                                                 height: 80,
                                                 child: ListTile(
