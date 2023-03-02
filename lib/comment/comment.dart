@@ -149,7 +149,15 @@ class _MyCommentState extends State<Comment> {
                     },
                   ),
                   elevation: 1,
-                  centerTitle: false,
+                  title: Text(
+                    postData['activityName'].toString(),
+                    style: const TextStyle(
+                      color: mobileSearchColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  centerTitle: true,
                   actions: [
                     if (widget.postid['open'] == true)
                       IconButton(
@@ -215,8 +223,6 @@ class _MyCommentState extends State<Comment> {
                                                             'MyCustomFont',
                                                         color:
                                                             mobileSearchColor,
-                                                        fontWeight:
-                                                            FontWeight.bold,
                                                       )),
                                                 ),
                                                 if (widget.postid['open'] ==
@@ -306,7 +312,7 @@ class _MyCommentState extends State<Comment> {
                                                                       fontFamily:
                                                                           'MyCustomFont',
                                                                       color:
-                                                                          unselected,
+                                                                          mobileSearchColor,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .bold,
@@ -319,7 +325,8 @@ class _MyCommentState extends State<Comment> {
                                                                   children: <
                                                                       InlineSpan>[
                                                                     TextSpan(
-                                                                        text: '\t$joinLen / ${documentSnapshot['peopleLimit']}',
+                                                                        text:
+                                                                            '\t$joinLen / ${documentSnapshot['peopleLimit']}',
                                                                         style:
                                                                             const TextStyle(
                                                                           fontSize:
@@ -378,9 +385,8 @@ class _MyCommentState extends State<Comment> {
                                                                     ),
                                                                   ),
                                                                   TextSpan(
-                                                                      text: '${'\t\t' +
-                                                                          documentSnapshot[
-                                                                              'place']} /',
+                                                                      text:
+                                                                          '${'\t\t' + documentSnapshot['place']} /',
                                                                       style:
                                                                           const TextStyle(
                                                                         fontFamily:
@@ -786,9 +792,9 @@ class _MyCommentState extends State<Comment> {
                                                               children: [
                                                                 Padding(
                                                                   padding: const EdgeInsets
-                                                                      .only(
-                                                                          bottom:
-                                                                              45),
+                                                                          .only(
+                                                                      bottom:
+                                                                          45),
                                                                   child:
                                                                       CircleAvatar(
                                                                     backgroundColor:
@@ -833,9 +839,9 @@ class _MyCommentState extends State<Comment> {
                                                                             10),
                                                                     child:
                                                                         Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              15.00),
+                                                                      padding: const EdgeInsets
+                                                                              .all(
+                                                                          15.00),
                                                                       child:
                                                                           Column(
                                                                         crossAxisAlignment:
@@ -1126,7 +1132,8 @@ class _MyCommentState extends State<Comment> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const MyHomePage(
+                                            builder: (context) =>
+                                                const MyHomePage(
                                               index: 0,
                                             ),
                                           ),
