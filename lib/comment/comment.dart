@@ -794,7 +794,7 @@ class _MyCommentState extends State<Comment> {
                                                                   padding: const EdgeInsets
                                                                           .only(
                                                                       bottom:
-                                                                          45),
+                                                                          65),
                                                                   child:
                                                                       CircleAvatar(
                                                                     backgroundColor:
@@ -809,11 +809,8 @@ class _MyCommentState extends State<Comment> {
                                                                   ),
                                                                 ),
                                                                 GestureDetector(
-                                                                  onLongPress: () =>
-                                                                      _showModalBottomSheet(
-                                                                          context,
-                                                                          postidD,
-                                                                          documentSnapshot),
+                                                                  onLongPress:
+                                                                      () {},
                                                                   child: Card(
                                                                     clipBehavior:
                                                                         Clip.hardEdge,
@@ -840,8 +837,9 @@ class _MyCommentState extends State<Comment> {
                                                                     child:
                                                                         Padding(
                                                                       padding: const EdgeInsets
-                                                                              .all(
-                                                                          15.00),
+                                                                              .only(
+                                                                          left:
+                                                                              15),
                                                                       child:
                                                                           Column(
                                                                         crossAxisAlignment:
@@ -867,7 +865,14 @@ class _MyCommentState extends State<Comment> {
                                                                                       fontFamily: 'MyCustomFont',
                                                                                       color: unselected,
                                                                                     )),
-                                                                              )
+                                                                              ),
+                                                                              IconButton(
+                                                                                iconSize: 12,
+                                                                                icon: const Icon(Icons.more_horiz),
+                                                                                onPressed: () {
+                                                                                  _showModalBottomSheet(context, postidD, documentSnapshot);
+                                                                                },
+                                                                              ),
                                                                             ],
                                                                           ),
                                                                           SizedBox(
