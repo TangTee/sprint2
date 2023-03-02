@@ -46,7 +46,7 @@ class _MySearchTagState extends State<TagResult> {
           ),
           body: StreamBuilder<QuerySnapshot>(
               stream: _post
-                  .where('tag', isGreaterThanOrEqualTo: widget.Tag)
+                  .where('tag', isEqualTo: widget.Tag)
                   //.orderBy('activityName', descending: true)
                   .snapshots(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
