@@ -23,12 +23,17 @@ class _notificationState extends State<notification> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          const DrawerHeader(child: Text('Header')),
           const ListTile(
-            title: Text("Item 1"),
+            title: Text("TungTee"),
+            subtitle: Text("Notification ใช้เป็นแบบLocal"),
+          ),
+          const ListTile(
+            title: Text("TungTee"),
+            subtitle: Text("ระบบ Cloud Fire Message ยังไม่สามารถใช้งานได้"),
           ),
           ListTile(
-            title: const Text("Item 1"),
+            title: const Text("TungTee"),
+            subtitle: Text("ยินดีต้องรับสู่แอพ TungTee"),
             onTap: () async {
               await service.showNotification(
                   id: 0, title: 'Notification Title', body: 'Some body');
