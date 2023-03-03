@@ -812,11 +812,10 @@ class _MyCommentState extends State<Comment> {
                                                                 GestureDetector(
                                                                   onLongPress:
                                                                       () async {
-                                                                    _showModalBottomSheetcopy(
-                                                                      context,
-                                                                      documentSnapshot[
-                                                                          'comment'],
-                                                                    );
+                                                                    _showModalBottomSheet(
+                                                                        context,
+                                                                        postidD,
+                                                                        documentSnapshot);
                                                                   },
                                                                   child: Card(
                                                                     clipBehavior:
@@ -1073,60 +1072,6 @@ class _MyCommentState extends State<Comment> {
           );
   }
 
-  void _showModalBottomSheetcopy(BuildContext context, comment) {
-    showModalBottomSheet(
-      useRootNavigator: true,
-      context: context,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      )),
-      builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-                //ignore: unnecessary_new
-                title: const Center(
-                  child: Text(
-                    'Copy Text',
-                    style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
-                  ),
-                ),
-
-                onTap: () async {
-                  Clipboard.setData(
-                    ClipboardData(
-                      text: comment,
-                    ),
-                  );
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-                title: const Center(
-                    child: Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: redColor,
-                      fontFamily: 'MyCustomFont',
-                      fontSize: 20),
-                )),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   void _showModalBottomSheet1(BuildContext context, uid) {
     showModalBottomSheet(
       useRootNavigator: true,
@@ -1264,6 +1209,25 @@ class _MyCommentState extends State<Comment> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              ListTile(
+                contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+                //ignore: unnecessary_new
+                title: const Center(
+                  child: Text(
+                    'Copy Text',
+                    style: TextStyle(fontFamily: 'MyCustomFont', fontSize: 20),
+                  ),
+                ),
+
+                onTap: () async {
+                  Clipboard.setData(
+                    ClipboardData(
+                      text: mytext['comment'].toString(),
+                    ),
+                  );
+                  Navigator.pop(context);
+                },
+              ),
               if (FirebaseAuth.instance.currentUser!.uid == mytext['uid'])
                 ListTile(
                   contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
