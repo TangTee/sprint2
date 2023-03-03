@@ -122,13 +122,6 @@ class _EditPageState extends State<EditPage> {
                       fontSize: 46,
                       fontWeight: FontWeight.bold,
                       color: purple,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5,
-                          color: unselected,
-                          offset: Offset(3, 3),
-                        ),
-                      ],
                     ),
                   ),
                   bottom: const PreferredSize(
@@ -407,7 +400,7 @@ class _EditPageState extends State<EditPage> {
                     Icons.camera,
                     color: lightPurple,
                   ),
-                 onPressed: () async {
+                  onPressed: () async {
                     takePhoto(ImageSource.camera);
                     Navigator.pop(context);
                   },
