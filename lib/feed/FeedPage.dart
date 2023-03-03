@@ -156,12 +156,12 @@ class _SearchFormState extends State<SearchForm> {
                             })),
                   ),
                   onFieldSubmitted: (value) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            SearchResult(activity: activitySearch.text),
-                      ),
-                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (context) =>
+                    //         SearchResult(activity: activitySearch.text),
+                    //   ),
+                    // );
                   },
                 ),
               ),
@@ -216,7 +216,7 @@ class _SearchFormState extends State<SearchForm> {
         ];
       },
       body: SafeArea(
-        child: PostCard(),
+        child: PostCard(activitySearch: activitySearch.text),
       ),
     );
   }
@@ -226,39 +226,72 @@ class PostCard extends StatelessWidget {
   final CollectionReference _post =
       FirebaseFirestore.instance.collection('post');
 
-   PostCard({super.key});
+  //PostCard({super.key});
+  final String activitySearch;
+  PostCard({Key? key, required this.activitySearch}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-        stream: _post
-            .where('open', isEqualTo: true)
-            .orderBy('timeStamp', descending: true)
-            .snapshots(),
-        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container(
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const <Widget>[
-                    SizedBox(
-                      height: 30.0,
-                      width: 30.0,
-                      child: CircularProgressIndicator(),
+    return activitySearch != ""
+        ? StreamBuilder<QuerySnapshot>(
+            stream: _post
+                .where('open', isEqualTo: true)
+                .where('activityName', isGreaterThanOrEqualTo: activitySearch)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const <Widget>[
+                        SizedBox(
+                          height: 30.0,
+                          width: 30.0,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            );
-          }
+                  ),
+                );
+              }
 
-          return ListView.builder(
-              itemCount: (snapshot.data! as dynamic).docs.length,
-              itemBuilder: (context, index) => Container(
-                    child: CardWidget(
-                        snap: (snapshot.data! as dynamic).docs[index]),
-                  ));
-        });
+              return ListView.builder(
+                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  itemBuilder: (context, index) => Container(
+                        child: CardWidget(
+                            snap: (snapshot.data! as dynamic).docs[index]),
+                      ));
+            })
+        : StreamBuilder<QuerySnapshot>(
+            stream: _post
+                .where('open', isEqualTo: true)
+                .orderBy('timeStamp', descending: true)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container(
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: const <Widget>[
+                        SizedBox(
+                          height: 30.0,
+                          width: 30.0,
+                          child: CircularProgressIndicator(),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.builder(
+                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  itemBuilder: (context, index) => Container(
+                        child: CardWidget(
+                            snap: (snapshot.data! as dynamic).docs[index]),
+                      ));
+            });
   }
 }
