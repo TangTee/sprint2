@@ -47,7 +47,8 @@ class _RegisnextPageState extends State<RegisnextPage> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
-  String _ImageProfileController = '';
+  String _ImageProfileController =
+      'https://cdn-icons-png.flaticon.com/512/149/149071.png';
   final String _selectedGender = '';
   final CollectionReference _users =
       FirebaseFirestore.instance.collection('users');
@@ -354,7 +355,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
               password,
               Imageidcard,
               age,
-              ImageProfile,
+              _ImageProfileController,
               Displayname,
               gender,
               bio,
@@ -376,7 +377,7 @@ class _RegisnextPageState extends State<RegisnextPage> {
           await HelperFunctions.saveUserNameSF(fullName);
           await HelperFunctions.saveUserImageidcardSF(Imageidcard);
           await HelperFunctions.saveUserAgeSF(age);
-          await HelperFunctions.saveUserImageprofileSF(ImageProfile);
+          await HelperFunctions.saveUserImageprofileSF(_ImageProfileController);
           await HelperFunctions.saveUserDisplaySF(Displayname);
           await HelperFunctions.saveUserGenderSF(gender);
           await HelperFunctions.saveUserBioSF(bio);
