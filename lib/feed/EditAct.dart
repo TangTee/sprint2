@@ -138,13 +138,6 @@ class _EditActState extends State<EditAct> {
                       fontSize: 46,
                       fontWeight: FontWeight.bold,
                       color: purple,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 5,
-                          color: unselected,
-                          offset: Offset(3, 3),
-                        ),
-                      ],
                     ),
                   ),
                   bottom: const PreferredSize(
@@ -457,7 +450,8 @@ class _EditActState extends State<EditAct> {
                                         SingleChildScrollView(
                                           scrollDirection: Axis.horizontal,
                                           child: Padding(
-                                              padding: const EdgeInsets.only(top: 3),
+                                              padding:
+                                                  const EdgeInsets.only(top: 3),
                                               child: SizedBox(
                                                 child: OutlinedButton(
                                                   onPressed: null,
