@@ -255,6 +255,17 @@ class PostCard extends StatelessWidget {
                   ),
                 );
               }
+              if ((snapshot.data! as dynamic).docs.length == 0) {
+                return const Center(
+                  child: Text('Post not found',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'MyCustomFont',
+                        color: unselected,
+                        fontWeight: FontWeight.bold,
+                      )),
+                );
+              }
 
               return ListView.builder(
                   itemCount: (snapshot.data! as dynamic).docs.length,
