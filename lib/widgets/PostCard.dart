@@ -193,9 +193,8 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                           TextSpan(
-                            text: '${'${'\t\t' +
-                                widget.snap['date']}\t(' +
-                                widget.snap['time']})',
+                            text:
+                                '${'${'\t\t' + widget.snap['date']}\t(' + widget.snap['time']})',
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,
@@ -270,13 +269,33 @@ class _PostCardState extends State<CardWidget> {
                             ),
                           ),
                           TextSpan(
-                            text: '\t\t$joinLen / ${widget.snap['peopleLimit']}',
+                            text:
+                                '\t\t$joinLen / ${widget.snap['peopleLimit']}',
                             style: const TextStyle(
                               fontFamily: 'MyCustomFont',
                               color: unselected,
                               fontSize: 14,
                             ),
                           ),
+                          if (joinLen.toString() == widget.snap['peopleLimit'])
+                            const TextSpan(
+                              text: '\t\tFull',
+                              style: TextStyle(
+                                fontFamily: 'MyCustomFont',
+                                color: redColor,
+                                fontSize: 14,
+                              ),
+                            ),
+                          if (joinLen ==
+                              int.parse(widget.snap['peopleLimit']) - 1)
+                            const TextSpan(
+                              text: '\t\t1 Last place',
+                              style: TextStyle(
+                                fontFamily: 'MyCustomFont',
+                                color: redColor,
+                                fontSize: 14,
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -438,7 +457,8 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const MyHomePage(
+                                            builder: (context) =>
+                                                const MyHomePage(
                                               index: 0,
                                             ),
                                           ),
@@ -485,7 +505,8 @@ class _PostCardState extends State<CardWidget> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (context) => const MyHomePage(
+                                            builder: (context) =>
+                                                const MyHomePage(
                                               index: 0,
                                             ),
                                           ),
