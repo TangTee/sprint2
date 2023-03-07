@@ -165,9 +165,8 @@ class _ChatPageState extends State<ChatPage> {
                                     FirebaseFirestore.instance
                                         .collection('post')
                                         .doc(widget.groupId)
-                                        .update({
-                                      'open': ['false']
-                                    }).whenComplete(() {
+                                        .update({'open': false}).whenComplete(
+                                            () {
                                       Navigator.pop(context);
                                     });
                                     await service.showNotificationWithPayload(
