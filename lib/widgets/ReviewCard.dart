@@ -113,9 +113,8 @@ class _ReviewCardState extends State<CardRWidget> {
                     ),
                     RatingBar.builder(
                       initialRating: widget.review['rating'],
-                      maxRating: widget.review['rating'],
-                      minRating: widget.review['rating'],
                       direction: Axis.horizontal,
+                      ignoreGestures: true,
                       allowHalfRating: true,
                       itemCount: 5,
                       itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
